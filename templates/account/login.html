@@ -1,0 +1,58 @@
+{% extends "account/base.html" %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+{% bootstrap_messages %}
+
+
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+
+
+{% block content %}
+
+<div class="container-sm text-center w-50 my-5 py-5 border rounded-3">
+  {% get_providers as socialaccount_providers %}
+  
+  <main class="form-signin">
+    <form class="login" method="POST" action="{% url 'account_login' %}">
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+
+    {% csrf_token %}
+
+    {% bootstrap_form form %}
+    <div class="form-floating">
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+    </div>
+
+    <button class="primaryAction w-50 btn  btn-primary m-3" type="submit">{% trans "Sign In" %}</button>
+    <!-- <br> -->
+    <button class="btn btn-outline-warning w-50" href="{% url 'account_reset_password' %}">Forgot Passwword</button> 
+  </form>
+
+
+</main>
+<hr>
+<div class="login-or">{% trans 'or' %}</div>
+
+
+Not a member? <a href="{{ signup_url }}">Register</a>
+
+
+{% if socialaccount_providers %}
+<p> Or sign up with:</p>
+<div class="socialaccount_providers btn-group">
+  {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+</div>
+
+
+  
+  {% include "socialaccount/snippets/login_extra.html" %}
+{% endif %}
+
+</div>
+  {% endblock %}
+

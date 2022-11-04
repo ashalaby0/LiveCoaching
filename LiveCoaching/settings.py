@@ -49,6 +49,7 @@ INSTALLED_APPS = [
 
     # apps
     'home',
+    'bootstrap5',
 ]
 
 SITE_ID = 1
@@ -82,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-
+ 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
@@ -138,9 +139,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_URLS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# redirect after login
+LOGIN_REDIRECT_URL = '/'
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
+
+# remove the intermediate page when using social login
+SOCIALACCOUNT_LOGIN_ON_GET = True

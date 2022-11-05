@@ -154,3 +154,6 @@ ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 
 # remove the intermediate page when using social login
 SOCIALACCOUNT_LOGIN_ON_GET = True
+
+# for sending mails
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' ## need to be changed in productiona (a.sh .. 5-Sept)

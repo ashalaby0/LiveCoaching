@@ -12,7 +12,7 @@
 
 {% block content %}
 
-<div class="container-sm text-center w-50 my-5 py-5 border rounded-3">
+<div class="container-sm text-center w-50 my-5 py-5 border rounded-3" >
   {% get_providers as socialaccount_providers %}
   
   <main class="form-signin">
@@ -30,28 +30,25 @@
 
     <button class="primaryAction w-50 btn  btn-primary m-3" type="submit">{% trans "Sign In" %}</button>
     <!-- <br> -->
-    <button class="btn btn-outline-warning w-50" href="{% url 'account_reset_password' %}">Forgot Passwword</button> 
+    <a class="btn btn-outline-warning w-50" href="{% url 'account_reset_password' %}">Forgot Passwword</a> 
   </form>
 
+  <div class="m-3 p-3">
+    {% if socialaccount_providers %}
+    <div class="socialaccount_providers btn-group">
+      {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+    </div>
+  </div>
+  
+  
+    
+    {% include "socialaccount/snippets/login_extra.html" %}
+  {% endif %}
+  
 
 </main>
 <hr>
-<div class="login-or">{% trans 'or' %}</div>
-
-
 Not a member? <a href="{{ signup_url }}">Register</a>
-
-
-{% if socialaccount_providers %}
-<p> Or sign up with:</p>
-<div class="socialaccount_providers btn-group">
-  {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-</div>
-
-
-  
-  {% include "socialaccount/snippets/login_extra.html" %}
-{% endif %}
 
 </div>
   {% endblock %}

@@ -8,6 +8,7 @@ from django.db.models.query_utils import Q
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -39,10 +40,11 @@ def password_reset_request(request):
 	password_reset_form = PasswordResetForm()
 	return render(request=request, template_name="password/password_reset.html", context={"password_reset_form":password_reset_form})
 
-
+# @login_required(login_url='/accounts/login')
 def index(request):
     return render(
         request=request,
+        # template_name='home_old.html',
         template_name='home.html',
         context={}
     )

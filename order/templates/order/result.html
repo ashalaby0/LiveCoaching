@@ -1,0 +1,13 @@
+{% extends 'home.html' %}
+
+{% block content %}
+{% if status %}
+    <div class="alert alert-success text-center m-3 w-25" role="alert">
+        Payment Result: {{ result }}
+    </div>
+{% else %}
+<div class="alert alert-danger text-center m-3 w-25" role="alert">
+    Payment Result: {{ result }}
+</div>
+{% endif %}
+{% endblock %}

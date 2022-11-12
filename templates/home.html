@@ -11,67 +11,50 @@
 
   </head>
   <body >
-    <div class="row" style="min-height: 100vh;">
-        <div class="col-2 d-flex flex-column justify-content-around  bg-light">
-                <div class="nav-item">
-                  <a href="#" class="d-flex justify-content-center justify-content-lg-start nav-link py-2 border-bottom" aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="right">
-                    <i class="p-2 bi bi-person-circle text-primary" ></i>
-                    <p class="d-none d-lg-block text-secondary p-2">Home</p>
-                  </a>
-                </div>
-                <div class="nav-item">
-                  <a href="#" class="d-flex justify-content-center  justify-content-lg-start nav-link py-2 border-bottom" title="Dashboard" data-bs-toggle="tooltip" data-bs-placement="right">
-                    <i class="p-2 bi bi-speedometer2  text-primary"></i>
-                    <p class="d-none d-lg-block text-secondary p-2">Dashboard</p>
-                </a>
-                </div>
-                <div class="nav-item">
-                  <a href="#" class="d-flex justify-content-center  justify-content-lg-start nav-link py-2 border-bottom" title="Products" data-bs-toggle="tooltip" data-bs-placement="right">
-                    <i class="p-2 bi bi-people-fill text-primary"></i>
-                    <p class="d-none d-lg-block text-secondary p-2">Group</p>
-                  </a>
-                </div>
-                <div class="nav-item">
-                  <a href="#" class="d-flex justify-content-center  justify-content-lg-start nav-link py-2 border-bottom" title="Customers" data-bs-toggle="tooltip" data-bs-placement="right">
-                    <i class="p-2 bi bi-house-fill text-primary"></i>
-                    <p class="d-none d-lg-block text-secondary p-2">Home</p>
-                </a>
-                </div>
-                <div class="nav-item">
-                    <a href="#" class="d-flex justify-content-center  justify-content-lg-start nav-link py-2 border-bottom" aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="right">
-                        <i class="p-2 bi bi-broadcast-pin text-primary"></i>
-                        <p class="d-none d-lg-block text-secondary p-2">broadcast</p>
-                    </a>
-                  </div>
-                  <div class="nav-item">
-                    <a href="#" class="d-flex justify-content-center  justify-content-lg-start nav-link py-2 border-bottom" title="Dashboard" data-bs-toggle="tooltip" data-bs-placement="right">
-                        <i class="p-2 bi bi-calendar-week-fill text-primary"></i>
-                        <p class="d-none d-lg-block text-secondary p-2">Calender</p>
-                    </a>
-                  </div>
+    <nav class="navbar navbar-expand-lg bg-warning navbar-light sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">LifeCoaching</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-label="Toggle Navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+          <div class="navbar-nav ms-auto">
+            <a class="nav-item nav-link" href="#">Home</a>
+            <a class="nav-item nav-link" href="#">Home</a>
+            <a class="nav-item nav-link" href="#">Home</a>
+            <a class="nav-item nav-link" href="#">Home</a>
+            <div class="nav-item dropdown" href="#">
+              <a class="nav-link dropdown-toggle" href="#" id="myActionDropDown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                My Actions
+              </a>
+              <ul class="dropdown-menu" aria-lebelledby="myActionDropDown">
+                <li><a class="dropdown-item" href="{% url 'payment' %}">Checkout</a></li>
+                <li><a class="dropdown-item" href="#">Ay &aga</a></li>
+                <li><a class="dropdown-item" href="#">Ay Kalam</a></li>
+              </ul>
+            </div>
+            <form class="d-flex ms-3">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-light" type="submit">Go</button>
+            </form>
 
-                  <div class="nav-item">
-                    {% if request.user.is_authenticated %}
-                    <a href="/accounts/logout" class="d-flex justify-content-center  justify-content-lg-start nav-link py-2 border-bottom" title="Dashboard" data-bs-toggle="tooltip" data-bs-placement="right">
-                        <i class="p-2 bi bi-box-arrow-left text-primary"></i>
-                        <p class="d-none d-lg-block text-secondary  p-2" style="white-space: nowrap;">Sign Out</p>
-                    </a>
-                    {% else %}
-                    <a href="/accounts/login" class="d-flex justify-content-center  justify-content-lg-start nav-link py-2 border-bottom" title="Dashboard" data-bs-toggle="tooltip" data-bs-placement="right">
-                        <i class="p-2 bi bi-box-arrow-in-right text-primary"></i>
-                        <p class="d-none d-lg-block text-secondary  p-2" style="white-space: nowrap;">Sign In</p>
-                    </a>
+              {% if request.user.is_authenticated %}
+              <a href="/accounts/logout" class="nav-item nav-link">
+                  Log Out
+              </a>
+              {% else %}
+              <a href="/accounts/login" class="nav-item nav-link">
+                Log In
+              </a>
 
-                    {% endif %}
-                </div>
+              {% endif %}
+          </div>
+        </div> 
+      </div>
+    </nav>
 
-        </div>
-        <div class="col-10">
-            {% block content %}
-            {{user}}
-            {% endblock %}
-        </div>
-    </div>
-      
+    {% block content %}
+    {% endblock %}
+
   </body>
 </html>

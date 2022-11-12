@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-kt=v!e(u*u1knp#ccawchfj5du0&xz=wjc3g6e_-r=8zfl7#y(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
     # apps
     'home',
+    'order',
     'bootstrap5',
 ]
 

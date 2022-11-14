@@ -1,5 +1,4 @@
 from django.shortcuts import render, HttpResponseRedirect, HttpResponse
-from django.views.generic import CreateView, DetailView, ListView
 from django.views.decorators.csrf import csrf_exempt
 import hmac
 import hashlib
@@ -8,8 +7,20 @@ from . import models
 
 
 def payment_view(request):
+    """ payment wity paymob 
+    
+        - send 3 apis to paymob to get token.
+        - if succeeded to get token:
+            - redirect to paymob iframe to pay.
+            - validate payment with paymob and display result to client
+        - if failed
+            - display failure alert.
+    """
+    new_order = models.Order(name='newOrder', user=request.user)
+    new_order.save()
+    merchant_order_id = new_order.id
     payment = models.Payment()
-    status, payment_key = payment.pay()
+    status, payment_key = payment.get_paymob_token(merchant_order_id=merchant_order_id)
 
     
     if status:
@@ -27,6 +38,8 @@ def payment_view(request):
 
 @csrf_exempt
 def post_pay(request):
+    """ paymob hmac validation"""
+
     hmac_secret = 'FDDE8D8FB185CDE6AA6CCF5D5BD8FBD8'
     hmac_fields = [
         'amount_cents',

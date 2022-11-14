@@ -1,9 +1,44 @@
 from django.db import models
 from django.contrib.auth.models import User
-from bs4 import BeautifulSoup
 import requests
 
 from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeField
+
+
+#TODO
+# login .. done
+# register .. done
+# password reset .. pending
+# payment .. test done { pending on read payment test} 
+# pages:
+    # home page .. in progress
+    # coach profile page .. pending
+    # client profile page .. pending
+    # search .. pending
+    # filter .. pending
+    
+# session
+    # start_time
+    # status
+    # duration
+    # coach
+    # client_set
+    
+
+# client ( extend user mode )
+    # name
+    # email
+    # gender
+    # ..
+    
+# coach ( extend user mode )
+    # name
+    # speciality
+    # rating
+    # location
+    # price_per_hour
+    # price_per_30
+    # available_for_kids
 
 
 class Order(models.Model):
@@ -27,17 +62,21 @@ class Payment(models.Model):
         url = 'https://accept.paymob.com/api/auth/tokens'
         context = {"api_key": "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnVZVzFsSWpvaWFXNXBkR2xoYkNJc0luQnliMlpwYkdWZmNHc2lPall5TURFd05Dd2lZMnhoYzNNaU9pSk5aWEpqYUdGdWRDSjkuNFpXTDFTemZfWC1FUEowcUtldXZ1VVN0WlJrU1dNNm0zRXFGZFlzNlZvS3ZZaEFBcFpSMGg1cURvVkNIZkd2MWFJUWFBSWRJbjZZaFlmejJwMkdqdEE="}
         r = requests.post(url, json = context)
-
-        return r.json().get('token')
+        token = r.json().get('token')
+        print(token)
+        if token:
+            return True, token
+        return False, token
         
-    def _paymob_seccond_api_call(self, token):
+    def _paymob_seccond_api_call(self, token, merchant_order_id):
+        print(merchant_order_id)
         url = 'https://accept.paymob.com/api/ecommerce/orders'
         context = {
             "auth_token":  token,
             "delivery_needed": "false",
             "amount_cents": "100",
             "currency": "EGP",
-            "merchant_order_id": 21,
+            "merchant_order_id": merchant_order_id,
             "items": [
                 {
                     "name": "ASC1515",
@@ -123,14 +162,15 @@ class Payment(models.Model):
             return False, token
         return True,  token
 
-    def pay(self):
+    def get_paymob_token(self, merchant_order_id):
+        """ get paymob token through paymob 3 api calls"""
         integration_id = '3065725'
+        result = self._paymob_first_api_call()
+        if not result[0]:
+            return result
+        token = result[1]
 
-        token = self._paymob_first_api_call()
-        if not token:
-            return False, 'First Api Call Failed'
-        
-        result = self._paymob_seccond_api_call(token=token)
+        result = self._paymob_seccond_api_call(token=token, merchant_order_id=merchant_order_id)
         if not result[0]:
             return result
         order_id = result[1]

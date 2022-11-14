@@ -1,0 +1,9 @@
+.coach-img {
+    height: 200px;
+    min-height: 200px;
+    width: 150px;
+    min-width: 150px;
+    border-radius: 20px;
+    margin-right: 20px;
+}
+

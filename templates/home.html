@@ -2,9 +2,6 @@
 {% load static %}
 
 {% block script %}
-<script>
-    
-</script>
 {% endblock %}
 
 {% block content %}
@@ -21,7 +18,7 @@
                             <div id="nameHelpText" class="form-text">Search by coach name</div>
                         </div>
                         <div class="mb-3">
-                            <input type="text" id="specialityInput" class="form-control" name="coach_speciality_q" placeholder="Coach Speciality ..." />
+                            <input type="text" id="specialityInput" class="form-control" name="coach_speciality_q" placeholder="Coach Speciality ..."/>
                             <div id="specialityHelpText" class="form-text">Search by coach speciality</div>
                         </div>
                         <hr>
@@ -29,19 +26,20 @@
                             <label class="form-label">Min Price</label>
                             <div class="d-flex">
                                 <input type="range" value="0" class="form-range me-2" id="minPriceInput" name='min_price_q' min="0" max="1000" oninput="this.nextElementSibling.value = this.value">
-                                <output>0</output>
+                                <output id="min_price_q_output">0</output>
                             </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Max Price</label>
                             <div class="d-flex">
                                 <input type="range" value="1000" class="form-range" id="maxPriceInput" name='max_price_q' min="0" max="1000" oninput="this.nextElementSibling.value = this.value">
-                                <output>1000</output>
+                                <output id="max_price_q_output">1000</output>
                             </div>
                         </div>
                         <hr>
 
-                        <button type="submit" class="btn btn-primary w-100">Search</button>
+                        <button type="submit" class="btn btn-primary w-100 my-2">Search</button>
+                        <a href="{% url 'home' %}" class="btn btn-danger w-100">Clear</a>
                     </form>
                 </div>
             </div>
@@ -120,4 +118,5 @@
         </div>
     </div>
 </div>
+
 {% endblock %}

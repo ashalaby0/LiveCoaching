@@ -143,6 +143,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
+MEDIA_URL = 'media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -156,5 +159,9 @@ ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 # remove the intermediate page when using social login
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
-# for sending mails
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' ## need to be changed in productiona (a.sh .. 5-Sept)
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'ahmed.shalaby241@gmail.com'
+EMAIL_HOST_PASSWORD = 'yyxvtrukopydmlsq'

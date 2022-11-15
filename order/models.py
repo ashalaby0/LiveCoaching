@@ -8,7 +8,7 @@ from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeFie
 #TODO
 # login .. done
 # register .. done
-# password reset .. pending
+# password reset .. done
 # payment .. test done { pending on read payment test} 
 # pages:
     # home page .. in progress

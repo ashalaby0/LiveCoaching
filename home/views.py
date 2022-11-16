@@ -1,6 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render
+from django.views.generic import DetailView
 
 from home import models
 
@@ -27,3 +28,8 @@ def index(request):
         template_name='home.html',
         context={'coach_list': coach_list}
     )
+
+
+class CoachDetailView(DetailView):
+    model = models.Coach
+    template_name = 'home/coach_profile.html'

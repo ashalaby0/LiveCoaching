@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from . import models
+from home import models
+
 
 @admin.register(models.Coach)
 class CoachModelAdmin(admin.ModelAdmin):
@@ -10,4 +11,14 @@ class CoachModelAdmin(admin.ModelAdmin):
 
 @admin.register(models.Client)
 class ClientModelAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.Session)
+class SessionModelAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.Category)
+class CategoryModelAdmin(admin.ModelAdmin):
     pass

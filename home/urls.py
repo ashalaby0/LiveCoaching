@@ -6,7 +6,7 @@ from home import views
 urlpatterns = [
     path(
         '',
-        views.index,
+        views.coaches,
         name='home'
     ),
 

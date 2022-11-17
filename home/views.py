@@ -7,7 +7,7 @@ from home import models
 
 
 @login_required(login_url='/accounts/login')
-def index(request):
+def coaches(request):
 
     coach_name_q = request.GET.get('coach_name_q') if request.GET.get(
         'coach_name_q') != None else ''
@@ -25,7 +25,7 @@ def index(request):
     )
     return render(
         request=request,
-        template_name='home.html',
+        template_name='home/coaches.html',
         context={'coach_list': coach_list}
     )
 

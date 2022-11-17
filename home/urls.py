@@ -6,8 +6,13 @@ from home import views
 urlpatterns = [
     path(
         '',
-        views.coaches,
+        views.home,
         name='home'
+    ),
+    path(
+        'coaches',
+        views.coaches,
+        name='coaches'
     ),
 
     path(

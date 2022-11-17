@@ -6,6 +6,14 @@ from django.views.generic import DetailView
 from home import models
 
 
+def home(request):
+    return render(
+        request=request,
+        template_name='home/home.html',
+        context={}
+    )
+
+
 @login_required(login_url='/accounts/login')
 def coaches(request):
 

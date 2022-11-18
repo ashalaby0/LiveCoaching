@@ -48,5 +48,10 @@ urlpatterns = [
         'booking/<int:pk>',
         views.BookingDetailView.as_view(),
         name='booking'
+    ),
+    path(
+        'sessions',
+        views.sessions,
+        name='sessions'
     )
 ]

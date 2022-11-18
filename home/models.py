@@ -40,7 +40,9 @@ class Session(models.Model):
     coach = models.ForeignKey(Coach, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     time = models.DateTimeField()
+    duration = models.IntegerField(default=60)
     review = models.CharField(max_length=500, default='')
+    group_session = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f'{self.category}: {self.coach} - {self.client}'

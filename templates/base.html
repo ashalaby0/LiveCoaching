@@ -8,7 +8,6 @@
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
     <script src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
-    <script src="{% static 'js/custom.js' %}" defer></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
@@ -41,7 +40,9 @@
               <a class="nav-item nav-link" href="{% url 'coaches' %}"
                 >Coaches</a
               >
-              <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
+              <a class="nav-item nav-link" href="{% url 'sessions' %}"
+                >Sessions</a
+              >
               <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
               <div class="nav-item dropdown" href="#">
                 <a

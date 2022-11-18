@@ -1,4 +1,3 @@
-
 /* Search Card Script */
 /* ------------------ */
 
@@ -34,6 +33,12 @@ else{
     max_price_q_input.value = queryParams.max_price_q;
     let max_price_q_output = document.querySelector('#max_price_q_output')
     max_price_q_output.value = queryParams.max_price_q
+}
+
+// // keep date input search value
+const available_date_q_input = document.querySelector('[name="available_date_q"]')
+if (queryParams.available_date_q !== null){
+    available_date_q_input.value = queryParams.available_date_q;
 }
 
 /* ---------------------------------------------------------------------------- */

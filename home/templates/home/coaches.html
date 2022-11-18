@@ -9,7 +9,7 @@
         <div class="card-header">Filter By</div>
 
         <div class="card-body">
-          <form method="GET" action="{% url 'home' %}">
+          <form method="GET" action="{% url 'coaches' %}">
             <div>
               <input
                 type="text"
@@ -72,7 +72,7 @@
             <button type="submit" class="btn btn-primary w-100 my-2">
               Search
             </button>
-            <a href="{% url 'home' %}" class="btn btn-danger w-100">Clear</a>
+            <a href="{% url 'coaches' %}" class="btn btn-danger w-100">Clear</a>
           </form>
         </div>
       </div>
@@ -147,9 +147,9 @@
                   </a>
                 </div>
                 <div class="w-100">
-                  <button type="button" class="btn btn-primary w-100">
+                  <a href="#" class="btn btn-primary w-100">
                     BOOK APPOINTMENT
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>

@@ -38,6 +38,11 @@ def coaches(request):
     )
 
 
+class BookingDetailView(DetailView):
+    model = models.Coach
+    template_name = 'home/booking.html'
+
+
 class CoachDetailView(DetailView):
     model = models.Coach
     template_name = 'home/coach_profile.html'

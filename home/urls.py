@@ -43,5 +43,10 @@ urlpatterns = [
         'coach_details/<int:pk>',
         views.CoachDetailView.as_view(),
         name='coach_details'
+    ),
+    path(
+        'booking/<int:pk>',
+        views.BookingDetailView.as_view(),
+        name='booking'
     )
 ]

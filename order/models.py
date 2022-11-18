@@ -1,9 +1,8 @@
-from django.db import models
-from django.contrib.auth.models import User
 import requests
-
-from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeField
-
+from creditcards.models import (CardExpiryField, CardNumberField,
+                                SecurityCodeField)
+from django.contrib.auth.models import User
+from django.db import models
 
 #TODO
 # login .. done
@@ -11,11 +10,15 @@ from creditcards.models import CardNumberField, CardExpiryField, SecurityCodeFie
 # password reset .. done
 # payment .. test done { pending on read payment test} 
 # pages:
-    # home page .. in progress
-    # coach profile page .. pending
+    # home page .. in progress [ search, add contactus link ]
+    # contact us page
+    # coach registeration page ... pending
+    # coach profile page .. in progress
     # client profile page .. pending
-    # search .. pending
-    # filter .. pending
+    # search .. done
+    # filter .. in progress [availability]
+    # scheduled sessions page .. pending
+    # booking .. in progress
     
 # session
     # start_time

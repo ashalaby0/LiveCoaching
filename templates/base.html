@@ -19,7 +19,12 @@
     <header>
       <nav class="navbar navbar-expand-lg bg-warning navbar-light sticky-top">
         <div class="container-fluid">
-          <a class="navbar-brand" href="#">LifeCoaching</a>
+          <a class="navbar-brand" href="{% url 'home' %}">
+            <img
+              src="{% static 'images/life-coach-logo.png' %}"
+              style="width: 100px; height: 75px"
+            />
+          </a>
           <button
             class="navbar-toggler"
             type="button"
@@ -33,7 +38,9 @@
           <div class="collapse navbar-collapse" id="navbarText">
             <div class="navbar-nav ms-auto">
               <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
-              <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
+              <a class="nav-item nav-link" href="{% url 'coaches' %}"
+                >Coaches</a
+              >
               <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
               <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
               <div class="nav-item dropdown" href="#">
@@ -53,7 +60,7 @@
                       >Checkout</a
                     >
                   </li>
-                  <li><a class="dropdown-item" href="#">Ay &aga</a></li>
+                  <li><a class="dropdown-item" href="#">Ay 7aga</a></li>
                   <li><a class="dropdown-item" href="#">Ay Kalam</a></li>
                 </ul>
               </div>
@@ -98,13 +105,13 @@
             class="d-flex justify-content-center gap-3"
             style="list-style-type: none"
           >
-            <li>Coaches</li>
+            <li><a class="link-dark" href="{% url 'coaches' %}">Coaches</a></li>
             <li>|</li>
-            <li>Join as a coach</li>
+            <li><a class="link-dark" href="#">Join as a coach</a></li>
             <li>|</li>
-            <li>Terms & Conditions</li>
+            <li><a class="link-dark" href="#">Terms & Conditions</a></li>
             <li>|</li>
-            <li>Policy</li>
+            <li><a class="link-dark" href="#">Policy</a></li>
           </ul>
         </div>
         <div class="container-fluid">

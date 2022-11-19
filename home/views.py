@@ -86,16 +86,20 @@ def sessions(request):
     )
 
 
-def booking(request, coach_id):
-    coach = get_object_or_404(models.Coach, pk=coach_id)
-    private_session_set = models.Session.objects.filter(
-        clients__contains=request.user)
-    group_session_set = models.Session.objects.filter(coach__id=coach_id)
+def booking(request, pk):
+    client = models.Client.objects.get(user=request.user)
 
+    coach = get_object_or_404(models.Coach, pk=pk)
+    private_session_set = models.Session.objects.filter(
+        clients=client)
+    group_session_set = models.Session.objects.filter(coach__id=pk)
+
+    print(forms.SessionModelForm())
     context = {
         'private_session_set': private_session_set,
         'group_session_set': group_session_set,
-        'coach': coach
+        'coach': coach,
+        'session_form': forms.SessionModelForm()
     }
     return render(
         request=request,
@@ -104,9 +108,9 @@ def booking(request, coach_id):
     )
 
 
-class BookingDetailView(DetailView):
-    model = models.Coach
-    template_name = 'home/booking.html'
+# class BookingDetailView(DetailView):
+#     model = models.Coach
+#     template_name = 'home/booking.html'
 
 
 class CoachDetailView(DetailView):

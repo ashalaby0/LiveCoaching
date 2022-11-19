@@ -1,11 +1,41 @@
 {% extends 'base.html' %} {% load static %} {% block script %}
 <script>
+  let activateHour = (evt) => {
+    evt.target.checked = true;
+    console.log("ahmed");
+  };
+
+  let updateAvailHours = () => {
+    let availHoursUl = document.querySelector("#avail-hours");
+    let availHours = ["08:00", "10:00", "12:00", "14:00", "16:00"];
+    if (availHours.length === 0) {
+      availHoursUl.innerHTML =
+        "<p class='text-center text-danger w-100'>Not Available...</p>";
+    } else {
+      availHoursUl.textContent = "";
+      availHours.forEach((element, i) => {
+        let newRadio = document.createElement("input");
+        newRadio.setAttribute("type", "radio");
+        newRadio.setAttribute("class", "btn-check");
+        newRadio.setAttribute("name", "sessionHour");
+        newRadio.setAttribute("id", `option${i}`);
+        newRadio.setAttribute("value", element);
+        availHoursUl.append(newRadio);
+
+        let newRadioLabel = document.createElement("label");
+        newRadioLabel.setAttribute("class", "btn btn-outline-primary");
+        newRadioLabel.setAttribute("for", `option${i}`);
+        newRadioLabel.textContent = element;
+
+        // newRadioLabel.addEventListener("click", (event) => activateHour(event));
+        newRadio.addEventListener("click", (event) => activateHour(event));
+        availHoursUl.append(newRadioLabel);
+      });
+    }
+  };
   document
-    .querySelector("#scheduleDate")
-    .addEventListener(
-      "change",
-      () => (document.querySelector("#booking").disabled = false)
-    );
+    .querySelector("#sesion-date")
+    .addEventListener("change", updateAvailHours);
 </script>
 {% endblock %} {% block content %}
 <div class="d-flex flex-column container">
@@ -48,28 +78,29 @@
         </div>
         <div
           class="d-flex flex-column justify-content-between align-items-center"
+          style="min-width: 25%"
         >
-          <input type="datetime-local" class="form-control" id="scheduleDate" />
-          <div class="d-flex justify-content-between w-100 mt-2">
-            <div class="dropdown">
+          <input type="date" class="form-control" id="sesion-date" />
+          <div
+            class="d-flex justify-content-between w-100 mt-2"
+            style="min-width: 25%"
+          >
+            <div class="d-flex flex-column" style="min-width: 100%">
+              <div class="form-check form-check-inline" id="avail-hours">
+                <button class="btn btn-outline-primary">--:--</button>
+                <button class="btn btn-outline-primary">--:--</button>
+                <button class="btn btn-outline-primary">--:--</button>
+                <button class="btn btn-outline-primary">--:--</button>
+                <button class="btn btn-outline-primary">--:--</button>
+              </div>
               <button
-                id="booking"
-                class="btn btn-primary dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                disabled
+                type="submit"
+                class="btn btn-danger flex-grow-1 mt-2"
+                style="min-width: 100%"
               >
                 BOOK
               </button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">PRIVATE</a></li>
-                <li><a class="dropdown-item" href="#">GROUP</a></li>
-              </ul>
             </div>
-            <button type="submit" class="btn btn-danger flex-grow-1">
-              Checkout
-            </button>
           </div>
         </div>
       </div>

@@ -1,33 +1,36 @@
-from django.forms import ModelForm
+from django import forms
 
 from . import models
 
 
-class ClientModelForm(ModelForm):
+class ClientModelForm(forms.ModelForm):
     class Meta:
         model = models.Client
         fields = '__all__'
 
 
-class CoachModelForm(ModelForm):
+class CoachModelForm(forms.ModelForm):
     class Meta:
         model = models.Coach
         fields = '__all__'
 
 
-class CategoryModelForm(ModelForm):
+class CategoryModelForm(forms.ModelForm):
     class Meta:
         model = models.Category
         fields = '__all__'
 
 
-class SessionModelForm(ModelForm):
+class SessionModelForm(forms.ModelForm):
     class Meta:
         model = models.Session
+        widgets = {
+            'time': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'})
+        }
         fields = '__all__'
 
 
-class UserModelForm(ModelForm):
+class UserModelForm(forms.ModelForm):
     class Meta:
         model = models.User
         fields = '__all__'

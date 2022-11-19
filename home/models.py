@@ -45,7 +45,7 @@ class Session(models.Model):
     group_session = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return f'{self.category}: {self.coach} - {self.client}'
+        return f'{self.category}: {self.coach}'
 
 
 class OrderItem(models.Model):

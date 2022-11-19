@@ -46,7 +46,8 @@ urlpatterns = [
     ),
     path(
         'booking/<int:pk>',
-        views.BookingDetailView.as_view(),
+        # views.BookingDetailView.as_view(),
+        views.booking,
         name='booking'
     ),
     path(

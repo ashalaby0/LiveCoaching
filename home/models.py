@@ -14,14 +14,14 @@ class Category(models.Model):
 
 
 class Client(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.user.username
 
 
 class Coach(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     speciality = models.CharField(max_length=200, default='')
     rating = models.IntegerField(default=0, validators=[
                                  MaxValueValidator(5), MinValueValidator(0)])
@@ -36,7 +36,7 @@ class Coach(models.Model):
 
 
 class Session(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    clients = models.ManyToManyField(Client)
     coach = models.ForeignKey(Coach, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     time = models.DateTimeField()
@@ -46,3 +46,21 @@ class Session(models.Model):
 
     def __str__(self) -> str:
         return f'{self.category}: {self.coach} - {self.client}'
+
+
+class OrderItem(models.Model):
+    item = models.ForeignKey(Session, on_delete=models.CASCADE)
+
+    def __str__(self) -> str:
+        return self.item.category
+
+
+class Order(models.Model):
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    items = models.ManyToManyField(OrderItem)
+    start_date = models.DateTimeField(auto_now_add=True)
+    ordered_date = models.DateTimeField()
+    ordered = models.BooleanField()
+
+    def __str__(self) -> str:
+        return self.client.user.username

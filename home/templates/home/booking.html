@@ -1,4 +1,13 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %} {% load static %} {% block script %}
+<script>
+  document
+    .querySelector("#scheduleDate")
+    .addEventListener(
+      "change",
+      () => (document.querySelector("#booking").disabled = false)
+    );
+</script>
+{% endblock %} {% block content %}
 <div class="d-flex flex-column container">
   <div class="mb-3">
     <div class="card text-primary">
@@ -40,9 +49,24 @@
         <div
           class="d-flex flex-column justify-content-between align-items-center"
         >
-          <input type="datetime-local" class="form-control" />
+          <input type="datetime-local" class="form-control" id="scheduleDate" />
           <div class="d-flex justify-content-between w-100 mt-2">
-            <button type="submit" class="btn btn-primary me-2">BOOK</button>
+            <div class="dropdown">
+              <button
+                id="booking"
+                class="btn btn-primary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                disabled
+              >
+                BOOK
+              </button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">PRIVATE</a></li>
+                <li><a class="dropdown-item" href="#">GROUP</a></li>
+              </ul>
+            </div>
             <button type="submit" class="btn btn-danger flex-grow-1">
               Checkout
             </button>
@@ -55,9 +79,38 @@
   <div class="d-flex">
     <div class="d-flex flex-column w-100">
       <div class="card mb-3">
-        <div class="card-body">here we go</div>
+        <div class="card-body">
+          <h2 class="text-primary">Private Sessions</h2>
+          <div>
+            {% if private_session_set %}
+            <ul>
+              {% for private_session in private_session_set %}
+              <li>{{private_session}}</li>
+              {% endfor %}
+            </ul>
+            {% else %}
+            <h6>No Scheduled Private Sessions booked.</h6>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-body">
+          <h2 class="text-primary">Group Sessions</h2>
+          <div>
+            {% if group_session_set %}
+            <ul>
+              {% for group_session in group_session_set %}
+              <li>{{group_session}}</li>
+              {% endfor %}
+            </ul>
+            {% else %}
+            <h6>No Scheduled Group Sessions</h6>
+            {% endif %}
+          </div>
+        </div>
       </div>
     </div>
+    {% endblock %}
   </div>
-  {% endblock %}
 </div>

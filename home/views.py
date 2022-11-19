@@ -2,10 +2,10 @@ import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import DetailView
 
-from home import models
+from . import forms, models
 
 
 def home(request):
@@ -83,6 +83,24 @@ def sessions(request):
         request=request,
         template_name='home/sessions.html',
         context={'session_list': session_list}
+    )
+
+
+def booking(request, coach_id):
+    coach = get_object_or_404(models.Coach, pk=coach_id)
+    private_session_set = models.Session.objects.filter(
+        clients__contains=request.user)
+    group_session_set = models.Session.objects.filter(coach__id=coach_id)
+
+    context = {
+        'private_session_set': private_session_set,
+        'group_session_set': group_session_set,
+        'coach': coach
+    }
+    return render(
+        request=request,
+        template_name='home/booking.html',
+        context=context
     )
 
 

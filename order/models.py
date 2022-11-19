@@ -8,9 +8,10 @@ from django.db import models
 # login .. done
 # register .. done
 # password reset .. done
-# payment .. test done { pending on read payment test}
+# payment .. test done { pending on real payment test}
+
 # pages:
-# home page .. in progress [ search, add contactus link ]
+# home page .. in progress [ search, add contact us link ]
 # contact us page
 # coach registeration page ... pending
 # coach profile page .. in progress
@@ -19,29 +20,6 @@ from django.db import models
 # filter .. in progress [availability]
 # scheduled sessions page .. pending
 # booking .. in progress
-
-# session
-# start_time
-# status
-# duration
-# coach
-# client_set
-
-
-# client ( extend user mode )
-# name
-# email
-# gender
-# ..
-
-# coach ( extend user mode )
-# name
-# speciality
-# rating
-# location
-# price_per_hour
-# price_per_30
-# available_for_kids
 
 
 class Order(models.Model):

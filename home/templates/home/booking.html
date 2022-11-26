@@ -1,43 +1,13 @@
-{% extends 'base.html' %} {% load static %} {% block script %}
-<script>
-  let activateHour = (evt) => {
-    evt.target.checked = true;
-    console.log("ahmed");
-  };
+{% extends 'base.html' %} {% load static %}
 
-  let updateAvailHours = () => {
-    let availHoursUl = document.querySelector("#avail-hours");
-    let availHours = ["08:00", "10:00", "12:00", "14:00", "16:00"];
-    if (availHours.length === 0) {
-      availHoursUl.innerHTML =
-        "<p class='text-center text-danger w-100'>Not Available...</p>";
-    } else {
-      availHoursUl.textContent = "";
-      availHours.forEach((element, i) => {
-        let newRadio = document.createElement("input");
-        newRadio.setAttribute("type", "radio");
-        newRadio.setAttribute("class", "btn-check");
-        newRadio.setAttribute("name", "sessionHour");
-        newRadio.setAttribute("id", `option${i}`);
-        newRadio.setAttribute("value", element);
-        availHoursUl.append(newRadio);
+<!-- css/js section -->
 
-        let newRadioLabel = document.createElement("label");
-        newRadioLabel.setAttribute("class", "btn btn-outline-primary");
-        newRadioLabel.setAttribute("for", `option${i}`);
-        newRadioLabel.textContent = element;
+{% block script %}
+<script src="{% static 'home/js/booking.js' %}" defer></script>
+{% endblock %}
 
-        // newRadioLabel.addEventListener("click", (event) => activateHour(event));
-        newRadio.addEventListener("click", (event) => activateHour(event));
-        availHoursUl.append(newRadioLabel);
-      });
-    }
-  };
-  document
-    .querySelector("#sesion-date")
-    .addEventListener("change", updateAvailHours);
-</script>
-{% endblock %} {% block content %}
+<!-- main content -->
+{% block content %}
 <div class="d-flex flex-column container">
   <div class="mb-3">
     <div class="card text-primary">
@@ -80,28 +50,41 @@
           class="d-flex flex-column justify-content-between align-items-center"
           style="min-width: 25%"
         >
-          <input type="date" class="form-control" id="sesion-date" />
-          <div
-            class="d-flex justify-content-between w-100 mt-2"
-            style="min-width: 25%"
-          >
-            <div class="d-flex flex-column" style="min-width: 100%">
-              <div class="form-check form-check-inline" id="avail-hours">
-                <button class="btn btn-outline-primary">--:--</button>
-                <button class="btn btn-outline-primary">--:--</button>
-                <button class="btn btn-outline-primary">--:--</button>
-                <button class="btn btn-outline-primary">--:--</button>
-                <button class="btn btn-outline-primary">--:--</button>
+          <form action="{% url 'payment' %}" method="POST">
+            {% csrf_token %}
+            <input
+              type="date"
+              data-coach-id="{{coach.id}}"
+              data-url="{% url 'get_coach_available_hours' coach.id %}"
+              class="form-control"
+              id="sesion-date"
+              name="session_date"
+            />
+            <input name="coach_id" value="{{coach.id}}" hidden />
+            <div
+              class="d-flex justify-content-between w-100 mt-2"
+              style="min-width: 25%"
+            >
+              <div class="d-flex flex-column" style="min-width: 100%">
+                <div class="form-check form-check-inline" id="avail-hours">
+                  <a href="#" class="btn btn-outline-primary">--:--</a>
+                  <a href="#" class="btn btn-outline-primary">--:--</a>
+                  <a href="#" class="btn btn-outline-primary">--:--</a>
+                  <a href="#" class="btn btn-outline-primary">--:--</a>
+                  <a href="#" class="btn btn-outline-primary">--:--</a>
+                </div>
+                <button
+                  id="book_button"
+                  type="submit"
+                  class="btn btn-danger flex-grow-1 mt-2"
+                  style="min-width: 100%"
+                  disabled
+                >
+                  BOOK
+                </button>
               </div>
-              <button
-                type="submit"
-                class="btn btn-danger flex-grow-1 mt-2"
-                style="min-width: 100%"
-              >
-                BOOK
-              </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

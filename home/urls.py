@@ -54,5 +54,22 @@ urlpatterns = [
         'sessions',
         views.sessions,
         name='sessions'
-    )
+    ),
+    path(
+        'get_coach_available_hours/<int:pk>',
+        views.get_coach_available_hours,
+        name='get_coach_available_hours'
+    ),
+    path(
+        "payment",
+        views.payment_view,
+        name='payment'
+
+    ),
+    path(
+        'post_pay',
+        views.post_pay,
+        name='post_pay'
+    ),
+
 ]

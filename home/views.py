@@ -1,9 +1,14 @@
+import base64
 import datetime
 
+import requests
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView
 
@@ -115,19 +120,46 @@ def booking(request, pk):
     )
 
 
-# class BookingDetailView(DetailView):
-#     model = models.Coach
-#     template_name = 'home/booking.html'
-
-
 class CoachDetailView(DetailView):
     model = models.Coach
     template_name = 'home/coach_profile.html'
 
 
+def get_zoom_user_authorization(request):
+    ZOOM_OAUTH_REDIRECT_URL = request.build_absolute_uri(
+        reverse(settings.ZOOM_OAUTH_REDIRECT_URL_NAME))
+    return redirect(settings.ZOOM_USER_AUTHORIZATON_URL_BASE + ZOOM_OAUTH_REDIRECT_URL)
+
+
+def get_zoom_access_token(request):
+    response = requests.post(
+        url=settings.ZOOM_TOKEN_REQUEST_URL,
+        headers={
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': 'Basic ' + base64.b64encode(bytes(f'{settings.ZOOM_API_KEY}:{settings.ZOOM_API_SEC}', 'utf-8')).decode('utf-8')
+        },
+        data={
+            'code': request.GET.get('code'),
+            'grant_type': 'authorization_code',
+            'redirect_uri': request.build_absolute_uri(reverse('get_zoom_access_token'))
+        }
+
+    )
+    if response.status_code == 200:
+        access_token = response.json().get('access_token')
+        print('access_token', access_token)
+        # here we create zoom meeting
+        # display it on screen
+        # button to sent it by mail
+        # make sure mail is already provided
+        # if not ask for mail
+        # set status to True
+
+    # render template with final result
+
+
 def payment_view(request):
 
-    print('post', request.POST)
     coach_id = request.POST.get('coach_id')
     session_hour = request.POST.get('sessionHour')
     session_hour = int(session_hour.split(':')[0])
@@ -138,7 +170,6 @@ def payment_view(request):
     _day = int(_day)
 
     client = models.Client.objects.get(user=request.user)
-    print(client)
     _time = datetime.datetime(
         _year, _month, _day, session_hour, 0, 0)
     coach = models.Coach.objects.get(pk=coach_id)
@@ -146,11 +177,16 @@ def payment_view(request):
         coach=coach, time=_time, category=coach.speciality, group_session=False)
     new_session.clients.add(client)
 
-    print(f'session created: {new_session.id}')
-
     new_order = models.Order.objects.create(client=client, item=new_session)
 
-    print(f'order created: {new_order.id}')
+    # for testing ( creating zoom meeting )
+    models.Session.objects.create_zoom_meeting(
+        topic='test_topic',
+        start_time=_time,
+        duration_in_mins='60',
+        time_zone='EGYPT/CAIRO',
+        agenda='test_agenda'
+    )
 
     merchant_order_id = new_order.id
     payment = models.Payment()
@@ -178,7 +214,7 @@ def payment_view(request):
 @csrf_exempt
 def post_pay(request):
 
-    hmac_secret = 'FDDE8D8FB185CDE6AA6CCF5D5BD8FBD8'
+    hmac_secret = settings.PAYMOB_HMAC
     hmac_fields = [
         'amount_cents',
         'created_at',
@@ -209,6 +245,9 @@ def post_pay(request):
         generated_hmac = hmac.new(hmac_secret.encode(
             'utf-8'), concatenated_str.encode('utf8'), hashlib.sha512).hexdigest()
         result = hmac.compare_digest(generated_hmac, sent_hmac)
+
+        # create new zoom session
+        # send session url to client
 
         return render(
             request=request,

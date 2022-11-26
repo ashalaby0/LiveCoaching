@@ -71,5 +71,14 @@ urlpatterns = [
         views.post_pay,
         name='post_pay'
     ),
-
+    path(
+        'get_zoom_user_authorization',
+        views.get_zoom_user_authorization,
+        name='get_zoom_user_authorization'
+    ),
+    path(
+        'get_zoom_access_token',
+        views.get_zoom_access_token,
+        name='get_zoom_access_token'
+    )
 ]

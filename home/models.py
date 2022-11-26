@@ -1,8 +1,12 @@
 import datetime
+import json
+from time import time
 
+import jwt
 import requests
 from creditcards.models import (CardExpiryField, CardNumberField,
                                 SecurityCodeField)
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -63,6 +67,56 @@ class Coach(models.Model):
         return self.user.username
 
 
+class SessionCustomManager(models.QuerySet):
+
+    def generate_zoom_token(self):
+        API_KEY = settings.ZOOM_API_KEY
+        API_SEC = settings.ZOOM_API_SEC
+        token = jwt.encode(
+            {'iss': API_KEY, 'exp': time() + 5000},
+            API_SEC,
+            algorithm='HS256'
+        )
+        return jwt.decode(token, API_SEC, algorithms=["HS256"])
+
+    def create_zoom_meeting(self, topic, start_time, duration_in_mins, time_zone, agenda):
+        formated_time = '2022-12-12T11: 11: 11'  # will be formated from start_time
+        payload = {
+            "topic": topic,
+            "type": 2,
+            "start_time": formated_time,
+            "duration": duration_in_mins,
+            "timezone": time_zone,
+            "agenda": agenda,
+
+            "recurrence": {"type": 1,
+                           "repeat_interval": 1
+                           },
+            "settings": {"host_video": "true",
+                         "participant_video": "true",
+                         "join_before_host": "False",
+                         "mute_upon_entry": "True",
+                         "watermark": "true",
+                         "audio": "voip",
+                         "auto_recording": "cloud"
+                         }
+        }
+
+        headers = {
+            'authorization': f'Bearer {self.generate_zoom_token()}',
+            'content/type': 'application/json'
+        }
+
+        response = requests.post(
+            settings.ZOOM_API_URL,
+            headers=headers,
+            data=json.dumps(payload)
+        )
+
+        result = response.json()
+        print(result)
+
+
 class Session(models.Model):
     clients = models.ManyToManyField(Client)
     coach = models.ForeignKey(Coach, on_delete=models.CASCADE)
@@ -71,6 +125,9 @@ class Session(models.Model):
     duration = models.IntegerField(default=60)
     review = models.CharField(max_length=500, default='')
     group_session = models.BooleanField(default=False)
+    url = models.URLField(default=None, null=True)
+
+    objects = SessionCustomManager.as_manager()
 
     def __str__(self) -> str:
         return f'{self.category}: {self.coach}'
@@ -97,13 +154,11 @@ class Payment(models.Model):
         context = {"api_key": "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnVZVzFsSWpvaWFXNXBkR2xoYkNJc0luQnliMlpwYkdWZmNHc2lPall5TURFd05Dd2lZMnhoYzNNaU9pSk5aWEpqYUdGdWRDSjkuNFpXTDFTemZfWC1FUEowcUtldXZ1VVN0WlJrU1dNNm0zRXFGZFlzNlZvS3ZZaEFBcFpSMGg1cURvVkNIZkd2MWFJUWFBSWRJbjZZaFlmejJwMkdqdEE="}
         r = requests.post(url, json=context)
         token = r.json().get('token')
-        print(token)
         if token:
             return True, token
         return False, token
 
     def _paymob_seccond_api_call(self, token, merchant_order_id):
-        print(merchant_order_id)
         url = 'https://accept.paymob.com/api/ecommerce/orders'
         context = {
             "auth_token":  token,
@@ -160,9 +215,7 @@ class Payment(models.Model):
         return True, id
 
     def _paymob_third_api_call(self, token, order_id, integration_id):
-        print('third api 333333333333333')
         url = 'https://accept.paymob.com/api/acceptance/payment_keys'
-        print('order_id', order_id)
 
         billing_data = {
             "apartment": "803",

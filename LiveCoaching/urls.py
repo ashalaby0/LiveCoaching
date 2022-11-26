@@ -27,7 +27,9 @@ urlpatterns = [
     # allauth
     path('accounts/', include('allauth.urls')),
 
-    path('favicon.ico', RedirectView.as_view(url='/static/images/favicon.ico'))
+    path('favicon.ico', RedirectView.as_view(
+        url='/static/images/favicon.ico')),
+    path('zoom', include('zoom.urls'),)
 ]
 
 

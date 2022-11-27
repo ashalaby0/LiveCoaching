@@ -66,6 +66,8 @@ class Coach(models.Model):
     def __str__(self) -> str:
         return self.user.username
 
+# not used
+
 
 class SessionCustomManager(models.QuerySet):
 
@@ -127,7 +129,7 @@ class Session(models.Model):
     group_session = models.BooleanField(default=False)
     url = models.URLField(default=None, null=True)
 
-    objects = SessionCustomManager.as_manager()
+    # objects = SessionCustomManager.as_manager()
 
     def __str__(self) -> str:
         return f'{self.category}: {self.coach}'

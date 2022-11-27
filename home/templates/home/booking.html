@@ -85,6 +85,13 @@
               </div>
             </div>
           </form>
+          <form action="{% url 'schedule_zoom_meeting' %}" method="post">
+            {% csrf_token %}
+            <input name="meeting_date" value="2022-12-29T08:00:00Z" />
+            <input name="meeting_topic" value="meeting_topic1" />
+            <input name="meeting_agenda" value="meeting_agenda1" />
+            <button class="btn btn-secondary" type="submit">book test</button>
+          </form>
         </div>
       </div>
     </div>

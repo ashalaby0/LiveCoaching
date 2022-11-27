@@ -72,13 +72,13 @@ urlpatterns = [
         name='post_pay'
     ),
     path(
-        'get_zoom_user_authorization',
-        views.get_zoom_user_authorization,
-        name='get_zoom_user_authorization'
+        'schedule_zoom_meeting',
+        views.schedule_zoom_meeting,
+        name='schedule_zoom_meeting'
     ),
     path(
-        'get_zoom_access_token',
-        views.get_zoom_access_token,
-        name='get_zoom_access_token'
+        'zoom_callback',
+        views.zoom_callback,
+        name='zoom_callback'
     )
 ]

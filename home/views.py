@@ -1,11 +1,13 @@
 import base64
 import datetime
+import hashlib
+import hmac
 
 import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.http import JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
@@ -125,13 +127,21 @@ class CoachDetailView(DetailView):
     template_name = 'home/coach_profile.html'
 
 
-def get_zoom_user_authorization(request):
+def schedule_zoom_meeting(request):
+
+    meeting_date = request.POST.get('meeting_date')
+    meeting_topic = request.POST.get('meeting_topic')
+    meeting_agenda = request.POST.get('meeting_agenda')
+    request.session['meeting_date'] = meeting_date
+    request.session['meeting_topic'] = meeting_topic
+    request.session['meeting_agenda'] = meeting_agenda
+
     ZOOM_OAUTH_REDIRECT_URL = request.build_absolute_uri(
         reverse(settings.ZOOM_OAUTH_REDIRECT_URL_NAME))
     return redirect(settings.ZOOM_USER_AUTHORIZATON_URL_BASE + ZOOM_OAUTH_REDIRECT_URL)
 
 
-def get_zoom_access_token(request):
+def zoom_callback(request):
     response = requests.post(
         url=settings.ZOOM_TOKEN_REQUEST_URL,
         headers={
@@ -141,21 +151,35 @@ def get_zoom_access_token(request):
         data={
             'code': request.GET.get('code'),
             'grant_type': 'authorization_code',
-            'redirect_uri': request.build_absolute_uri(reverse('get_zoom_access_token'))
+            'redirect_uri': request.build_absolute_uri(reverse('zoom_callback'))
         }
-
     )
-    if response.status_code == 200:
-        access_token = response.json().get('access_token')
-        print('access_token', access_token)
-        # here we create zoom meeting
-        # display it on screen
-        # button to sent it by mail
-        # make sure mail is already provided
-        # if not ask for mail
-        # set status to True
+    access_token = response.json()['access_token']
 
-    # render template with final result
+    meeting_date = request.session['meeting_date']
+    meeting_topic = request.session['meeting_topic']
+    meeting_agenda = request.session['meeting_agenda']
+
+    response = requests.post(
+        url=settings.ZOOM_MEETING_URL,
+        headers={
+            'Authorization': 'Bearer ' + access_token,
+            'content-type': 'application/json'
+        },
+        json={
+            'agenda': meeting_agenda,
+            'default_password': False,
+            'duration': settings.ZOOM_MEETING_DURATION,
+            'password': settings.ZOOM_MEETING_PASSWORD,
+            'pre_schedule': False,
+            'schedule_for': request.user.email,
+            'schedule_time': meeting_date,
+            'timezone': 'Egypt/Cairo',
+            'Topic': meeting_topic,
+            'type': 2
+        }
+    )
+    return response
 
 
 def payment_view(request):
@@ -178,15 +202,6 @@ def payment_view(request):
     new_session.clients.add(client)
 
     new_order = models.Order.objects.create(client=client, item=new_session)
-
-    # for testing ( creating zoom meeting )
-    models.Session.objects.create_zoom_meeting(
-        topic='test_topic',
-        start_time=_time,
-        duration_in_mins='60',
-        time_zone='EGYPT/CAIRO',
-        agenda='test_agenda'
-    )
 
     merchant_order_id = new_order.id
     payment = models.Payment()

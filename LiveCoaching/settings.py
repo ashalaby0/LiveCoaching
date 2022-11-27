@@ -173,6 +173,9 @@ PAYMOB_HMAC = 'FDDE8D8FB185CDE6AA6CCF5D5BD8FBD8'
 # ZOOM
 ZOOM_API_KEY = '3eunwnojTGKyf_oydVKU7w'
 ZOOM_API_SEC = 'ABrJMIOaMu6fxRhQPOne5459Mnn1TinG'
-ZOOM_OAUTH_REDIRECT_URL_NAME = 'get_zoom_access_token'
+ZOOM_OAUTH_REDIRECT_URL_NAME = 'zoom_callback'
 ZOOM_USER_AUTHORIZATON_URL_BASE = f"https://zoom.us/oauth/authorize?response_type=code&client_id={ZOOM_API_KEY}&redirect_uri="
 ZOOM_TOKEN_REQUEST_URL = "https://zoom.us/oauth/token"
+ZOOM_MEETING_URL = 'https://api.zoom.us/v2/users/me/meetings'
+ZOOM_MEETING_DURATION = 60
+ZOOM_MEETING_PASSWORD = 123456

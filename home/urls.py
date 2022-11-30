@@ -56,7 +56,7 @@ urlpatterns = [
         name='sessions'
     ),
     path(
-        'get_coach_available_hours/<int:pk>',
+        'get_coach_available_hours/<int:pk>/<str:_date>',
         views.get_coach_available_hours,
         name='get_coach_available_hours'
     ),

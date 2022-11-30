@@ -30,21 +30,48 @@ class Client(models.Model):
 
 
 class CoachCustomManager(models.QuerySet):
-    def get_available_hours(self, pk):
+    # def get_available_hours(self, pk, _date):
+    #     coach_list = self.filter(pk=pk)
+    #     if coach_list.count() > 0:
+    #         coach = coach_list[0]
+    #         all_hours = set(range(coach.working_hours_start.hour,
+    #                               coach.working_hours_end.hour))
+    #         for i in coach.session_set.all():
+    #             print(i.time.hour)
+    #             if i.time.hour in all_hours:
+    #                 all_hours.remove(i.time.hour)
+
+    #         all_hours = [
+    #             datetime.time(x, 0, 0).strftime('%H:%M') for x in all_hours
+    #         ]
+    #         return all_hours
+    #     return []
+
+    def get_available_hours(self, pk, day):
         coach_list = self.filter(pk=pk)
         if coach_list.count() > 0:
             coach = coach_list[0]
-            all_hours = set(range(coach.working_hours_start.hour,
-                                  coach.working_hours_end.hour))
-            for i in coach.session_set.all():
-                print(i.time.hour)
-                if i.time.hour in all_hours:
-                    all_hours.remove(i.time.hour)
+            _date = datetime.datetime.combine(datetime.date(
+                *[int(x) for x in day.split('-')]), coach.working_hours_start)
 
-            all_hours = [
-                datetime.time(x, 0, 0).strftime('%H:%M') for x in all_hours
-            ]
-            return all_hours
+            total_duration = (
+                datetime.datetime.combine(datetime.date.today(
+                ), coach.working_hours_end) - datetime.datetime.combine(datetime.date.today(), coach.working_hours_start)
+            ).seconds
+            all_half_hours = (
+                _date + datetime.timedelta(minutes=i/60) for i in range(0, total_duration, 60*30))
+
+            formated_half_hours = [x.strftime('%H:%M') for x in all_half_hours]
+            for i in coach.session_set.filter(time__date=_date):
+                # remove reserved hour from all_half_hours
+                if i.time.strftime('%H:%M') in formated_half_hours:
+                    # remove current half hour
+                    formated_half_hours.remove(i.time.strftime('%H:%M'))
+                    formated_half_hours.remove(
+                        (i.time + datetime.timedelta(minutes=30)).strftime('%H:%M'))  # remove next half hour
+
+            # formated_half_hours = [x.strftime('%H:%M') for x in formated_half_hours]
+            return formated_half_hours
         return []
 
 

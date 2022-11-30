@@ -179,3 +179,7 @@ ZOOM_TOKEN_REQUEST_URL = "https://zoom.us/oauth/token"
 ZOOM_MEETING_URL = 'https://api.zoom.us/v2/users/me/meetings'
 ZOOM_MEETING_DURATION = 60
 ZOOM_MEETING_PASSWORD = 123456
+
+
+# for ngrok testing
+CSRF_TRUSTED_ORIGINS = ['https://09d5-197-135-92-154.eu.ngrok.io']

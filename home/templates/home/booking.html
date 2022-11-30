@@ -55,9 +55,9 @@
             <input
               type="date"
               data-coach-id="{{coach.id}}"
-              data-url="{% url 'get_coach_available_hours' coach.id %}"
+              data-url="{% url 'get_coach_available_hours' pk=coach.id _date='datePlaceHolder' %}"
               class="form-control"
-              id="sesion-date"
+              id="session-date"
               name="session_date"
             />
             <input name="coach_id" value="{{coach.id}}" hidden />
@@ -67,11 +67,67 @@
             >
               <div class="d-flex flex-column" style="min-width: 100%">
                 <div class="form-check form-check-inline" id="avail-hours">
-                  <a href="#" class="btn btn-outline-primary">--:--</a>
-                  <a href="#" class="btn btn-outline-primary">--:--</a>
-                  <a href="#" class="btn btn-outline-primary">--:--</a>
-                  <a href="#" class="btn btn-outline-primary">--:--</a>
-                  <a href="#" class="btn btn-outline-primary">--:--</a>
+                  <div
+                    class="btn-group"
+                    role="group"
+                    aria-label="Basic radio toggle button group"
+                  >
+                    <input
+                      type="radio"
+                      class="btn-check"
+                      name="sessionHour"
+                      id="option1"
+                      autocomplete="off"
+                      checked
+                    />
+                    <label class="btn btn-outline-primary" for="option1"
+                      >--:--</label
+                    >
+
+                    <input
+                      type="radio"
+                      class="btn-check"
+                      name="sessionHour"
+                      id="option2"
+                      autocomplete="off"
+                    />
+                    <label class="btn btn-outline-primary" for="option2"
+                      >--:--</label
+                    >
+
+                    <input
+                      type="radio"
+                      class="btn-check"
+                      name="sessionHour"
+                      id="option3"
+                      autocomplete="off"
+                    />
+                    <label class="btn btn-outline-primary" for="option3"
+                      >--:--</label
+                    >
+
+                    <input
+                      type="radio"
+                      class="btn-check"
+                      name="sessionHour"
+                      id="option4"
+                      autocomplete="off"
+                    />
+                    <label class="btn btn-outline-primary" for="option4"
+                      >--:--</label
+                    >
+
+                    <input
+                      type="radio"
+                      class="btn-check"
+                      name="sessionHour"
+                      id="option5"
+                      autocomplete="off"
+                    />
+                    <label class="btn btn-outline-primary" for="option5"
+                      >--:--</label
+                    >
+                  </div>
                 </div>
                 <button
                   id="book_button"
@@ -85,13 +141,13 @@
               </div>
             </div>
           </form>
-          <form action="{% url 'schedule_zoom_meeting' %}" method="post">
+          <!-- <form action="{% url 'schedule_zoom_meeting' %}" method="post">
             {% csrf_token %}
             <input name="meeting_date" value="2022-12-29T08:00:00Z" />
             <input name="meeting_topic" value="meeting_topic1" />
             <input name="meeting_agenda" value="meeting_agenda1" />
             <button class="btn btn-secondary" type="submit">book test</button>
-          </form>
+          </form> -->
         </div>
       </div>
     </div>

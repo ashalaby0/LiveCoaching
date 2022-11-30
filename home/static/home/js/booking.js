@@ -5,6 +5,8 @@ let activateHour = (evt) => {
 
 
 let getAvailHours = (url) => {
+  let _date = document.querySelector("#session-date").value
+  url = url.replace('datePlaceHolder',_date)
   return fetch(url, {
     method: "GET",
     headers: {
@@ -47,5 +49,5 @@ let updateAvailHours = async (evt) => {
   }
 };
 document
-  .querySelector("#sesion-date")
+  .querySelector("#session-date")
   .addEventListener("change", updateAvailHours);

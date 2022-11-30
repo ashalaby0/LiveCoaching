@@ -6,6 +6,7 @@ import hmac
 import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -95,8 +96,8 @@ def sessions(request):
     )
 
 
-def get_coach_available_hours(request, pk):
-    hours = models.Coach.objects.get_available_hours(pk)
+def get_coach_available_hours(request, pk, _date):
+    hours = models.Coach.objects.get_available_hours(pk, _date)
     return JsonResponse({'av_hours': hours})
 
 
@@ -160,6 +161,9 @@ def zoom_callback(request):
     meeting_topic = request.session['meeting_topic']
     meeting_agenda = request.session['meeting_agenda']
 
+    client_mail = request.session['client_mail']
+    coach_mail = request.session['coach_mail']
+
     response = requests.post(
         url=settings.ZOOM_MEETING_URL,
         headers={
@@ -172,26 +176,51 @@ def zoom_callback(request):
             'duration': settings.ZOOM_MEETING_DURATION,
             'password': settings.ZOOM_MEETING_PASSWORD,
             'pre_schedule': False,
-            'schedule_for': request.user.email,
+            'schedule_for': client_mail,
             'schedule_time': meeting_date,
             'timezone': 'Egypt/Cairo',
             'Topic': meeting_topic,
             'type': 2
         }
     )
-    return response
+
+    start_url = response.json()['start_url']
+    send_mail(
+        'LifeCoaching Session Scheduled',
+        f'URL:{start_url} <br> CLIENT: {request.user.username}',
+        settings.EMAIL_HOST_USER,
+        [client_mail, coach_mail],
+        fail_silently=False,
+    )
+
+    join_url = response.json()['join_url']
+    send_mail(
+        'LifeCoaching Session Scheduled',
+        f'URL:{join_url}',
+        settings.EMAIL_HOST_USER,
+        [client_mail, coach_mail],
+        fail_silently=False,
+    )
+
+    return HttpResponse(f'''<div class="alert alert-success">URL: <a href='{join_url}'>Join Meeting</a></div><br><span> link sent by mail.. please chck your mail</span> ''')
+    # return response.json()
 
 
 def payment_view(request):
 
     coach_id = request.POST.get('coach_id')
     session_hour = request.POST.get('sessionHour')
-    session_hour = int(session_hour.split(':')[0])
+    session_hour, session_minute = [int(x) for x in session_hour.split(':')]
     session_date = request.POST.get('session_date')
     _year, _month, _day = session_date.split('-')
     _year = int(_year)
     _month = int(_month)
     _day = int(_day)
+
+    meeting_date = datetime.datetime(
+        _year, _month, _day, session_hour, session_minute).strftime('%Y-%m-%d%T%H:%M')
+    meeting_topic = ''
+    meeting_agenda = ''
 
     client = models.Client.objects.get(user=request.user)
     _time = datetime.datetime(
@@ -207,6 +236,12 @@ def payment_view(request):
     payment = models.Payment()
     status, payment_key = payment.get_paymob_token(
         merchant_order_id=merchant_order_id)
+
+    request.session['meeting_date'] = meeting_date
+    request.session['meeting_topic'] = meeting_topic
+    request.session['meeting_agenda'] = meeting_agenda
+    request.session['client_mail'] = client.user.email
+    request.session['coach_mail'] = coach.user.email
 
     if status:
         iframe_page = f'https://accept.paymob.com/api/acceptance/iframes/698300?payment_token={payment_key}'
@@ -226,7 +261,7 @@ def payment_view(request):
     )
 
 
-@csrf_exempt
+@ csrf_exempt
 def post_pay(request):
 
     hmac_secret = settings.PAYMOB_HMAC
@@ -261,9 +296,7 @@ def post_pay(request):
             'utf-8'), concatenated_str.encode('utf8'), hashlib.sha512).hexdigest()
         result = hmac.compare_digest(generated_hmac, sent_hmac)
 
-        # create new zoom session
-        # send session url to client
-
+        return redirect('schedule_zoom_meeting')
         return render(
             request=request,
             template_name='order/result.html',

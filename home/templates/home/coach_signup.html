@@ -1,0 +1,64 @@
+{% extends 'base.html' %} {% load bootstrap5 %} {% bootstrap_css %} {%
+bootstrap_javascript %} {% bootstrap_messages %}
+
+<!--  -->
+{% block content %}
+<div class="container text-center w-75 my-5 py-5 border rounded-3">
+  <form method="post">
+    <h3 class="text-start">Sign Up for LifeCoaching</h3>
+    <hr />
+    <p class="text-start">
+      Welcome! You are just minutes from being listed on LifeCoaching's
+      professional coach directory.
+    </p>
+    <h3 class="text-start">Basic Information</h3>
+    <hr />
+    <div class="container w-50">
+      <div class="input-group mb-3">
+        <span class="input-group-text">First Name</span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="First Name"
+          aria-label="First Name"
+          aria-describedby="First Name"
+        />
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">Last Name</span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Last Name"
+          aria-label="Last Name"
+          aria-describedby="Last Name"
+        />
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">Email</span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Email"
+          aria-label="Email"
+          aria-describedby="Email"
+        />
+      </div>
+      <div class="input-group mb-3">
+        <span class="input-group-text">Website</span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Website"
+          aria-label="Website"
+          aria-describedby="Website"
+        />
+      </div>
+    </div>
+    <hr />
+    <h3 class="text-start">Location</h3>
+    <div class="container w-50">{{form.speciality}}</div>
+    <button class="btn btn-success" type="submit">Sign Up</button>
+  </form>
+</div>
+{% endblock %}

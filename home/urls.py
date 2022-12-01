@@ -80,5 +80,10 @@ urlpatterns = [
         'zoom_callback',
         views.zoom_callback,
         name='zoom_callback'
+    ),
+    path(
+        'coach_sign_up',
+        views.CoachsignUpFormView.as_view(),
+        name='coach_sign_up'
     )
 ]

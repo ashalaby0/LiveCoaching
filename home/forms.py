@@ -12,7 +12,8 @@ class ClientModelForm(forms.ModelForm):
 class CoachModelForm(forms.ModelForm):
     class Meta:
         model = models.Coach
-        fields = '__all__'
+        exclude = ['user', 'location']
+        widgets =
 
 
 class CategoryModelForm(forms.ModelForm):

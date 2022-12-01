@@ -30,23 +30,6 @@ class Client(models.Model):
 
 
 class CoachCustomManager(models.QuerySet):
-    # def get_available_hours(self, pk, _date):
-    #     coach_list = self.filter(pk=pk)
-    #     if coach_list.count() > 0:
-    #         coach = coach_list[0]
-    #         all_hours = set(range(coach.working_hours_start.hour,
-    #                               coach.working_hours_end.hour))
-    #         for i in coach.session_set.all():
-    #             print(i.time.hour)
-    #             if i.time.hour in all_hours:
-    #                 all_hours.remove(i.time.hour)
-
-    #         all_hours = [
-    #             datetime.time(x, 0, 0).strftime('%H:%M') for x in all_hours
-    #         ]
-    #         return all_hours
-    #     return []
-
     def get_available_hours(self, pk, day):
         coach_list = self.filter(pk=pk)
         if coach_list.count() > 0:
@@ -80,7 +63,9 @@ class Coach(models.Model):
     speciality = models.ForeignKey(Category, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0, validators=[
                                  MaxValueValidator(5), MinValueValidator(0)])
-    location = models.CharField(max_length=150, default='Egypt')
+    country = models.CharField(max_length=50, default='Egypt')
+    city = models.CharField(max_length=50, default='Cairo')
+    location = models.CharField(max_length=150, default='Egypt, Cairo')
     price_per_hour = models.IntegerField(default=0)
     price_per_30_mins = models.IntegerField(default=0)
     available_for_kids = models.BooleanField(default=False)
@@ -89,6 +74,10 @@ class Coach(models.Model):
     working_hours_end = models.TimeField(default=datetime.time(16, 0, 0))
 
     objects = CoachCustomManager.as_manager()
+
+    def save(self):
+        self.localtion = f'{self.country}, {self.state}'
+        super(Coach, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return self.user.username

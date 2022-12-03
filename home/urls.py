@@ -80,5 +80,10 @@ urlpatterns = [
         'zoom_callback',
         views.zoom_callback,
         name='zoom_callback'
+    ),
+    path(
+        'admin_panel',
+        views.admin_panel,
+        name='admin_panel'
     )
 ]

@@ -303,3 +303,7 @@ def post_pay(request):
             context={'result': result, 'status': True}
         )
     return HttpResponse(f'<h6>RESULT: {result}</h6>')
+
+
+def admin_panel(request):
+    return render(request, template_name="home/admin_panel.html", context={})

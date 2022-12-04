@@ -1,0 +1,93 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block style %}
+    <link href="{% static 'home/css/styles.css' %}" rel="stylesheet">
+    <script src="{% static 'home/js/admin_panel.js' %}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container d-flex  justify-content-between mt-4 gap-3">
+    <div class="card bg-light text-center w-50">
+        <!-- <img src="{% static 'images/lc_6.jpg' %}" class="card-img" style="filter: brightness(60%);" alt="test"> -->
+        <!-- <div class="card-img-overlay"> -->
+            <div class="card-header" >
+              Coaches
+            </div>
+            <div class="card-body">
+               <div>
+                <div class="d-flex justify-content-between mb-1">
+                    <span>Life Coaches</span>
+                    <span class="badge bg-primary rounded-pill">4</span>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                    <span>Career Coaches</span>
+                    <span class="badge bg-primary rounded-pill">2</span>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                    <span>Relationship Coaches</span>
+                    <span class="badge bg-primary rounded-pill">0</span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-1">
+                    <span>Relationship Coaches</span>
+                    <span class="badge bg-primary rounded-pill">0</span>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                    <span>Relationship Coaches</span>
+                    <span class="badge bg-primary rounded-pill">1</span>
+                </div>
+
+            </div>
+            </div>
+            <div class="card-footer text-end">
+                <button class="btn btn-secondary">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-danger">
+                    <i class="bi bi-trash3"></i>
+                </button>
+            </div>
+        </div>
+      <!-- </div> -->
+      <div class="card bg-light text-center  w-50">
+        <!-- <img src="{% static 'images/lc_6.jpg' %}" class="card-img" style="filter: brightness(60%);" alt="test"> -->
+        <!-- <div class="card-img-overlay"> -->
+        
+        <div class="card-header">
+          Clients
+        </div>
+        <div class="card-body">
+            <canvas id="clientChart"></canvas>
+        </div>
+        <div class="card-footer text-end">
+                <button class="btn btn-secondary">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-danger">
+                    <i class="bi bi-trash3"></i>
+                </button>
+        </div>
+        </div>
+      <!-- </div> -->
+
+      <div class="card bg-light text-center w-50">
+        <div class="card-header">
+          Sessoins
+        </div>
+        <div class="card-body">
+            <canvas id="sessionChart"></canvas>
+        </div>
+        <div class="card-footer text-end">
+                <button class="btn btn-secondary">
+                    <i class="bi bi-pencil"></i>
+                </button>
+                <button class="btn btn-danger">
+                    <i class="bi bi-trash3"></i>
+                </button>
+
+        </div>
+      </div>
+</div>
+{% endblock %}

@@ -1,4 +1,3 @@
-Chart.defaults.color = 'white';
 
 let clientCtart = document.getElementById("clientChart").getContext('2d');
 let clientChartObject = new Chart(clientCtart, {
@@ -18,13 +17,24 @@ let clientChartObject = new Chart(clientCtart, {
           }]
       },
       options: {
- 
+        legend: {
+            display:false,
+            labels: {
+                fontColor: "white",
+            }
+        },
           scales: {
               yAxes: [{
                   ticks: {
+                    fontColor:"black",
                       beginAtZero:true
                   }
               }],
+              xAxes: [{
+                ticks: {
+                    fontColor:"black"
+                }
+              }]
           }
       }
   });
@@ -57,7 +67,26 @@ let clientChartObject = new Chart(clientCtart, {
             }]
         },
         options: {
-        }
+            legend: {
+            display:false,
+            labels: {
+                    fontColor: "white",
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                      fontColor:"black",
+                        beginAtZero:true
+                    }
+                }],
+                xAxes: [{
+                  ticks: {
+                      fontColor:"black"
+                  }
+                }]
+            }
+      }
     });
   
   

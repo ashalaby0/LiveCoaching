@@ -65,7 +65,7 @@ class Coach(models.Model):
                                  MaxValueValidator(5), MinValueValidator(0)])
     country = models.CharField(max_length=50, default='Egypt')
     city = models.CharField(max_length=50, default='Cairo')
-    location = models.CharField(max_length=150, default='Egypt, Cairo')
+    # location = models.CharField(max_length=150, default='Egypt, Cairo')
     price_per_hour = models.IntegerField(default=0)
     price_per_30_mins = models.IntegerField(default=0)
     available_for_kids = models.BooleanField(default=False)

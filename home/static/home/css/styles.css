@@ -2,3 +2,30 @@
     min-height: 300px;
     position: relative; 
   }
+
+
+  .customized-card {
+    width: 30%;
+    background-size: cover;
+    min-width: 300px;
+    min-height: 300px;
+    /* filter: brightness(60%); */
+  }
+
+  /* .customized-card * {
+    filter: brightness(100%);
+  } */
+
+  .custom-card-body {
+    background-color: white;
+    border-radius: 10px;
+    padding: 5px;
+    color: dodgerblue   ;
+    /* filter: brightness(60%); */
+
+  }
+
+
+  .customized-card div span:first-child {
+    text-shadow: 7px 7px 7px #2b2a2a;
+  }

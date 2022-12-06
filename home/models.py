@@ -75,8 +75,8 @@ class Coach(models.Model):
 
     objects = CoachCustomManager.as_manager()
 
-    def save(self):
-        self.localtion = f'{self.country}, {self.state}'
+    def save(self, *args, **kwargs):
+        self.localtion = f'{self.country}, {self.city}'
         super(Coach, self).save(*args, **kwargs)
 
     def __str__(self) -> str:

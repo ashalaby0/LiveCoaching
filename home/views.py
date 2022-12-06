@@ -11,9 +11,9 @@ from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import DetailView, FormView
+from django.views.generic import DetailView, ListView, UpdateView
+from django.contrib.auth.models import User
 
 from . import forms, models
 
@@ -297,13 +297,40 @@ def post_pay(request):
         result = hmac.compare_digest(generated_hmac, sent_hmac)
 
         return redirect('schedule_zoom_meeting')
-        return render(
-            request=request,
-            template_name='order/result.html',
-            context={'result': result, 'status': True}
-        )
     return HttpResponse(f'<h6>RESULT: {result}</h6>')
 
 
 def admin_panel(request):
     return render(request, template_name="home/admin_panel.html", context={})
+
+
+class CoachAdminListView(ListView):
+    model = models.Coach
+    template_name = 'home/manage_coaches.html'
+
+
+class CoachAdminDetailView(UpdateView):
+    model = models.Coach
+    form_class = forms.CoachModelForm
+    template_name = 'home/manage_coach.html'
+    
+def coach_admin_update(request, user_id):
+
+    user = User.objects.get(pk=user_id)
+    print(user)
+    coach = models.Coach.objects.get(user=user_id)
+    print(coach)
+
+    user_form = forms.UserModelForm()
+    coach_form = forms.CoachModelForm()
+    if request.method == 'POST':
+        print(request.POST)
+        
+    return render(
+        request=request, 
+        template_name='home/manage_coach.html', 
+        context={
+            'user_form': user_form,
+            'coach_form': coach_form
+        }
+    )

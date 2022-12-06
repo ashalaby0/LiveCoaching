@@ -85,5 +85,16 @@ urlpatterns = [
         'admin_panel',
         views.admin_panel,
         name='admin_panel'
+    ),
+    path(
+        'admin_panel/manage_coaches', 
+        views.CoachAdminListView.as_view(), 
+        name='manage_coaches'
+    ),
+    path(
+        'admin_panel/manage_coaches/<int:user_id>',
+        # views.CoachAdminDetailView.as_view(),
+        views.coach_admin_update,
+        name='manage_coach'
     )
 ]

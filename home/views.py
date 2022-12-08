@@ -102,7 +102,7 @@ def get_coach_available_hours(request, pk, _date):
 
 
 def booking(request, pk):
-    client, status = models.Client.objects.get_or_create(user=request.user.id)
+    client, status = models.Client.objects.get_or_create(user=request.user)
     print(client)
 
     coach = get_object_or_404(models.Coach, pk=pk)

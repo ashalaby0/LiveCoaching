@@ -189,6 +189,7 @@ class Payment(models.Model):
 
     def _paymob_seccond_api_call(self, token, merchant_order_id):
         url = 'https://accept.paymob.com/api/ecommerce/orders'
+        print(merchant_order_id)
         context = {
             "auth_token":  token,
             "delivery_needed": "false",

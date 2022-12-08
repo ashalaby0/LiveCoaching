@@ -80,5 +80,23 @@ urlpatterns = [
         'zoom_callback',
         views.zoom_callback,
         name='zoom_callback'
-    )
+    ),
+
+    # admin panel
+    path(
+        'admin_panel',
+        views.admin_panel,
+        name='admin_panel'
+    ),
+    path(
+        'admin_panel/manage_coaches', 
+        views.CoachAdminListView.as_view(), 
+        name='manage_coaches'
+    ),
+    path(
+        'admin_panel/manage_coaches/<int:coach_id>',
+        views.coach_admin_update,
+        name='manage_coach'
+    ),
+
 ]

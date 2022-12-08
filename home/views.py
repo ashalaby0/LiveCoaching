@@ -13,7 +13,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 
 from . import forms, models
 
@@ -303,3 +303,42 @@ def post_pay(request):
             context={'result': result, 'status': True}
         )
     return HttpResponse(f'<h6>RESULT: {result}</h6>')
+
+
+# admin panel
+
+def admin_panel(request):
+    return render(request, template_name="home/admin_panel.html", context={})
+
+
+class CoachAdminListView(ListView):
+    model = models.Coach
+    template_name = 'home/manage_coaches.html'
+
+    
+def coach_admin_update(request, coach_id):
+
+    coach = models.Coach.objects.get(pk=coach_id)
+    user = coach.user
+
+    if request.method == 'POST':
+
+        coach_form = forms.CoachModelForm(request.POST, instance=coach)
+        user_form = forms.UserModelForm(request.POST, instance=user)
+        if coach_form.is_valid() and user_form.is_valid():
+            coach_form.save()
+            user_form.save()
+            return redirect('manage_coaches')
+    else:
+        user_form = forms.UserModelForm(instance=user)
+        coach_form = forms.CoachModelForm(instance=coach)
+
+
+    return render(
+        request=request, 
+        template_name='home/manage_coach.html', 
+        context={
+            'user_form': user_form,
+            'coach_form': coach_form
+        }
+    )

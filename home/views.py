@@ -235,7 +235,17 @@ def payment_view(request):
     merchant_order_id = new_order.id
     payment = models.Payment()
     status, payment_key = payment.get_paymob_token(
-        merchant_order_id=merchant_order_id)
+        merchant_order_id=merchant_order_id,
+        amount_cents=coach.price_per_hour * 100,
+        item_name=coach.speciality,
+        quantity=1,
+        email=client.user.email,
+        first_name=client.user.first_name,
+        last_name=client.user.last_name,
+        phone_number=client.phone_number,
+        city=client.city,
+        country=client.country
+        )
 
     request.session['meeting_date'] = meeting_date
     request.session['meeting_topic'] = meeting_topic

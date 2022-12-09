@@ -81,8 +81,8 @@ class Coach(models.Model):
     rating = models.IntegerField(default=0, validators=[
                                  MaxValueValidator(5), MinValueValidator(0)])
     location = models.CharField(max_length=150, default='Egypt')
-    price_per_hour = models.IntegerField(default=0)
-    price_per_30_mins = models.IntegerField(default=0)
+    price_per_hour = models.IntegerField(default=0) # in 100 cents
+    price_per_30_mins = models.IntegerField(default=0) # in 100 cents
     available_for_kids = models.BooleanField(default=False)
     photo = models.ImageField(upload_to='photo/%Y/%m/%d', blank=True)
     working_hours_start = models.TimeField(default=datetime.time(8, 0, 0))
@@ -187,53 +187,60 @@ class Payment(models.Model):
             return True, token
         return False, token
 
-    def _paymob_seccond_api_call(self, token, merchant_order_id):
+    def _paymob_seccond_api_call(
+        self, 
+        token, 
+        merchant_order_id,
+        amount_cents,
+        item_name,
+        quantity,
+        email,
+        first_name,
+        last_name,
+        phone_number,
+        city,
+        country
+        ):
         url = 'https://accept.paymob.com/api/ecommerce/orders'
         print(merchant_order_id)
         context = {
             "auth_token":  token,
             "delivery_needed": "false",
-            "amount_cents": "100",
+            "amount_cents": amount_cents,
             "currency": "EGP",
             "merchant_order_id": merchant_order_id,
             "items": [
                 {
-                    "name": "ASC1515",
-                    "amount_cents": "500000",
-                    "description": "Smart Watch",
-                    "quantity": "1"
-                },
-                {
-                    "name": "ERT6565",
-                    "amount_cents": "200000",
-                    "description": "Power Bank",
-                    "quantity": "1"
+                    "name": item_name,
+                    "amount_cents": amount_cents,
+                    "description": item_name,
+                    "quantity": quantity
                 }
             ],
             "shipping_data": {
-                "apartment": "803",
-                "email": "claudette09@exa.com",
-                "floor": "42",
-                "first_name": "Clifford",
-                "street": "Ethan Land",
-                "building": "8028",
-                "phone_number": "+86(8)9135210487",
-                "postal_code": "01898",
-                "extra_description": "8 Ram , 128 Giga",
-                "city": "Jaskolskiburgh",
-                "country": "CR",
-                "last_name": "Nicolas",
-                "state": "Utah"
+                "apartment": "",
+                "email": email,
+                "floor": "",
+                "first_name": first_name,
+                "street": "",
+                "building": "",
+                "phone_number": phone_number,
+                "postal_code": "",
+                "extra_description": "",
+                "city": city,
+                "country": country,
+                "last_name": last_name,
+                "state": ""
             },
             "shipping_details": {
-                "notes": " test",
+                "notes": "",
                 "number_of_packages": 1,
                 "weight": 1,
                 "weight_unit": "Kilogram",
                 "length": 1,
                 "width": 1,
                 "height": 1,
-                "contents": "product of some sorts"
+                "contents": ""
             }
         }
 
@@ -244,27 +251,39 @@ class Payment(models.Model):
             return False, msg
         return True, id
 
-    def _paymob_third_api_call(self, token, order_id, integration_id):
+    def _paymob_third_api_call(
+        self, 
+        token, 
+        order_id, 
+        integration_id,
+        first_name,
+        last_name,
+        email,
+        phone_number,
+        city,
+        country,
+        amount_cents
+        ):
         url = 'https://accept.paymob.com/api/acceptance/payment_keys'
 
         billing_data = {
-            "apartment": "803",
-            "email": "claudette09@exa.com",
-            "floor": "42",
-            "first_name": "Clifford",
-            "street": "Ethan Land",
-            "building": "8028",
-                        "phone_number": "+86(8)9135210487",
-                        "shipping_method": "PKG",
-                        "postal_code": "01898",
-                        "city": "Jaskolskiburgh",
-                        "country": "CR",
-                        "last_name": "Nicolas",
-                        "state": "Utah"
+            "apartment": "",
+            "email": email,
+            "floor": "",
+            "first_name": first_name,
+            "street": "",
+            "building": "",
+                        "phone_number": phone_number,
+                        "shipping_method": "",
+                        "postal_code": "",
+                        "city": city,
+                        "country": country,
+                        "last_name": last_name,
+                        "state": ""
         }
         context = {
             "auth_token": token,
-            "amount_cents": "100",
+            "amount_cents": amount_cents,
             "expiration": 3600,
             "order_id": order_id,
             "billing_data": billing_data,
@@ -279,17 +298,52 @@ class Payment(models.Model):
             return False, token
         return True,  token
 
-    def get_paymob_token(self, merchant_order_id):
-        integration_id = '3065725'
+    def get_paymob_token(
+        self, 
+        merchant_order_id,
+        amount_cents,
+        item_name,
+        quantity,
+        email,
+        first_name,
+        last_name,
+        phone_number,
+        city,
+        country
+        ):
+        integration_id = settings.PAYMOB_INTEGRATION_ID
         result = self._paymob_first_api_call()
         if not result[0]:
             return result
         token = result[1]
 
         result = self._paymob_seccond_api_call(
-            token=token, merchant_order_id=merchant_order_id)
+            token=token, 
+            merchant_order_id=merchant_order_id,
+            amount_cents=coach.price_per_hour * 100,
+            item_name=coach.speciality,
+            quantity=1,
+            email=client.user.email,
+            first_name=client.user.first_name,
+            last_name=client.user.last_name,
+            phone_number=client.phone_number,
+            city=client.city,
+            country=client.country
+            )
+
         if not result[0]:
             return result
         order_id = result[1]
 
-        return self._paymob_third_api_call(token, order_id, integration_id)
+        return self._paymob_third_api_call(
+            token, 
+            order_id, 
+            integration_id,
+            first_name=client.user.first_name,
+            last_name=client.user.last_name,
+            email=client.user.email,
+            phone_number=client.phone_number,
+            city=client.city,
+            country=client.country,
+            amount_cents=coach.price_per_hour * 100
+            )

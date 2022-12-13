@@ -14,13 +14,13 @@
 {% endif %}
 
 {% if provider.name == 'Google' %}
-  <button class="btn btn-outline-danger" onclick="location.href = '{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}'">
-    <i class="bi bi-google"></i>
+  <button class="social-icon" onclick="location.href = '{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}'">
+    <i class="fab fa-google"></i>
   </button>
 {% elif provider.name == 'Facebook' %}
-<button class="btn btn-outline-primary" onclick="location.href = '{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}'">
-  <i class="bi bi-facebook"></i>
-</button>
+  <button class="social-icon" onclick="location.href = '{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}'">
+    <i class="fab fa-facebook-f"></i>
+  </button>
 {% endif %}
 
 {% endfor %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block style %}
+<script src="{% static 'home/js/admin_panel.js' %}" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col container d-flex justify-content-around">
+        <div class="d-flex flex-column justify-content-between text-white">
+            <div class="text-center border-bottom py-3 h3">Coaches</div>
+            <canvas id="coachChart"></canvas>
+            <div class="text-end border-top py-3">
+                <a href="{% url 'manage_coaches' %}" class="btn btn-secondary">
+                    <span>Manage ... </span>
+                    <i class="bi bi-pencil"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column justify-content-between text-white">
+            <div class="text-center border-bottom py-3 h3">Clients</div>
+            <canvas id="clientChart"></canvas>
+            <div class="text-end border-top py-3">
+                <button class="btn btn-secondary">
+                    <span>Manage ... </span>
+                    <i class="bi bi-pencil"></i>
+                </button>
+            </div>
+        </div>
+        <div class="d-flex flex-column justify-content-between text-white border rounded">
+            <div class="text-center border-bottom py-3 h3">Sessions</div>
+            <canvas id="sessionChart"></canvas>
+            <div class="text-end border-top py-3">
+                <button class="btn btn-secondary">
+                    <span>Manage ... </span>
+                    <i class="bi bi-pencil"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

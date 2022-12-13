@@ -39,7 +39,7 @@ let updateAvailHours = async (evt) => {
       availHoursUl.append(newRadio);
 
       let newRadioLabel = document.createElement("label");
-      newRadioLabel.setAttribute("class", "btn btn-outline-primary");
+      newRadioLabel.setAttribute("class", "btn custom-btn-outline-primary");
       newRadioLabel.setAttribute("for", `option${i}`);
       newRadioLabel.textContent = element;
 

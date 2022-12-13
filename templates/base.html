@@ -2,126 +2,122 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Life Coaching</title>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nawarly</title>
+
+    <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}" />
+
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+
+
     <script src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css"
-    />
-    {% block style %} {% endblock %}
+
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" defer></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js" defer></script>
   </head>
+  {% block style %} {% endblock %}
   <body>
-    <header>
-      <nav class="navbar navbar-expand-lg bg-warning navbar-light sticky-top">
-        <div class="container-fluid">
-          <!-- <a class="navbar-brand" href="{% url 'home' %}"> -->
-          <a class="navbar-brand" href="http://localhost:8000/">
-            <img
-              src="{% static 'images/life-coach-logo.png' %}"
-              style="width: 100px; height: 75px"
-            />
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarText"
-            aria-controls="navbarText"
-            aria-label="Toggle Navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarText">
-            <div class="navbar-nav ms-auto">
-              <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
-              <a class="nav-item nav-link" href="{% url 'coaches' %}"
-                >Coaches</a
-              >
-              <a class="nav-item nav-link" href="{% url 'sessions' %}"
-                >Group Sessions</a
-              >
-              <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
-              <div class="nav-item dropdown" href="#">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="myActionDropDown"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  My Actions
-                </a>
-                <ul class="dropdown-menu" aria-lebelledby="myActionDropDown">
-                  <li>
-                    <a class="dropdown-item" href="{% url 'payment' %}"
-                      >Checkout</a
-                    >
-                  </li>
-                  <li><a class="dropdown-item" href="#">Ay 7aga</a></li>
-                  <li><a class="dropdown-item" href="#">Ay Kalam</a></li>
-                </ul>
-              </div>
-              <form class="d-flex ms-3">
-                <input
-                  class="form-control me-2"
-                  type="search"
-                  placeholder="Search"
-                  aria-label="Search"
-                />
-                <button class="btn btn-outline-light" type="submit">Go</button>
-              </form>
-
-              {% if request.user.is_authenticated %}
-              <a href="/accounts/logout" class="nav-item nav-link"> Log Out </a>
-              {% else %}
-              <a href="/accounts/login" class="nav-item nav-link"> Log In </a>
-
-              {% endif %}
+    <!-- Start Header -->
+    <div class="header" id="header">
+      <div class="container">
+        <a href="http://localhost:8000/" class="logo">Nawarly</a>
+        <ul class="main-nav">
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'coaches' %}">Coaches</a></li>
+          <li><a href="{% url 'sessions' %}">Group Sessions</a></li>
+          <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+          <li>
+            <a href="#">Category</a>
+            <!-- Start Categories menu -->
+            <div class="mega-menu">
+              <ul class="links">
+                <li>
+                  <a href="{% url 'coaches' %}?coach_speciality_q=Relations">Relations</a>
+                </li>
+                <li>
+                  <a href="{% url 'coaches' %}?coach_speciality_q=Startup">Startup</a>
+                </li>
+                <li>
+                  <a href="{% url 'coaches' %}?coach_speciality_q=Social">Social Life</a>
+                </li>
+                <li>
+                  <a href="{% url 'coaches' %}?coach_speciality_q=Skills">Skills</a>
+                </li>
+                <li>
+                  <a href="{% url 'coaches' %}?coach_speciality_q=ay 7aga">ay 7aga</a>
+                </li>
+              </ul>
+            </div>
+            <!-- End Categories menu -->
+          </li>
+          <li>
+            {% if request.user.is_authenticated %}
+              <a href="/accounts/logout" class="nav-item nav-link"> LogOut </a>
+            {% else %}
+              <a href="/accounts/login" class="nav-item nav-link"> LogIn </a>
+            {% endif %}
+        </li>
+        </ul>
+      </div>
+    </div>
+    <!-- End Header -->
+    {% block content %}
+    
+    {% endblock %}
+    <!-- Start Footer -->
+    <div class="footer">
+      <div class="container">
+        <div class="box">
+          <h3>Nawarly</h3>
+          <ul class="social">
+            <li>
+              <a href="#" class="facebook">
+                <ion-icon name="logo-facebook"></ion-icon>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="twitter">
+                <ion-icon name="logo-instagram"></ion-icon>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="youtube">
+                <ion-icon name="logo-youtube"></ion-icon>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="box">
+          <div class="line">
+            <i class="fas fa-map-marker-alt fa-fw"></i>
+            <div class="info">Egypt, Cairo</div>
+          </div>
+          <div class="line">
+            <i class="far fa-clock fa-fw"></i>
+            <div class="info">Business Hours: From 10:00 To 18:00</div>
+          </div>
+          <div class="line">
+            <i class="fas fa-phone-volume fa-fw"></i>
+            <div class="info">
+              <span>+2010000000</span>
+              <span>+2011111111</span>
             </div>
           </div>
         </div>
-      </nav>
-    </header>
-    <main>{% block content %} {% endblock %}</main>
-    <footer>
-      <div
-        class="d-flex flex-column text-center justify-content-between bg-warning text-dark"
-      >
-        <div class="container">
-          <h1 class="text-light fw-5">Life Coaching</h1>
-          <h5>
-            Our goal in LifeCoaching is to support our people and culture by
-            providing genuine coaching services from certified coaches with
-            diversified niches to conquer daily challenges, craft their own
-            success, live in contentment and happiness.
-          </h5>
-        </div>
-
-        <div class="container-fluid">
-          <ul
-            class="d-flex justify-content-center gap-3"
-            style="list-style-type: none"
-          >
-            <li><a class="link-dark" href="{% url 'coaches' %}">Coaches</a></li>
-            <li>|</li>
-            <li><a class="link-dark" href="#">Join as a coach</a></li>
-            <li>|</li>
-            <li><a class="link-dark" href="#">Terms & Conditions</a></li>
-            <li>|</li>
-            <li><a class="link-dark" href="#">Policy</a></li>
-          </ul>
-        </div>
-        <div class="container-fluid">
-          <p>&copy; 2022 LifeCoaching. All Rights Reserved</p>
-          <p>V1.0</p>
-        </div>
       </div>
-    </footer>
+      <p class="copyright">Copyright © 2023 Nawarly. All Rights Reserved.</p>
+    </div>
+    <!-- End Footer -->
+
+  {% block script %}
+  {% endblock %}
   </body>
-  {% block script %} {% endblock %}
+
 </html>

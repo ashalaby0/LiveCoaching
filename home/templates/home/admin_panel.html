@@ -2,73 +2,151 @@
 {% load static %}
 
 {% block style %}
-<link href="{% static 'home/css/styles.css' %}" rel="stylesheet">
+
+
+<link rel="stylesheet" href="{% static '/home/css/styles.css' %}">
 <script src="{% static 'home/js/admin_panel.js' %}" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 {% endblock %}
 
 {% block content %}
-<div class="container d-flex  justify-content-between mt-4 gap-3">
-
-    <div class="container customized-card d-flex flex-column justify-content-between text-dark rounded"
-        style="background-image: url('{% static "images/lc_6.jpg" %}');">
-        <div class="text-center border-bottom py-3 h3 text-white">Coaches</div>
-        <div class="d-flex justify-content-between mb-1">
-            <span class="text-white text-shadow">Life Coaches</span>
-            <span class="badge bg-white text-secondary rounded-pill">4</span>
-        </div>
-        <div class="d-flex justify-content-between mb-1">
-            <span class="text-white text-shadow">Career Coaches</span>
-            <span class="badge bg-white text-secondary rounded-pill">2</span>
-        </div>
-        <div class="d-flex justify-content-between mb-1">
-            <span class="text-white text-shadow">Relationship Coaches</span>
-            <span class="badge bg-white text-secondary rounded-pill">0</span>
-        </div>
-
-        <div class="d-flex justify-content-between mb-1">
-            <span class="text-white text-shadow">Relationship Coaches</span>
-            <span class="badge bg-white text-secondary rounded-pill">0</span>
-        </div>
-        <div class="d-flex justify-content-between mb-1">
-            <span class="text-white text-shadow">Relationship Coaches</span>
-            <span class="badge bg-white text-secondary rounded-pill">1</span>
-        </div>
-        <div class="text-end border-top py-3">
-            <a href="{% url 'manage_coaches' %}" class="btn btn-secondary">
-                <span>Manage ... </span>
-                <i class="bi bi-pencil"></i>
-            </a>
-        </div>
-    </div>
-
-    <div class="container customized-card  rounded" style="background-image: url('{% static "images/lc_12.jpg" %}');">
-        <div>
-        <div class="d-flex flex-column justify-content-between text-white" style="z-index: 100">
-                <div class="text-center border-bottom py-3 h3">Clients</div>
-                
-                <canvas id="clientChart"></canvas>
-                <div class="text-end border-top py-3">
-                    <button class="btn btn-secondary">
-                        <span>Manage ... </span>
-                        <i class="bi bi-pencil"></i>
-                    </button>
+<div class="d-flex flex-column">
+    <div class="d-flex justify-content-around">
+    
+    
+        <div class="custom-card custom-narrow-card">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="text-secondary">Coaches</div>
+                    <h5>
+                        <i class="fa fa-id-badge" aria-hidden="true"></i>
+                        15
+                    </h5>
                 </div>
+                <div></div>
+            </div>
+            <canvas id="coachChart"></canvas>
+            <div class="text-end border-top py-3">
+                <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div class="custom-card custom-narrow-card">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="text-secondary">Clients</div>
+                    <h5>
+                        <i class="fa fa-user-circle" aria-hidden="true"></i>
+                        48
+                    </h5>
+                </div>
+                <div></div>
+            </div>
+            <canvas id="clientChart"></canvas>
+            <div class="text-end border-top py-3">
+                <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div class="custom-card custom-narrow-card">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="text-secondary">Sessions</div>
+                    <h5>
+                        <i class="fa fa-users" aria-hidden="true"></i>
+                        32
+                    </h5>
+                </div>
+                <div></div>
+            </div>
+            <canvas id="sessionChart"></canvas>
+            <div class="text-end border-top py-3">
+                <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    
+    </div>
+    <div class="d-flex justify-content-around">
+        <div class="custom-card custom-narrow-card">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="text-secondary">Session Per Coach</div>
+                    <h5>
+                        <i class="fa fa-id-badge" aria-hidden="true"></i>
+                        15
+                    </h5>
+                </div>
+                <div></div>
+            </div>
+            <canvas style="height: 50%;" id="sessionPerCoachChart"></canvas>
+            <div class="text-end border-top py-3">
+                <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+        <div class="custom-card custom-narrow-card">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="text-secondary">Session Per Client</div>
+                    <h5>
+                        <i class="fa fa-user-circle" aria-hidden="true"></i>
+                        48
+                    </h5>
+                </div>
+                <div></div>
+            </div>
+            <canvas style="height: 50%;" id="sessionPerClientChart"></canvas>
+            <div class="text-end border-top py-3">
+                <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </a>
             </div>
         </div>
     </div>
+</div>
 
-    <div class="container customized-card d-flex flex-column justify-content-between text-white rounded"
-        style="background-image: url('{% static "images/lc_6.jpg" %}');">   
-        <div class="text-center border-bottom py-3 h3">Sessions</div>
-            <canvas id="sessionChart"></canvas>
+<!-- <div class="row">
+    <div class="row d-flex justify-content-around">
+        <div class="custom-card custom-wide-card">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="text-secondary">Session Per Coach</div>
+                    <h5>
+                        <i class="fa fa-id-badge" aria-hidden="true"></i>
+                    </h5>
+                </div>
+                <div></div>
+            </div>
+            <canvas id="sessionPerCoachChart"></canvas>
             <div class="text-end border-top py-3">
-                
-            <button class="btn btn-secondary">
-                <span>Manage ... </span>
-                <i class="bi bi-pencil"></i>
-            </button>
+                <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </a>
+            </div>
         </div>
-
+        <div class="custom-card custom-wide-card">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="text-secondary">Session Per Client</div>
+                    <h5>
+                        <i class="fa fa-user-circle" aria-hidden="true"></i>
+                        48
+                    </h5>
+                </div>
+                <div></div>
+            </div>
+            <canvas id="sessionPerClientChart"></canvas>
+            <div class="text-end border-top py-3">
+                <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
     </div>
-    {% endblock %}
+</div> -->
+{% endblock %}

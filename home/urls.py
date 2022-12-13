@@ -98,5 +98,10 @@ urlpatterns = [
         views.coach_admin_update,
         name='manage_coach'
     ),
+    path(
+        'contact_us',
+        views.contact_us,
+        name='contact_us'
+    )
 
 ]

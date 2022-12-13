@@ -7,3 +7,48 @@
     margin-right: 20px;
 }
 
+.custom-btn-primary {
+    background-color: var(--main-color);
+    /* color: var(--main-color4);; */
+    color: white;
+}
+.custom-btn-outline-primary {
+    border-color: var(--main-color);
+    color: var(--main-color);
+}
+.custom-btn-primary:hover {
+    background-color: var(--main-color4);
+}
+.custom-btn-primary:checked {
+    background-color: var(--main-color4);
+    color: var(--main-color4);
+}
+.custom-btn-outline-primary:hover {
+    color: var(--main-color4);
+    border-color: var(--main-color4);
+}
+
+.custom-btn-danger {
+    background-color: var(--main-color4);
+    color: white;
+}
+
+.custom-text-primary {
+    color: var(--main-color);
+}
+
+
+
+/* search min/max slider style */
+.slider::-webkit-slider-thumb {
+    /* appearance: none; */
+    background: var(--main-color);    
+    cursor: pointer; 
+  }
+
+
+/* change cursor for diabled buttons */
+  :disabled {
+    cursor: not-allowed;
+    pointer-events: all !important;
+  }

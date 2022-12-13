@@ -10,10 +10,15 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from phonenumber_field.modelfields import PhoneNumberField
 
 # TODO
 # coach location filed options
 
+# make the email required for any user
+User._meta.get_field('email')._unique = True  
+User._meta.get_field('email').blank = False
+User._meta.get_field('email').null = False
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -24,6 +29,10 @@ class Category(models.Model):
 
 class Client(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    phone_number = PhoneNumberField(default="not-provided", unique=True)
+    city = models.CharField(max_length=50, default="not-provided")
+    country = models.CharField(max_length=50, default="not-provided")
+    
 
     def __str__(self) -> str:
         return self.user.username
@@ -92,8 +101,6 @@ class Coach(models.Model):
 
     def __str__(self) -> str:
         return self.user.username
-
-# not used
 
 
 class SessionCustomManager(models.QuerySet):
@@ -170,6 +177,11 @@ class Order(models.Model):
     def __str__(self) -> str:
         return self.client.user.username
 
+class CustomerMessage(models.Model):
+    full_name = models.CharField(max_length=50)
+    email = models.EmailField()
+    message = models.TextField()
+    phone_number = PhoneNumberField(blank=True, null=True)
 
 class Payment(models.Model):
     shipment_address = models.CharField(max_length=150)
@@ -183,6 +195,7 @@ class Payment(models.Model):
         context = {"api_key": "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnVZVzFsSWpvaWFXNXBkR2xoYkNJc0luQnliMlpwYkdWZmNHc2lPall5TURFd05Dd2lZMnhoYzNNaU9pSk5aWEpqYUdGdWRDSjkuNFpXTDFTemZfWC1FUEowcUtldXZ1VVN0WlJrU1dNNm0zRXFGZFlzNlZvS3ZZaEFBcFpSMGg1cURvVkNIZkd2MWFJUWFBSWRJbjZZaFlmejJwMkdqdEE="}
         r = requests.post(url, json=context)
         token = r.json().get('token')
+        print(token)
         if token:
             return True, token
         return False, token
@@ -202,6 +215,7 @@ class Payment(models.Model):
         country
         ):
         url = 'https://accept.paymob.com/api/ecommerce/orders'
+        merchant_order_id += 1000 # for testing
         print(merchant_order_id)
         context = {
             "auth_token":  token,
@@ -245,6 +259,7 @@ class Payment(models.Model):
         }
 
         r = requests.post(url, json=context)
+        print(r.json())
         id = r.json().get('id')
         msg = r.json().get('message')
         if not id:
@@ -262,24 +277,49 @@ class Payment(models.Model):
         phone_number,
         city,
         country,
-        amount_cents
+        amount_cents,
+        state=None,
+        building=None,
+        apartment=None,
+        street=None,
+        postal_code=None,
+        floor=None
         ):
+
+        if not state:
+            state = 'not-provided'
+
+        if not building:
+            building = 'not-provided'
+
+        if not apartment:
+            apartment = 'not-provided'
+
+        if not street:
+            street = 'not-provided'
+
+        if not postal_code:
+            postal_code = 'not-provided'
+
+        if not floor:
+            floor = 'not-provided'
+            
         url = 'https://accept.paymob.com/api/acceptance/payment_keys'
 
         billing_data = {
-            "apartment": "",
+            "apartment": apartment,
             "email": email,
-            "floor": "",
+            "floor": floor,
             "first_name": first_name,
-            "street": "",
-            "building": "",
+            "street": street,
+            "building": building,
                         "phone_number": phone_number,
                         "shipping_method": "",
-                        "postal_code": "",
+                        "postal_code": postal_code,
                         "city": city,
                         "country": country,
                         "last_name": last_name,
-                        "state": ""
+                        "state": state
         }
         context = {
             "auth_token": token,
@@ -294,6 +334,7 @@ class Payment(models.Model):
 
         r = requests.post(url, json=context)
         token = r.json().get('token')
+        print(r.json())
         if not token:
             return False, token
         return True,  token
@@ -301,16 +342,35 @@ class Payment(models.Model):
     def get_paymob_token(
         self, 
         merchant_order_id,
-        amount_cents,
-        item_name,
-        quantity,
-        email,
-        first_name,
-        last_name,
-        phone_number,
-        city,
-        country
+        coach,
+        client
         ):
+
+        if not client.user.first_name:
+            first_name = 'not-provided'
+        else:
+            first_name = client.user.first_name
+
+        if not client.user.last_name:
+            last_name = 'not-provided'
+        else:
+            last_name = client.user.last_name
+
+        if not client.user.email:
+            email = 'not-provided'
+        else:
+            email = client.user.email
+
+        if not client.city:
+            city = 'not-provided'
+        else:
+            city = client.city
+
+        if not client.country:
+            country = 'not-provided'
+        else:
+            country = client.country
+
         integration_id = settings.PAYMOB_INTEGRATION_ID
         result = self._paymob_first_api_call()
         if not result[0]:
@@ -321,14 +381,14 @@ class Payment(models.Model):
             token=token, 
             merchant_order_id=merchant_order_id,
             amount_cents=coach.price_per_hour * 100,
-            item_name=coach.speciality,
+            item_name=coach.speciality.name,
             quantity=1,
-            email=client.user.email,
-            first_name=client.user.first_name,
-            last_name=client.user.last_name,
-            phone_number=client.phone_number,
-            city=client.city,
-            country=client.country
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            phone_number=str(client.phone_number),
+            city=city,
+            country=country
             )
 
         if not result[0]:
@@ -339,11 +399,12 @@ class Payment(models.Model):
             token, 
             order_id, 
             integration_id,
-            first_name=client.user.first_name,
-            last_name=client.user.last_name,
-            email=client.user.email,
-            phone_number=client.phone_number,
-            city=client.city,
-            country=client.country,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            phone_number=str(client.phone_number),
+            city=city,
+            country=country,
             amount_cents=coach.price_per_hour * 100
+
             )

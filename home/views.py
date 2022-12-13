@@ -6,6 +6,7 @@ import hmac
 import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -236,15 +237,8 @@ def payment_view(request):
     payment = models.Payment()
     status, payment_key = payment.get_paymob_token(
         merchant_order_id=merchant_order_id,
-        amount_cents=coach.price_per_hour * 100,
-        item_name=coach.speciality,
-        quantity=1,
-        email=client.user.email,
-        first_name=client.user.first_name,
-        last_name=client.user.last_name,
-        phone_number=client.phone_number,
-        city=client.city,
-        country=client.country
+        coach=coach,
+        client=client
         )
 
     request.session['meeting_date'] = meeting_date
@@ -252,6 +246,7 @@ def payment_view(request):
     request.session['meeting_agenda'] = meeting_agenda
     request.session['client_mail'] = client.user.email
     request.session['coach_mail'] = coach.user.email
+    print(f'client_mail: {client.user.email}')
 
     if status:
         iframe_page = f'https://accept.paymob.com/api/acceptance/iframes/698300?payment_token={payment_key}'
@@ -264,6 +259,9 @@ def payment_view(request):
     result = 'Payment Failed .. '
     if payment_key == 'duplicate':
         result += "Duplicate Product ID"
+
+    else:
+        result += str(payment_key)
     return render(
         request=request,
         template_name='order/result.html',
@@ -352,3 +350,23 @@ def coach_admin_update(request, coach_id):
             'coach_form': coach_form
         }
     )
+
+def contact_us(request):
+
+    form = forms.CustomerMessageForm()
+    context = {'form':form}
+
+    if request.method == 'POST':
+        form = forms.CustomerMessageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            print('saved')
+            messages.success(request, "Submitted Successfully !.")
+            form = forms.CustomerMessageForm()
+            context = {'form':form}
+            
+    return render(
+        request=request,
+        template_name='home/contact_us.html',
+        context=context
+        )

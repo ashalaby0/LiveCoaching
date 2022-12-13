@@ -1,0 +1,228 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.contact{
+    position: relative;
+    min-height: 100vh;
+    padding: 50px 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #023047;
+}
+
+.contact .content {
+
+    max-width: 800px;
+    text-align: center;
+
+}
+
+.contact .content h2{
+
+    font-size: 3em;
+    font-weight: 500;
+    color: #fff;
+}
+
+.contact .content p{
+
+    color: #fff;
+    font-size: 1.1em;
+    font-weight: 300;
+}
+
+.container{
+
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    margin-top: 30px;
+}
+
+.container .contactInfo{
+
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    /* background: #023047;
+    min-height: 500px;
+    border-radius: 11px; */
+}
+
+.container .contactInfo .box{
+
+    position: relative;
+    padding: 20px 0;
+    display: flex;
+    cursor: pointer;
+
+}
+
+.container .contactInfo .box .icon{
+    min-width: 60px;
+    height: 60px;
+    background: #fb8500;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.75em;
+    transition: 0.5s;
+}
+
+.container .contactInfo .box:hover .icon{
+    background: #ffb703;
+    color: black;
+}
+
+.container .contactInfo .box .text{
+
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    font-size: 1.1em;
+    color: burlywood;
+    font-weight: 300px;
+}
+
+.container .contactInfo .box .text h3{
+    font-weight: 500;
+    color:beige
+}
+
+.container .contactInfo .txt{
+    color: beige;
+    margin-top: 50px;
+    font-weight: 500;
+    padding-left: 10px;
+    border-left: 11px solid #fb8500;
+}
+
+.list{
+    position: relative;
+    display: flex;
+    gap: 30px;
+    margin: 20px 0;
+}
+
+.list li{
+    list-style: none;
+}
+
+.list li a{
+     color: #fb8500;
+     font-size: 2em;
+     transition: 0.5s;
+}
+
+.list li a:hover{
+    color: #ffb703;
+}
+
+.container .contactForm{
+    position: relative;
+    width: 40%;
+    min-height: 100px;
+    padding: 60px;
+    border-radius: 11px;
+}
+
+.container .contactForm h2{
+    font-size: 2em;
+    color: #fb8500;
+    font-weight: 500;
+    text-align: center;
+}
+
+.container .contactForm .inputbox{
+    position: relative;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.container .contactForm .inputbox input,
+.container .contactForm .inputbox textarea{
+
+    width: 100%;
+    color: beige;
+    background-color: #023047;
+    padding: 5px 0;
+    font-size: 1.1em;
+    margin: 10px 0;
+    border: none;
+    border-bottom: 2px solid #fb8500;
+    outline: none;
+    resize: none;
+}
+
+.container .contactForm .inputbox textarea{
+    border: 2px solid #fb8500;
+    border-radius: 11px;
+}
+
+.container .contactForm .inputbox span{
+    position: absolute;
+    color: beige;
+    left: 0;
+    pointer-events: none;
+    padding: 7px 7px;
+    margin: 10px 0;
+    font-size: 1.1em;
+    transition: 0.5s;
+}
+
+.container .contactForm .inputbox input:focus ~ span ,
+.container .contactForm .inputbox textarea:focus ~ span,
+.container .contactForm .inputbox input:valid ~ span ,
+.container .contactForm .inputbox textarea:valid ~ span
+{
+    color:#ffb703;
+    font-size: 0.9em;
+    transform: translateY(-25px);
+}
+
+.container .contactForm .inputbox input[type='submit']{
+    width: 100px;
+    background: #fb8500;
+    color: black;
+    border: none;
+    border-radius: 11px;
+    cursor: pointer;
+    padding: 10px;
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-left: 40%;
+}
+
+.container .contactForm .inputbox input[type='submit']:hover{
+    background: #ffb703;
+}
+
+@media(max-width: 991px)
+{
+    .contact
+    {
+        padding: 50px;
+    }
+
+    .container{
+        flex-direction: column;
+    }
+
+    .container .contactInfo,
+    .container .contactForm
+    {
+        width: 100%;
+    }
+
+    .container .contactForm{
+        padding: 50px;
+    }
+}

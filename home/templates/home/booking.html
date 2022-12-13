@@ -10,7 +10,7 @@
 {% block content %}
 <div class="d-flex flex-column container">
   <div class="mb-3">
-    <div class="card text-primary">
+    <div class="card custom-text-primary">
       <div class="card-body d-flex justify-content-between align-items-center">
         <div class="d-flex justify-content-between">
           <div>
@@ -28,15 +28,15 @@
             <div>
               <div>
                 {% if coach.rating > 0%}
-                <i class="bi bi-star-fill" style="color: gold"></i>
+                <i class="fa-solid fa-star" style="color: gold"></i>
                 {% endif %} {% if coach.rating > 1%}
-                <i class="bi bi-star-fill" style="color: gold"></i>
+                <i class="fa-solid fa-star" style="color: gold"></i>
                 {% endif %} {% if coach.rating > 2%}
-                <i class="bi bi-star-fill" style="color: gold"></i>
+                <i class="fa-solid fa-star" style="color: gold"></i>
                 {% endif %} {% if coach.rating > 3%}
-                <i class="bi bi-star-fill" style="color: gold"></i>
+                <i class="fa-solid fa-star" style="color: gold"></i>
                 {% endif %} {% if coach.rating > 4%}
-                <i class="bi bi-star-fill" style="color: gold"></i>
+                <i class="fa-solid fa-star" style="color: gold"></i>
                 {% endif %}
               </div>
             </div>
@@ -48,7 +48,7 @@
         </div>
         <div
           class="d-flex flex-column justify-content-between align-items-center"
-          style="min-width: 25%"
+          style="min-width: 25%; max-width: 50%;"
         >
           <form action="{% url 'payment' %}" method="POST">
             {% csrf_token %}
@@ -80,7 +80,7 @@
                       autocomplete="off"
                       checked
                     />
-                    <label class="btn btn-outline-primary" for="option1"
+                    <label class="btn custom-btn-outline-primary" for="option1"
                       >--:--</label
                     >
 
@@ -91,7 +91,7 @@
                       id="option2"
                       autocomplete="off"
                     />
-                    <label class="btn btn-outline-primary" for="option2"
+                    <label class="btn custom-btn-outline-primary" for="option2"
                       >--:--</label
                     >
 
@@ -102,7 +102,7 @@
                       id="option3"
                       autocomplete="off"
                     />
-                    <label class="btn btn-outline-primary" for="option3"
+                    <label class="btn custom-btn-outline-primary" for="option3"
                       >--:--</label
                     >
 
@@ -113,7 +113,7 @@
                       id="option4"
                       autocomplete="off"
                     />
-                    <label class="btn btn-outline-primary" for="option4"
+                    <label class="btn custom-btn-outline-primary" for="option4"
                       >--:--</label
                     >
 
@@ -124,7 +124,7 @@
                       id="option5"
                       autocomplete="off"
                     />
-                    <label class="btn btn-outline-primary" for="option5"
+                    <label class="btn custom-btn-outline-primary" for="option5"
                       >--:--</label
                     >
                   </div>
@@ -132,7 +132,7 @@
                 <button
                   id="book_button"
                   type="submit"
-                  class="btn btn-danger flex-grow-1 mt-2"
+                  class="btn custom-btn-danger flex-grow-1 mt-2"
                   style="min-width: 100%"
                   disabled
                 >
@@ -141,13 +141,6 @@
               </div>
             </div>
           </form>
-          <!-- <form action="{% url 'schedule_zoom_meeting' %}" method="post">
-            {% csrf_token %}
-            <input name="meeting_date" value="2022-12-29T08:00:00Z" />
-            <input name="meeting_topic" value="meeting_topic1" />
-            <input name="meeting_agenda" value="meeting_agenda1" />
-            <button class="btn btn-secondary" type="submit">book test</button>
-          </form> -->
         </div>
       </div>
     </div>
@@ -157,7 +150,7 @@
     <div class="d-flex flex-column w-100">
       <div class="card mb-3">
         <div class="card-body">
-          <h2 class="text-primary">Private Sessions</h2>
+          <h2 class="custom-text-primary">Private Sessions</h2>
           <div>
             {% if private_session_set %}
             <ul>
@@ -173,7 +166,7 @@
       </div>
       <div class="card mb-3">
         <div class="card-body">
-          <h2 class="text-primary">Group Sessions</h2>
+          <h2 class="custom-text-primary">Group Sessions</h2>
           <div>
             {% if group_session_set %}
             <ul>
@@ -188,6 +181,6 @@
         </div>
       </div>
     </div>
-    {% endblock %}
   </div>
 </div>
+{% endblock %}

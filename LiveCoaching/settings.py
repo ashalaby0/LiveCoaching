@@ -158,6 +158,7 @@ ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 
 # remove the intermediate page when using social login
 SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_LOGOUT_ON_GET =True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -183,4 +184,4 @@ ZOOM_MEETING_PASSWORD = 123456
 
 
 # for ngrok testing
-CSRF_TRUSTED_ORIGINS = ['https://09d5-197-135-92-154.eu.ngrok.io']
+CSRF_TRUSTED_ORIGINS = ['https://77a7-102-187-124-74.eu.ngrok.io']

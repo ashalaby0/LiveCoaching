@@ -22,3 +22,8 @@ class SessionModelAdmin(admin.ModelAdmin):
 @admin.register(models.Category)
 class CategoryModelAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(models.CustomerMessage)
+class CustomerMessageModelAdmin(admin.ModelAdmin):
+    pass

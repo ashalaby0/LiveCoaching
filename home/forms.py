@@ -34,3 +34,9 @@ class UserModelForm(forms.ModelForm):
     class Meta:
         model = models.User
         fields = '__all__'
+
+
+class CustomerMessageForm(forms.ModelForm):
+    class Meta:
+        model = models.CustomerMessage
+        fields = '__all__'

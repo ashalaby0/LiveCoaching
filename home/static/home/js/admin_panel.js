@@ -1,193 +1,208 @@
 
+// client stats
+async function get_client_stats(){
+    const client_stats_res = await fetch(client_stats_url)
+    let client_status_obj = await client_stats_res.json()
 
-// client chart
-let clientCtart = document.getElementById("clientChart").getContext('2d');
-let clientChartObject = new Chart(clientCtart, {
-      type: 'line',
-      data: {
-          labels: ["Jan", "Feb", "March", "April", "May", "June"],
-          datasets: [{
-              label: '# of Clients',
-              data: [3, 6, 7, 25, 12, 19],
-              backgroundColor: '#ffb703',
-              borderColor: '#023047',
-              borderWidth: 1
-          }]
-      },
-      options: {
-        legend: {
-            display:false,
-            labels: {
-                fontColor: "white",
-            }
-        },
-          scales: {
-              yAxes: [{
-                  ticks: {
-                    fontColor:"black",
-                      beginAtZero:true
-                  }
-              }],
-              xAxes: [{
-                ticks: {
-                    fontColor:"black"
-                }
-              }]
-          }
-      }
-  });
-
-
-  // coach chart
-let coachCtart = document.getElementById("coachChart").getContext('2d');
-let coachChartObject = new Chart(coachCtart, {
-      type: 'bar',
-      data: {
-          labels: ["Jan", "Feb", "March", "April", "May", "June"],
-          datasets: [{
-              label: '# of Coaches',
-              data: [3, 6, 7, 25, 12, 19],
-              backgroundColor: '#023047',
-              borderColor: '#ffb703',
-              borderWidth: 1
-          }]
-      },
-      options: {
-        legend: {
-            display:false,
-            labels: {
-                fontColor: "white",
-            }
-        },
-          scales: {
-              yAxes: [{
-                  ticks: {
-                    fontColor:"black",
-                      beginAtZero:true
-                  }
-              }],
-              xAxes: [{
-                ticks: {
-                    fontColor:"black"
-                }
-              }]
-          }
-      }
-  });
-
-// session chart
-  let sessionCtart = document.getElementById("sessionChart").getContext('2d');
-  let sessionChartObject = new Chart(sessionCtart, {
-        type: 'bar',
+    let clientCtart = document.getElementById("clientChart").getContext('2d');
+    new Chart(clientCtart, {
+        type: 'line',
         data: {
-            labels: ["Jan", "Feb", "March", "April", "May", "June"],
+            labels: Object.keys(client_status_obj),
             datasets: [{
-                label: '# of Sessions',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: '#023047',
-                borderColor: '#ffb703',
+                label: '# of Clients',
+                data: Object.values(client_status_obj),
+                backgroundColor: '#ffb703',
+                borderColor: '#023047',
                 borderWidth: 1
             }]
         },
         options: {
             legend: {
-            display:false,
-            labels: {
+                display: false,
+                labels: {
                     fontColor: "white",
                 }
             },
             scales: {
                 yAxes: [{
                     ticks: {
-                      fontColor:"black",
-                        beginAtZero:true
+                        fontColor: "black",
+                        beginAtZero: true
                     }
                 }],
                 xAxes: [{
-                  ticks: {
-                      fontColor:"black"
-                  }
+                    ticks: {
+                        fontColor: "black"
+                    }
                 }]
             }
-      }
+        }
     });
-  
+}
+get_client_stats()
 
-// client chart
-let sessionPerCoachCtart = document.getElementById("sessionPerCoachChart").getContext('2d');
-let sessionPerCoachChartObject = new Chart(sessionPerCoachCtart, {
-      type: 'doughnut',
-      data: {
-          labels: ["Jan", "Feb", "March", "April", "May", "June"],
-          datasets: [{
-              label: '# Session Per Coach',
-              data: [3, 6, 7, 25, 12, 19],
-              backgroundColor: [
-                '#ffb703',
-                '#023047',
-                '#ffb703',
-                '#023047',
-                '#ffb703',
-                '#023047'
-            ],
-              borderColor: [
-                '#023047',
-                '#ffb703',
-                '#023047',
-                '#ffb703',
-                '#023047',
-                '#ffb703'
-            ],
-              borderWidth: 1
-          }]
-      },
-      options: {
-        legend: {
-            display:false,
-            labels: {
-                fontColor: "white",
-            }
+// coach_stats
+async function get_coach_stats() {
+    const coach_stats_res = await fetch(coach_stats_url)
+    let coach_stats_obj = await coach_stats_res.json()
+    
+    // draw chart
+    let coachCtart = document.getElementById("coachChart").getContext('2d');
+    new Chart(coachCtart, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(coach_stats_obj),
+            datasets: [{
+                label: '# of Coaches',
+                data: Object.values(coach_stats_obj),
+                backgroundColor: '#023047',
+    
+            }]
         },
-         
-      }
-  });
+        options: {
+            legend: {
+                display: false,
+                labels: {
+                    fontColor: "white",
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        fontColor: "black",
+                        beginAtZero: true
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: "black"
+                    }
+                }]
+            }
+        }
+    });
+}
+get_coach_stats()
+
+// session chart
+async function get_session_stats() {
+    const session_status_res = await fetch(session_stats_url)
+    let session_status_obj = await session_status_res.json()
+
+    let sessionCtart = document.getElementById("sessionChart").getContext('2d');
+    new Chart(sessionCtart, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(session_status_obj),
+            datasets: [{
+                label: '# of Sessions',
+                data: Object.values(session_status_obj),
+                backgroundColor: '#023047',
+    
+            }]
+        },
+        options: {
+            legend: {
+                display: false,
+                labels: {
+                    fontColor: "white",
+                }
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        fontColor: "black",
+                        beginAtZero: true
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        fontColor: "black"
+                    }
+                }]
+            }
+        }
+    });
+}
+get_session_stats()
 
 
-  // coach chart
-let sessionPerClientCtart = document.getElementById("sessionPerClientChart").getContext('2d');
-let sessionPerClientChartObject = new Chart(sessionPerClientCtart, {
-    type: 'doughnut',
-    data: {
-        labels: ["Jan", "Feb", "March", "April", "May", "June"],
-        datasets: [{
-            label: '# Session Per Client',
-            data: [3, 6, 7, 25, 12, 19],
-            backgroundColor: [
-              '#ffb703',
-              '#023047',
-              '#ffb703',
-              '#023047',
-              '#ffb703',
-              '#023047'
-          ],
-            borderColor: [
-              '#023047',
-              '#ffb703',
-              '#023047',
-              '#ffb703',
-              '#023047',
-              '#ffb703'
-          ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-      legend: {
-          display:false,
-          labels: {
-              fontColor: "white",
-          }
-      },
-       
-    }
-});
+// Sesions per Coach
+async function get_sessions_per_coach_data() {
+
+    const sessions_per_coach_res = await fetch(sessions_per_coach_url);
+    let sessions_per_coach_obj = await sessions_per_coach_res.json();
+    let sessionPerCoachCtart = document.getElementById("sessionPerCoachChart").getContext('2d');
+    new Chart(sessionPerCoachCtart, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(sessions_per_coach_obj),
+            datasets: [{
+                label: '# Session Per Coach',
+                data: Object.values(sessions_per_coach_obj),
+                backgroundColor: [
+                    '#ffb703',
+                    '#023047',
+                    '#ffb703',
+                    '#023047',
+                    '#ffb703',
+                    '#023047'
+                ],
+    
+            }]
+        },
+        options: {
+            legend: {
+                display: true,
+                labels: {
+                    fontColor: "#023047",
+                    usePointStyle: true,
+                },
+                position: "right"
+            },
+    
+        }
+    });
+}
+get_sessions_per_coach_data()
+
+// Sessions per Client
+async function get_sessions_per_client_data() {
+
+    const sessions_per_client_res = await fetch(sessions_per_client_url);
+    let sessions_per_client_obj = await sessions_per_client_res.json()
+
+    let sessionPerClientCtart = document.getElementById("sessionPerClientChart").getContext('2d');
+    new Chart(sessionPerClientCtart, {
+        type: 'doughnut',
+        data: {
+            labels: Object.keys(sessions_per_client_obj),
+            datasets: [{
+                label: '# Session Per Client',
+                data: Object.values(sessions_per_client_obj),
+                backgroundColor: [
+                    '#ffb703',
+                    '#023047',
+                    '#ffb703',
+                    '#023047',
+                    '#ffb703',
+                    '#023047'
+                ],
+    
+            }]
+        },
+        options: {
+            legend: {
+                display: true,
+                labels: {
+                    fontColor: "#023047",
+                    usePointStyle: true,
+                },
+                position: "right"
+            },
+    
+        }
+    });
+}
+get_sessions_per_client_data()

@@ -370,3 +370,57 @@ def contact_us(request):
         template_name='home/contact_us.html',
         context=context
         )
+
+
+def coach_stats(request):
+    result = models.Coach.objects.get_monthly_stats()
+    print(result)
+    return JsonResponse(
+        {
+            'jan':10,
+            'feb':20,
+            'march':30,
+            'april':40,
+            'june':50,
+            }
+    )
+def client_stats(request):
+    return JsonResponse(
+        {
+            'jan':10,
+            'feb':20,
+            'march':30,
+            'april':40,
+            'june':50,
+            }
+    )
+def session_stats(request):
+    return JsonResponse(
+        {
+            'jan':10,
+            'feb':20,
+            'march':30,
+            'april':40,
+            'june':50,
+            }
+    )
+def sessions_per_coach(request):
+    return JsonResponse(
+        {
+            'jan':10,
+            'feb':20,
+            'march':30,
+            'april':40,
+            'june':50,
+            }
+    )
+def sessions_per_client(request):
+    return JsonResponse(
+        {
+            'jan':10,
+            'feb':20,
+            'march':30,
+            'april':40,
+            'june':50,
+            }
+    )

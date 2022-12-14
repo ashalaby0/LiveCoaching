@@ -1,6 +1,9 @@
 import datetime
 import json
 from time import time
+from django.db.models.functions import TruncMonth
+from django.db.models import Count
+
 
 import jwt
 import requests
@@ -26,6 +29,11 @@ class Category(models.Model):
     def __str__(self) -> str:
         return self.name
 
+class ClientCustomManager(models.QuerySet):
+
+    def get_monthly_stats(self):
+        return self.annotate(month=TruncMonth('joined_at')).values('month').annotate(c=Count('id')).values('joined_at__month', 'count')
+
 
 class Client(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -33,28 +41,16 @@ class Client(models.Model):
     city = models.CharField(max_length=50, default="not-provided")
     country = models.CharField(max_length=50, default="not-provided")
     
+    objects = ClientCustomManager.as_manager()
 
     def __str__(self) -> str:
         return self.user.username
 
 
 class CoachCustomManager(models.QuerySet):
-    # def get_available_hours(self, pk, _date):
-    #     coach_list = self.filter(pk=pk)
-    #     if coach_list.count() > 0:
-    #         coach = coach_list[0]
-    #         all_hours = set(range(coach.working_hours_start.hour,
-    #                               coach.working_hours_end.hour))
-    #         for i in coach.session_set.all():
-    #             print(i.time.hour)
-    #             if i.time.hour in all_hours:
-    #                 all_hours.remove(i.time.hour)
 
-    #         all_hours = [
-    #             datetime.time(x, 0, 0).strftime('%H:%M') for x in all_hours
-    #         ]
-    #         return all_hours
-    #     return []
+    def get_monthly_stats(self):
+        return self.annotate(month=TruncMonth('joined_at')).values('month').annotate(c=Count('id')).values('joined_at__month', 'count')
 
     def get_available_hours(self, pk, day):
         coach_list = self.filter(pk=pk)
@@ -79,7 +75,6 @@ class CoachCustomManager(models.QuerySet):
                     formated_half_hours.remove(
                         (i.time + datetime.timedelta(minutes=30)).strftime('%H:%M'))  # remove next half hour
 
-            # formated_half_hours = [x.strftime('%H:%M') for x in formated_half_hours]
             return formated_half_hours
         return []
 
@@ -96,6 +91,7 @@ class Coach(models.Model):
     photo = models.ImageField(upload_to='photo/%Y/%m/%d', blank=True)
     working_hours_start = models.TimeField(default=datetime.time(8, 0, 0))
     working_hours_end = models.TimeField(default=datetime.time(16, 0, 0))
+    joined_at = models.DateTimeField(auto_now_add=True)
 
     objects = CoachCustomManager.as_manager()
 
@@ -114,6 +110,10 @@ class SessionCustomManager(models.QuerySet):
             algorithm='HS256'
         )
         return jwt.decode(token, API_SEC, algorithms=["HS256"])
+
+    def get_upcomming_sessions(self):
+        return self.filter(time__gte=datetime.datetime.now())
+
 
     def create_zoom_meeting(self, topic, start_time, duration_in_mins, time_zone, agenda):
         formated_time = '2022-12-12T11: 11: 11'  # will be formated from start_time

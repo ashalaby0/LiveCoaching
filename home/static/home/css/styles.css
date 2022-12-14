@@ -9,11 +9,15 @@ body {
   height: 320px;
   margin: 20px;
   padding: 10px;
-  border: 2px solid var(--main-color);
+  border: 2px solid var(--main-color5);
 }
 .custom-narrow-card {
   width: 400px;
 }
 .custom-wide-card {
   width: 600px;
+}
+
+.custom-ultra-wide-card {
+  width: 95%;
 }

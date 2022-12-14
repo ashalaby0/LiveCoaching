@@ -5,11 +5,28 @@
 
 
 <link rel="stylesheet" href="{% static '/home/css/styles.css' %}">
+
+<script>
+    let coach_stats_url = "{% url 'coach_stats' %}";
+    let client_stats_url = "{% url 'client_stats' %}";
+    let session_stats_url = "{% url 'session_stats' %}";
+    let sessions_per_coach_url = "{% url 'sessions_per_coach' %}";
+    let sessions_per_client_url = "{% url 'sessions_per_client' %}";
+</script>
 <script src="{% static 'home/js/admin_panel.js' %}" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 {% endblock %}
 
 {% block content %}
+<!-- TODO -->
+<!-- add number of messages , number of users as bell notification - float right -->
+<div class="d-flex justify-content-between">
+    <h3 class="m-3">Statistics</h3>
+    <div>
+
+    </div>
+</div>
+
 <div class="d-flex flex-column">
     <div class="d-flex justify-content-around">
     
@@ -62,11 +79,7 @@
                 <div></div>
             </div>
             <canvas id="sessionChart"></canvas>
-            <div class="text-end border-top py-3">
-                <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-            </div>
+      
         </div>
     
     </div>
@@ -82,12 +95,12 @@
                 </div>
                 <div></div>
             </div>
-            <canvas style="height: 50%;" id="sessionPerCoachChart"></canvas>
-            <div class="text-end border-top py-3">
+            <canvas style="height: 70%;" id="sessionPerCoachChart"></canvas>
+            <!-- <div class="text-end border-top py-3">
                 <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </a>
-            </div>
+            </div> -->
         </div>
         <div class="custom-card custom-narrow-card">
             <div class="d-flex justify-content-between">
@@ -100,53 +113,43 @@
                 </div>
                 <div></div>
             </div>
-            <canvas style="height: 50%;" id="sessionPerClientChart"></canvas>
-            <div class="text-end border-top py-3">
+            <canvas style="height: 70%;" id="sessionPerClientChart"></canvas>
+            <!-- <div class="text-end border-top py-3">
                 <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
                     <i class="fa fa-pencil" aria-hidden="true"></i>
                 </a>
-            </div>
+            </div> -->
         </div>
     </div>
 </div>
 
-<!-- <div class="row">
-    <div class="row d-flex justify-content-around">
-        <div class="custom-card custom-wide-card">
-            <div class="d-flex justify-content-between">
-                <div>
-                    <div class="text-secondary">Session Per Coach</div>
-                    <h5>
-                        <i class="fa fa-id-badge" aria-hidden="true"></i>
-                    </h5>
-                </div>
-                <div></div>
+<h3 class="m-3">Upcomming Sessions</h3>
+    <div class="custom-card custom-ultra-wide-card">
+        <div class="d-flex justify-content-between">
+            <div>
+                <div class="text-secondary">Use list group</div>
+                <h5>
+                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+                    48
+                </h5>
             </div>
-            <canvas id="sessionPerCoachChart"></canvas>
-            <div class="text-end border-top py-3">
-                <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-            </div>
+            <div></div>
         </div>
-        <div class="custom-card custom-wide-card">
-            <div class="d-flex justify-content-between">
-                <div>
-                    <div class="text-secondary">Session Per Client</div>
-                    <h5>
-                        <i class="fa fa-user-circle" aria-hidden="true"></i>
-                        48
-                    </h5>
-                </div>
-                <div></div>
-            </div>
-            <canvas id="sessionPerClientChart"></canvas>
-            <div class="text-end border-top py-3">
-                <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-            </div>
-        </div>
+        <canvas style="height: 70%;" id="sessionPerClientChart"></canvas>
     </div>
-</div> -->
-{% endblock %}
+
+<h3 class="m-3">User Messages</h3>
+    <div class="custom-card custom-ultra-wide-card">
+        <div class="d-flex justify-content-between">
+            <div>
+                <div class="text-secondary">Use list group</div>
+                <h5>
+                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+                    48
+                </h5>
+            </div>
+            <div></div>
+        </div>
+        <canvas style="height: 70%;" id="sessionPerClientChart"></canvas>
+    </div>
+0{% endblock %}

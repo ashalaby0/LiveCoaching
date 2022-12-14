@@ -13,6 +13,8 @@
     --main-transition: 0.3s;
     --main-padding-top: 100px;
     --main-padding-bottom: 100px;
+    --main-nav-top-margin: 30px;
+    --main-nav-height: 72px;
   }
   html {
     scroll-behavior: smooth;
@@ -117,11 +119,12 @@ input:-webkit-autofill:focus {
 
   /* Start Header */
   .header {
-    background-color: var(--main-color);
+    background-color: var(--main-color4);
     position: relative;
-    -webkit-box-shadow: 0 0 10px var(--main-color4);
-    -moz-box-shadow: 0 0 10px var(--main-color4);
-    box-shadow: 0 0 10px var(--main-color4);
+    top: var(--main-nav-top-margin);
+    -webkit-box-shadow: 0 0 10px var(--main-color);
+    -moz-box-shadow: 0 0 10px var(--main-color);
+    box-shadow: 0 0 10px var(--main-color);
   }
   .header .container {
     display: flex;
@@ -131,10 +134,10 @@ input:-webkit-autofill:focus {
     position: relative;
   }
   .header .logo {
-    color: var(--main-color4);
+    color: var(--main-color);
     font-size: 33px;
     font-weight: bold;
-    height: 72px;
+    height: var(--main-nav-height);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -171,9 +174,9 @@ input:-webkit-autofill:focus {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 72px;
+    height: var(--main-nav-height);
     position: relative;
-    color: var(--main-color4);
+    color: var(--main-color);
     padding: 0 30px;
     overflow: hidden;
     font-size: 18px;
@@ -266,6 +269,13 @@ input:-webkit-autofill:focus {
   }
   /* End Header */
 
+  /* start main content */
+  #main-content {
+    position: relative;
+    top: var(--main-nav-top-margin) ;
+  }
+  /* end main content  */
+
   /* =======================================================================================================================*/
 
   /* Start Landing */
@@ -286,7 +296,7 @@ input:-webkit-autofill:focus {
     transform-origin: top left; */
   }
   .landing .container {
-    min-height: calc(100vh - 72px);
+    min-height: calc(100vh - var(--main-nav-height));
     display: flex;
     align-items: center;
     padding-bottom: 120px;

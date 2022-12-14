@@ -102,6 +102,34 @@ urlpatterns = [
         'contact_us',
         views.contact_us,
         name='contact_us'
-    )
+    ),
+
+    path(
+        'coach_stats',
+        views.coach_stats,
+        name='coach_stats'
+    ),
+
+    path(
+        'client_stats',
+        views.client_stats,
+        name='client_stats'
+    ),
+    path(
+        'session_stats',
+        views.session_stats,
+        name='session_stats'
+    ),
+        path(
+        'sessions_per_coach',
+        views.sessions_per_coach,
+        name='sessions_per_coach'
+    ),
+        path(
+        'sessions_per_client',
+        views.sessions_per_client,
+        name='sessions_per_client'
+    ),
+
 
 ]

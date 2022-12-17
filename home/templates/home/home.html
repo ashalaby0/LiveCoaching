@@ -1,159 +1,164 @@
-
 {% extends 'base.html' %}
 
 {% load static %}
 
-{% block content %} 
-    <!-- Start Landing -->
-    <div class="landing">
-      <div class="container">
-        <div class="text">
-          <h1>Welcome To Nawarly World</h1>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga numquam, velit unde error odit, quod, sit ullam perspiciatis quia totam perferendis quo neque dolore non quas iste accusamus saepe dolor.</p>
-        </div>
-      </div>
+{% block content %}
+<!-- Start Landing -->
+<div class="landing">
+  
+  <div class="container">
+    <div class="text">
+      <h1>Welcome To Nawarly World</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga numquam, velit unde error odit, quod, sit ullam
+        perspiciatis quia totam perferendis quo neque dolore non quas iste accusamus saepe dolor.</p>
     </div>
-    <!-- End Landing -->
+  </div>
+</div>
+<!-- End Landing -->
 
-    <!-- Start Categories -->
-    <div class="categories" id="categories">
-      <h2 class="main-title">Category</h2>
-      <div class="container">
-        <div class="box">
-          <div class="image">
-            <img decoding="async" src="{% static 'home/images/life-coach.jpg' %}" alt="" />
-          </div>
-        </div>
-        <div class="box">
-          <div class="image">
-            <img decoding="async" src="{% static 'home/images/life-coach2.jpg' %}" alt="" />
-          </div>
-        </div>
-        <div class="box">
-          <div class="image">
-            <img decoding="async" src="{% static 'home/images/life-coach.jpg' %}" alt="" />
-          </div>
-        </div>
-        <div class="box">
-          <div class="image">
-            <img decoding="async" src="{% static 'home/images/life-coach2.jpg' %}" alt="" />
-          </div>
-        </div>
-        <div class="box">
-          <div class="image">
-            <img decoding="async" src="{% static 'home/images/life-coach.jpg' %}" alt="" />
-          </div>
-        </div>
-        <div class="box">
-          <div class="image">
-            <img decoding="async" src="{% static 'home/images/life-coach2.jpg' %}" alt="" />
-          </div>
-        </div>
+<!-- Start Categories -->
+<div class="categories" id="categories">
+  <h2 class="main-title">Category</h2>
+  <div class="container">
+    <div class="box">
+      <div class="image">
+        <img decoding="async" src="{% static 'home/images/life-coach.jpg' %}" alt="" />
       </div>
     </div>
-    <!-- End Categories -->
+    <div class="box">
+      <div class="image">
+        <img decoding="async" src="{% static 'home/images/life-coach2.jpg' %}" alt="" />
+      </div>
+    </div>
+    <div class="box">
+      <div class="image">
+        <img decoding="async" src="{% static 'home/images/life-coach.jpg' %}" alt="" />
+      </div>
+    </div>
+    <div class="box">
+      <div class="image">
+        <img decoding="async" src="{% static 'home/images/life-coach2.jpg' %}" alt="" />
+      </div>
+    </div>
+    <div class="box">
+      <div class="image">
+        <img decoding="async" src="{% static 'home/images/life-coach.jpg' %}" alt="" />
+      </div>
+    </div>
+    <div class="box">
+      <div class="image">
+        <img decoding="async" src="{% static 'home/images/life-coach2.jpg' %}" alt="" />
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Categories -->
 
-    <!-- Start Coaches -->
-    <div class="coaches" id="coaches">
-      <h2 class="main-title">Coaches</h2>
-      <div class="container">
-        <div class="box">
-          <img decoding="async" src="{% static 'home/images/pic.jpg' %}" alt="" />
-          <h3>Shaher</h3>
-          <span class="title">Life Coach</span>
-          <div class="rate">
-            <ion-icon name="star"></ion-icon>
-            <ion-icon name="star"></ion-icon>
-            <ion-icon name="star"></ion-icon>
-            <ion-icon name="star"></ion-icon>
-            <ion-icon name="star"></ion-icon>
-          </div>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
-            quaerat ducimus
-          </p>
-        </div>
-        <div class="box">
-          <img decoding="async" src="{% static 'home/images/pic2.png' %}" alt="" />
-          <h3>Omaima Mohsen</h3>
-          <span class="title">Life Coach</span>
-          <div class="rate">
-            <i class="filled fas fa-star"></i>
-            <i class="filled fas fa-star"></i>
-            <i class="filled fas fa-star"></i>
-            <i class="filled fas fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
-            quaerat ducimus
-          </p>
-        </div>
-        <div class="box">
-          <img decoding="async" src="{% static 'home/images/pic2.png' %}" alt="" />
-          <h3>Shadin Nabil</h3>
-          <span class="title">Life Coach</span>
-          <div class="rate">
-            <i class="filled fa-star"></i>
-            <i class="filled fas fa-star"></i>
-            <i class="filled fas fa-star"></i>
-            <i class="filled fas fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
-            quaerat ducimus
-          </p>
-        </div>
-        <div class="box">
-          <img decoding="async" src="{% static 'home/images/pic.jpg' %}" alt="" />
-          <h3>Amr ay 7aga</h3>
-          <span class="title">Life Coach</span>
-          <div class="rate">
-            <i class="filled fas fa-star"></i>
-            <i class="filled fas fa-star"></i>
-            <i class="filled fas fa-star"></i>
-            <i class="filled fas fa-star"></i>
-            <i class="filled fas fa-star"></i>
-          </div>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
-            quaerat ducimus
-          </p>
-        </div>
-        <div class="box">
-          <img decoding="async" src="{% static 'home/images/pic.jpg' %}" alt="" />
-          <h3>Sherief Ashraf</h3>
-          <span class="title">Life Coach</span>
-          <div class="rate">
-            <i class="filled fas fa-star"></i>
-            <i class="filled fas fa-star"></i>
-            <i class="filled fas fa-star"></i>
-            <i class="far fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
-            quaerat ducimus
-          </p>
-        </div>
-        <div class="box">
-          <img decoding="async" src="{% static 'home/images/pic.jpg' %}" alt="" />
-          <h3>Shalaboka</h3>
-          <span class="title">Life Coach</span>
-          <div class="rate">
-            <i class="filled fas fa-star"></i>
-            <i class="filled fas fa-star"></i>
-            <i class="filled fas fa-star"></i>
-            <i class="far fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
-            quaerat ducimus
-          </p>
-        </div>
+<!-- Start Coaches -->
+<div class="coaches" id="coaches">
+  <h2 class="main-title">Coaches</h2>
+  <div class="container">
+    <div class="box">
+      <img decoding="async" src="{% static 'home/images/pic.jpg' %}" alt="" />
+      <h3>Shaher</h3>
+      <span class="title">Life Coach</span>
+      <div class="rate">
+        <ion-icon name="star"></ion-icon>
+        <ion-icon name="star"></ion-icon>
+        <ion-icon name="star"></ion-icon>
+        <ion-icon name="star"></ion-icon>
+        <ion-icon name="star"></ion-icon>
       </div>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
+        quaerat ducimus
+      </p>
     </div>
-    <!-- End Coaches -->
+    <div class="box">
+      <img decoding="async" src="{% static 'home/images/pic2.png' %}" alt="" />
+      <h3>Omaima Mohsen</h3>
+      <span class="title">Life Coach</span>
+      <div class="rate">
+        <i class="filled fas fa-star"></i>
+        <i class="filled fas fa-star"></i>
+        <i class="filled fas fa-star"></i>
+        <i class="filled fas fa-star"></i>
+        <i class="far fa-star"></i>
+      </div>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
+        quaerat ducimus
+      </p>
+    </div>
+    <div class="box">
+      <img decoding="async" src="{% static 'home/images/pic2.png' %}" alt="" />
+      <h3>Shadin Nabil</h3>
+      <span class="title">Life Coach</span>
+      <div class="rate">
+        <i class="filled fa-star"></i>
+        <i class="filled fas fa-star"></i>
+        <i class="filled fas fa-star"></i>
+        <i class="filled fas fa-star"></i>
+        <i class="far fa-star"></i>
+      </div>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
+        quaerat ducimus
+      </p>
+    </div>
+    <div class="box">
+      <img decoding="async" src="{% static 'home/images/pic.jpg' %}" alt="" />
+      <h3>Amr ay 7aga</h3>
+      <span class="title">Life Coach</span>
+      <div class="rate">
+        <i class="filled fas fa-star"></i>
+        <i class="filled fas fa-star"></i>
+        <i class="filled fas fa-star"></i>
+        <i class="filled fas fa-star"></i>
+        <i class="filled fas fa-star"></i>
+      </div>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
+        quaerat ducimus
+      </p>
+    </div>
+    <div class="box">
+      <img decoding="async" src="{% static 'home/images/pic.jpg' %}" alt="" />
+      <h3>Sherief Ashraf</h3>
+      <span class="title">Life Coach</span>
+      <div class="rate">
+        <i class="filled fas fa-star"></i>
+        <i class="filled fas fa-star"></i>
+        <i class="filled fas fa-star"></i>
+        <i class="far fa-star"></i>
+        <i class="far fa-star"></i>
+      </div>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
+        quaerat ducimus
+      </p>
+    </div>
+    <div class="box">
+      <img decoding="async" src="{% static 'home/images/pic.jpg' %}" alt="" />
+      <h3>Shalaboka</h3>
+      <span class="title">Life Coach</span>
+      <div class="rate">
+        <i class="filled fas fa-star"></i>
+        <i class="filled fas fa-star"></i>
+        <i class="filled fas fa-star"></i>
+        <i class="far fa-star"></i>
+        <i class="far fa-star"></i>
+      </div>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
+        quaerat ducimus
+      </p>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center fst-italic mt-5">
+    <a href="{% url 'coaches' %}" class="btn link-light" style="background-color: var(--main-color);color: var(--main-color4);">View All Coaches...</a>
+  </div>
+</div>
+
+<!-- End Coaches -->
 {% endblock %}

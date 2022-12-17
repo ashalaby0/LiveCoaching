@@ -71,3 +71,11 @@
 .page-nav-line div:last-child {
     color: gray;
 }
+
+/* form submission errors style */
+.form-errors li {
+    list-style-type: none;
+    color: red;
+    font-size: smaller;
+    font-style: italic;
+}

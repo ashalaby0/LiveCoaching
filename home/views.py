@@ -115,7 +115,8 @@ def booking(request, pk):
         'private_session_set': private_session_set,
         'group_session_set': group_session_set,
         'coach': coach,
-        'session_form': forms.SessionModelForm()
+        'session_form': forms.SessionModelForm(),
+        'today': datetime.datetime.now().strftime('%Y-%m-%d')
     }
     return render(
         request=request,
@@ -131,13 +132,16 @@ class CoachDetailView(DetailView):
 
 def schedule_zoom_meeting(request):
 
-    meeting_date = request.POST.get('meeting_date')
-    meeting_topic = request.POST.get('meeting_topic')
-    meeting_agenda = request.POST.get('meeting_agenda')
-    request.session['meeting_date'] = meeting_date
-    request.session['meeting_topic'] = meeting_topic
-    request.session['meeting_agenda'] = meeting_agenda
+    # meeting_date = request.POST.get('meeting_date')
+    # meeting_topic = request.POST.get('meeting_topic')
+    # meeting_agenda = request.POST.get('meeting_agenda')
+    # request.session['meeting_date'] = meeting_date
+    # request.session['meeting_topic'] = meeting_topic
+    # request.session['meeting_agenda'] = meeting_agenda
 
+    print('$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+    print(request.session['meeting_date'])
+    print('$$$$$$$$$$$$$$$$$$$$$$$$$$$')
     ZOOM_OAUTH_REDIRECT_URL = request.build_absolute_uri(
         reverse(settings.ZOOM_OAUTH_REDIRECT_URL_NAME))
     return redirect(settings.ZOOM_USER_AUTHORIZATON_URL_BASE + ZOOM_OAUTH_REDIRECT_URL)
@@ -157,14 +161,11 @@ def zoom_callback(request):
         }
     )
     access_token = response.json()['access_token']
-
     meeting_date = request.session['meeting_date']
     meeting_topic = request.session['meeting_topic']
     meeting_agenda = request.session['meeting_agenda']
-
     client_mail = request.session['client_mail']
     coach_mail = request.session['coach_mail']
-
     response = requests.post(
         url=settings.ZOOM_MEETING_URL,
         headers={
@@ -177,7 +178,7 @@ def zoom_callback(request):
             'duration': settings.ZOOM_MEETING_DURATION,
             'password': settings.ZOOM_MEETING_PASSWORD,
             'pre_schedule': False,
-            'schedule_for': client_mail,
+            'schedule_for': settings.EMAIL_HOST_USER,
             'schedule_time': meeting_date,
             'timezone': 'Egypt/Cairo',
             'Topic': meeting_topic,
@@ -204,7 +205,9 @@ def zoom_callback(request):
         fail_silently=False,
     )
 
-    return HttpResponse(f'''<div class="alert alert-success">URL: <a href='{join_url}'>Join Meeting</a></div><br><span> link sent by mail.. please chck your mail</span> ''')
+    messages.success(request, f"Session Scheduled Successfully & Link sent by mail.")
+    return redirect('home')
+    # return HttpResponse(f'''<div class="alert alert-success">URL: <a href='{join_url}'>Join Meeting</a></div><br><span> link sent by mail.. please chck your mail</span> ''')
     # return response.json()
 
 
@@ -299,19 +302,38 @@ def post_pay(request):
     hmac_fields.sort()
     result = 'post_request'
     if request.method == 'GET':
+
+        error_occured = request.GET.get('error_occured')
+        error_message = request.GET.get('error.message')
+        message = f'Failed with Error Message: {error_message}'
+        if error_occured == 'true':
+            return render(
+            request=request,
+            template_name='order/result.html',
+            context={'result': message, 'status': True}
+        )
+        
+            
         sent_hmac = request.GET.get('hmac')
         concatenated_str = ''.join(request.GET.get(i) for i in hmac_fields)
         generated_hmac = hmac.new(hmac_secret.encode(
             'utf-8'), concatenated_str.encode('utf8'), hashlib.sha512).hexdigest()
         result = hmac.compare_digest(generated_hmac, sent_hmac)
+        
+        print(f'hmac varification result: {result}')
+        print(f'payment success: {request.GET.get("success")}')
+        if request.GET.get("success") == 'true':
+            return redirect('schedule_zoom_meeting')
 
-        return redirect('schedule_zoom_meeting')
-        return render(
-            request=request,
-            template_name='order/result.html',
-            context={'result': result, 'status': True}
-        )
-    return HttpResponse(f'<h6>RESULT: {result}</h6>')
+    
+    messages.error(request, f"Payment failed, insure your credit card inputs are correct and try again.")
+    return redirect('home')
+    #     return render(
+    #         request=request,
+    #         template_name='order/result.html',
+    #         context={'result': request.GET.get("success"), 'status': True}
+    #     )
+    # return HttpResponse(f'<h6>RESULT: {result}</h6>')
 
 
 # admin panel

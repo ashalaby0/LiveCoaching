@@ -38,7 +38,7 @@
                     <div class="text-secondary">Coaches</div>
                     <h5>
                         <i class="fa fa-id-badge" aria-hidden="true"></i>
-                        15
+                        <span id="currentNoOfCoaches"></span>
                     </h5>
                 </div>
                 <div></div>
@@ -56,7 +56,7 @@
                     <div class="text-secondary">Clients</div>
                     <h5>
                         <i class="fa fa-user-circle" aria-hidden="true"></i>
-                        48
+                        <span id="currentNoOfClients"></span>
                     </h5>
                 </div>
                 <div></div>
@@ -74,7 +74,8 @@
                     <div class="text-secondary">Sessions</div>
                     <h5>
                         <i class="fa fa-users" aria-hidden="true"></i>
-                        32
+                        <span id="currentNoOfSessions"></span>
+                        
                     </h5>
                 </div>
                 <div></div>
@@ -91,17 +92,15 @@
                     <div class="text-secondary">Session Per Coach</div>
                     <h5>
                         <i class="fa fa-id-badge" aria-hidden="true"></i>
-                        15
+                        <span id="maxNumberOfSessionPerCoach"></span>
+                        
+                        
                     </h5>
                 </div>
                 <div></div>
             </div>
             <canvas style="height: 70%;" id="sessionPerCoachChart"></canvas>
-            <!-- <div class="text-end border-top py-3">
-                <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-            </div> -->
+        
         </div>
         <div class="custom-card custom-narrow-card">
             <div class="d-flex justify-content-between">
@@ -109,17 +108,12 @@
                     <div class="text-secondary">Session Per Client</div>
                     <h5>
                         <i class="fa fa-user-circle" aria-hidden="true"></i>
-                        48
+                        <span id="maxNumberOfSessionPerClient"></span>
                     </h5>
                 </div>
                 <div></div>
             </div>
             <canvas style="height: 70%;" id="sessionPerClientChart"></canvas>
-            <!-- <div class="text-end border-top py-3">
-                <a href="{% url 'manage_coaches' %}" class="btn btn-warning">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </a>
-            </div> -->
         </div>
     </div>
 </div>

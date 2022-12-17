@@ -35,7 +35,7 @@ class ClientCustomManager(models.QuerySet):
         return self.annotate(month=TruncMonth('joined_at')).values('month').annotate(count=Count('id')).values('joined_at__month', 'count')
 
     def get_total_session_per_client(self):
-        return self.annotate(no_of_session=Count('session')).values('user__username', 'no_of_session')
+        return self.annotate(no_of_session=Count('session')).values('user__username', 'no_of_session').order_by('no_of_session')
         # return self.all().values('client').annotate(count=Count('id')).values('client__user__username', 'count')
 
 class Client(models.Model):
@@ -67,17 +67,24 @@ class CoachCustomManager(models.QuerySet):
                 datetime.datetime.combine(datetime.date.today(
                 ), coach.working_hours_end) - datetime.datetime.combine(datetime.date.today(), coach.working_hours_start)
             ).seconds
+
+            # execluding last half hour as the duration is 1 hour
             all_half_hours = (
                 _date + datetime.timedelta(minutes=i/60) for i in range(0, total_duration, 60*30))
 
-            formated_half_hours = [x.strftime('%H:%M') for x in all_half_hours]
+            formated_half_hours = [x.strftime('%H:%M') for x in all_half_hours][:-1]
             for i in coach.session_set.filter(time__date=_date):
                 # remove reserved hour from all_half_hours
                 if i.time.strftime('%H:%M') in formated_half_hours:
                     # remove current half hour
                     formated_half_hours.remove(i.time.strftime('%H:%M'))
-                    formated_half_hours.remove(
-                        (i.time + datetime.timedelta(minutes=30)).strftime('%H:%M'))  # remove next half hour
+                    
+                     # remove next half hour
+                    try:
+                        formated_half_hours.remove(
+                            (i.time + datetime.timedelta(minutes=30)).strftime('%H:%M')) 
+                    except:
+                        pass
 
             return formated_half_hours
         return []
@@ -121,7 +128,7 @@ class SessionCustomManager(models.QuerySet):
         return self.filter(time__gte=datetime.datetime.now())
 
     def get_total_session_per_coach(self):
-        return self.all().values('coach').annotate(count=Count('id')).values('coach__user__username', 'count')
+        return self.all().values('coach').annotate(count=Count('id')).values('coach__user__username', 'count').order_by('count')
 
     def create_zoom_meeting(self, topic, start_time, duration_in_mins, time_zone, agenda):
         formated_time = '2022-12-12T11: 11: 11'  # will be formated from start_time

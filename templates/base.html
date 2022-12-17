@@ -28,7 +28,12 @@
     <!-- Start Header -->
     <div class="header" id="header">
       <div class="container">
-        <a href="http://localhost:8000/" class="logo">Nawarly</a>
+        <a href="http://localhost:8000/" class="logo">
+          <div class="d-flex flex-column">
+            <div>Nawarly</div>
+            <div class="fs-6 text-center text-secondary text-capitalize" style="font-size: 10px;">{{user}}</div>          
+          </div>
+        </a>
         <ul class="main-nav">
           <li><a href="{% url 'home' %}">Home</a></li>
           <li><a href="{% url 'coaches' %}">Coaches</a></li>
@@ -73,7 +78,16 @@
     </div>
     <!-- End Header -->
     <div id="main-content">
-
+      {% if messages %}
+      <div class="messages text-center">
+        {% for message in messages %}
+        <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible fs-6" {% endif %}>
+          <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
+          {{message}}
+        </div>
+        {% endfor %}
+      </div>
+      {% endif %}
       {% block content %}
       
       {% endblock %}

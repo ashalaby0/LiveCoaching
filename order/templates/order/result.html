@@ -1,20 +1,16 @@
 {% extends 'base.html' %}
 
 <!--  -->
-{% block style %}
-<style>
-  main {
-    min-height: 400px;
-  }
-</style>
-{% endblock %}
-<!--  -->
-{% block content %} {% if status %}
-<div class="alert alert-success text-center m-3 w-25" role="alert">
-  Payment Result: {{ result }}
-</div>
-{% else %}
-<div class="alert alert-danger text-center m-3 w-25" role="alert">
-  Payment Result: {{ result }}
+{% block content %} 
+{% if status %}
+<div class="container my-3" style="height: 70vh;">
+  <div class="alert alert-success text-center w-100" role="alert">
+    Payment Result: {{ result }}
+  </div>
+  {% else %}
+  <div class="alert alert-danger text-center w-100" role="alert">
+    Payment Result: {{ result }}
+  </div>
+
 </div>
 {% endif %} {% endblock %}

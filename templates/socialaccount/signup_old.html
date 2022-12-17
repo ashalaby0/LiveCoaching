@@ -1,17 +1,10 @@
-{% extends "account/base.html" %}
-{% load bootstrap5 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-{% bootstrap_messages %}
+{% extends "socialaccount/base.html" %}
 
 {% load i18n %}
-
 
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
-<div class="container-sm text-center w-50 my-5 py-5 border rounded-3">
-
     <h1>{% trans "Sign Up" %}</h1>
 
 <p>{% blocktrans with provider_name=account.get_provider.name site_name=site.name %}You are about to use your {{provider_name}} account to login to
@@ -19,11 +12,11 @@
 
 <form class="signup" id="signup_form" method="post" action="{% url 'socialaccount_signup' %}">
   {% csrf_token %}
-  {% bootstrap_form form %}
+  {{ form.as_p }}
   {% if redirect_field_value %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
   {% endif %}
-  <button type="submit" class="w-50 btn  btn-primary m-3">{% trans "Sign Up" %} &raquo;</button>
+  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
 </form>
 
 {% endblock %}

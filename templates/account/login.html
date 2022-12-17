@@ -6,77 +6,64 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>Login</title>
   
-  <link rel="stylesheet" href="{% static 'css/all.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'css/base.css' %}">
-  
-  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
-  <script src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
-  
-  <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <link rel="stylesheet" href="{% static 'css/all.min.css' %}">   
 
-  <link rel="stylesheet" href="{% static 'css/signup.css' %}" />
-
-
-
-  <title>Sign in & Sign up Form</title>
 </head>
 
 <body>
-  <div class="container">
-    <div class="forms-container">
-      <div class="signin-signup">
-        <form action="{% url 'account_login' %}" class="sign-in-form" method="post">
-          <h2 class="title">Sign In</h2>
-          <form action="{% url 'account_login' %}" class="sign-up-form">
-            {% csrf_token %}
-            <div class="input-field">
-              <i class="fas fa-user"></i>
-              {{form.login}}
-            </div>
-            <div class="input-field">
-              <i class="fas fa-lock"></i>
-              {{form.password}}
+  <div class="wrapper">
+    <div class="page-nav-line">
+      <div>
+        <a class=" text-decoration-none" href="{% url 'home' %}" style="color: var(--main-color)">
+          Home
+        </a>
+      </div>
+      <div class=""> &nbsp; &gt; &nbsp;</div>
+      <div>Login</div>
+    </div>
+    <h1>Hello Again!</h1>
+    <p>Welcome back you've <br> been missed!</p>
+    <form action="{% url 'account_login' %}" class="sign-in-form" method="post">
+      {% csrf_token %}      
+      
+      <div>
+        {{form.login}}      
+        <div class="fs-6 text-danger">{{ form.username.errors }}</div>
+      </div>
 
-            </div>
-            <input type="submit" value="L o g i n" class="btn solid" />
-          </form>
-          <p class="social-text">Or Sign in with social platforms</p>
-          <div class="social-media">
+      <div>
+        {{form.password}}
+        <div class="fs-6 text-danger">{{ form.password.errors }}</div>
+      </div>
+      
+      <p class="recover">
+        <a href="#">Forget Password</a>
+      </p>
+    <button type="submit" >Sign in</button>
+    </form>
+    <p class="or">
+      ----- or continue with -----
+    </p>
+    <div class="icons">
+      <div class="social-media d-flex">
             
-            {% if socialaccount_providers %}
-                {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-              {% include "socialaccount/snippets/login_extra.html" %}
-            {% endif %}
-          </div>
-        </form>
-
+        {% if socialaccount_providers %}
+            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+            {% include "socialaccount/snippets/login_extra.html" %}
+        {% endif %}
       </div>
     </div>
-
-    <div class="panels-container">
-      <div class="panel left-panel">
-        <div class="content">
-          <div class="d-flex fst-italic">
-            <div ><a class=" text-decoration-none" href="{% url 'home' %}" style="color: var(--main-color)">Home</a></div>
-            <div class=""> &nbsp; &gt; &nbsp;</div>
-            <div class="text-secondary">Login</div>
-        </div>
-          <h3>New here ?</h3>
-          <p>
-            Welcom to Nawarly World
-          </p>
-          <a class="btn transparent" id="sign-up-btn" href="{{ signup_url }}">
-            Sign up
-          </a>
-        </div>
-      </div>
+    <div class="not-member">
+      Not a member? <a href="{{ signup_url }}">Register Now</a>
     </div>
   </div>
+
 </body>
 
 </html>

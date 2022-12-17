@@ -7,7 +7,7 @@ import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.db.models import Q
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -184,7 +184,8 @@ def zoom_callback(request):
             'type': 2
         }
     )
-
+    
+    print(response.json())
     start_url = response.json()['start_url']
     send_mail(
         'LifeCoaching Session Scheduled',
@@ -239,7 +240,7 @@ def payment_view(request):
         merchant_order_id=merchant_order_id,
         coach=coach,
         client=client
-        )
+    )
 
     request.session['meeting_date'] = meeting_date
     request.session['meeting_topic'] = meeting_topic
@@ -315,15 +316,24 @@ def post_pay(request):
 
 # admin panel
 
-def admin_panel(request):
-    return render(request, template_name="home/admin_panel.html", context={})
+def dashboard(request):
+    upcomming_sessions = models.Session.objects.get_upcomming_sessions()
+    new_customer_messages = models.CustomerMessage.objects.all()
+
+
+
+    context = {
+        'upcomming_sessions':upcomming_sessions,
+        'new_customer_messages': new_customer_messages
+    }
+    return render(request, template_name="home/dashboard.html", context=context)
 
 
 class CoachAdminListView(ListView):
     model = models.Coach
     template_name = 'home/manage_coaches.html'
 
-    
+
 def coach_admin_update(request, coach_id):
 
     coach = models.Coach.objects.get(pk=coach_id)
@@ -343,8 +353,8 @@ def coach_admin_update(request, coach_id):
 
 
     return render(
-        request=request, 
-        template_name='home/manage_coach.html', 
+        request=request,
+        template_name='home/manage_coach.html',
         context={
             'user_form': user_form,
             'coach_form': coach_form
@@ -354,73 +364,80 @@ def coach_admin_update(request, coach_id):
 def contact_us(request):
 
     form = forms.CustomerMessageForm()
-    context = {'form':form}
+    context = {'form': form}
 
     if request.method == 'POST':
         form = forms.CustomerMessageForm(request.POST)
         if form.is_valid():
             form.save()
-            print('saved')
             messages.success(request, "Submitted Successfully !.")
             form = forms.CustomerMessageForm()
-            context = {'form':form}
-            
+            context = {'form': form}
+
+
+        subject = 'New Customer Message'
+        html_content = f"""
+        <span><strong>Name</strong></span>:  <span>{request.POST['full_name']}</span>
+        <br>
+        <span><strong>Email</strong></span>: <span>{request.POST['email']}</span>
+        <br>
+        <span><strong>Message</strong></span>: <span>{request.POST['message']}</span>
+        <br>
+        """
+        from_email = settings.EMAIL_HOST_USER
+        to_list = [settings.EMAIL_HOST_USER]
+
+        msg = EmailMessage(subject, html_content, from_email, to_list)
+        msg.content_subtype = "html"  # Main content is now text/html
+        msg.send()
+        print('mail sent')
+
+
     return render(
         request=request,
         template_name='home/contact_us.html',
         context=context
-        )
+    )
 
 
 def coach_stats(request):
     result = models.Coach.objects.get_monthly_stats()
+    return JsonResponse(
+        {i['joined_at__month']: i['count'] for i in result}
+    )
+
+
+def client_stats(request):
+    result = models.Client.objects.get_monthly_stats()
+    return JsonResponse(
+        {i['joined_at__month']: i['count'] for i in result}
+    )
+
+
+def session_stats(request):
+    result = models.Session.objects.get_monthly_stats()
+    return JsonResponse(
+        {i['time__month']: i['count'] for i in result}
+    )
+
+
+def sessions_per_coach(request):
+    result = models.Session.objects.get_total_session_per_coach()
+    return JsonResponse(
+        {i['coach__user__username']:i['count'] for i in result}
+    )
+
+
+def sessions_per_client(request):
+    result = models.Client.objects.get_total_session_per_client()
+    return JsonResponse(
+        {i['user__username']:i['no_of_session'] for i in result}
+        # user__username', 'no_of_sessions
+    )
+
+
+def get_upcomming_sessions(request):
     print(result)
     return JsonResponse(
-        {
-            'jan':10,
-            'feb':20,
-            'march':30,
-            'april':40,
-            'june':50,
-            }
-    )
-def client_stats(request):
-    return JsonResponse(
-        {
-            'jan':10,
-            'feb':20,
-            'march':30,
-            'april':40,
-            'june':50,
-            }
-    )
-def session_stats(request):
-    return JsonResponse(
-        {
-            'jan':10,
-            'feb':20,
-            'march':30,
-            'april':40,
-            'june':50,
-            }
-    )
-def sessions_per_coach(request):
-    return JsonResponse(
-        {
-            'jan':10,
-            'feb':20,
-            'march':30,
-            'april':40,
-            'june':50,
-            }
-    )
-def sessions_per_client(request):
-    return JsonResponse(
-        {
-            'jan':10,
-            'feb':20,
-            'march':30,
-            'april':40,
-            'june':50,
-            }
+        {'sessions': [x for x in result]}
     )

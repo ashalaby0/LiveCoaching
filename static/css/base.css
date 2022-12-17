@@ -272,7 +272,7 @@ input:-webkit-autofill:focus {
   /* start main content */
   #main-content {
     position: relative;
-    top: var(--main-nav-top-margin) ;
+    top: var(--main-nav-top-margin);
   }
   /* end main content  */
 
@@ -280,7 +280,7 @@ input:-webkit-autofill:focus {
 
   /* Start Landing */
   .landing {
-    position: relative;
+    position: relative; 
   }
   .landing::before {
     content: "";
@@ -470,8 +470,10 @@ input:-webkit-autofill:focus {
   
   /* Start Footer */
   .footer {
-    background-color: var(--main-color);
+    background-color: var(--main-color4);
     padding: 10px 0 0;
+    top: var(--main-nav-top-margin);
+    position: relative;
   }
   @media (max-width: 767px) {
     .footer {
@@ -484,7 +486,7 @@ input:-webkit-autofill:focus {
     gap: 50px;
   }
   .footer .box h3 {
-    color: var(--main-color4);
+    color: var(--main-color);
     font-size: 55px;
     margin: 0 0 20px;
   }
@@ -501,7 +503,7 @@ input:-webkit-autofill:focus {
   }
   .footer .box .social li a {
     background-color:None;
-    color: var(--main-color4);
+    color: var(--main-color);
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -511,22 +513,22 @@ input:-webkit-autofill:focus {
     transition: var(--main-transition);
   }
   .footer .box .social .facebook:hover {
-    color: var(--main-color5);
+    color: var(--main-color3);
   }
   .footer .box .social .twitter:hover {
-    color: var(--main-color5);
+    color: var(--main-color3);
   }
   .footer .box .social .youtube:hover {
-    color: var(--main-color5);
+    color: var(--main-color3);
   }
   .footer .box .text {
     line-height: 2;
-    color: var(--main-color4);
+    color: var(--main-color);
   }
   .footer .box .line {
     display: flex;
     align-items: center;
-    color: var(--main-color4);
+    color: var(--main-color);
     margin-bottom: 5px;
   }
   @media (max-width: 767px) {
@@ -536,7 +538,7 @@ input:-webkit-autofill:focus {
   }
   .footer .box .line i {
     font-size: 25px;
-    color: var(--main-color4);
+    color: var(--main-color);
     margin-right: 10px;
   }
   @media (max-width: 767px) {
@@ -560,7 +562,7 @@ input:-webkit-autofill:focus {
   .footer .copyright {
     padding: 25px 0;
     text-align: center;
-    color: var(--main-color4);
+    color: var(--main-color);
     margin: 10px 0 0;
     border-top: 1px solid grey;
   }

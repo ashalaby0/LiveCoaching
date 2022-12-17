@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             name='Client',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('phone_number', phonenumber_field.modelfields.PhoneNumberField(default='not-provided', max_length=128, region=None, unique=True)),
+                ('phone_number', phonenumber_field.modelfields.PhoneNumberField(default='not-provided', max_length=128, region=None)),
                 ('city', models.CharField(default='not-provided', max_length=50)),
                 ('country', models.CharField(default='not-provided', max_length=50)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),

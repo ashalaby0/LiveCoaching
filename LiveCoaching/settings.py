@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
 
     # auth apps
     'django.contrib.sites',
@@ -46,6 +47,9 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.facebook',
+
+    # django dev
+    'django_extensions',
 
 
     # apps
@@ -173,8 +177,8 @@ PAYMOB_HMAC = 'FDDE8D8FB185CDE6AA6CCF5D5BD8FBD8'
 PAYMOB_INTEGRATION_ID = '3065725'
 
 # ZOOM
-ZOOM_API_KEY = '3eunwnojTGKyf_oydVKU7w'
-ZOOM_API_SEC = 'ABrJMIOaMu6fxRhQPOne5459Mnn1TinG'
+ZOOM_API_KEY = 'EpOkgKKjRN2dczleGEITcw'
+ZOOM_API_SEC = 'i8tLN4VsFx6i1N2yqGliGDORS3Eqs77J'
 ZOOM_OAUTH_REDIRECT_URL_NAME = 'zoom_callback'
 ZOOM_USER_AUTHORIZATON_URL_BASE = f"https://zoom.us/oauth/authorize?response_type=code&client_id={ZOOM_API_KEY}&redirect_uri="
 ZOOM_TOKEN_REQUEST_URL = "https://zoom.us/oauth/token"
@@ -184,4 +188,10 @@ ZOOM_MEETING_PASSWORD = 123456
 
 
 # for ngrok testing
-CSRF_TRUSTED_ORIGINS = ['https://77a7-102-187-124-74.eu.ngrok.io']
+CSRF_TRUSTED_ORIGINS = ['https://7205-102-187-95-254.eu.ngrok.io']
+
+
+
+ACCOUNT_EMAIL_REQUIRED =True
+SOCIALACCOUNT_EMAIL_REQUIRED  = True
+# SESSION_COOKIE_SECURE = False

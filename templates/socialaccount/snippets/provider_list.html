@@ -9,18 +9,19 @@
   <button class="btn btn-outline-primary" onclick="location.href = '{% provider_login_url provider.id openid=brand.openid_url process=process %}'">
     <i class="bi bi-google"></i>
     <span></span>
-    {{brand.name}}</button>
+    {{brand.name}}
+  </button>
 {% endfor %}
 {% endif %}
 
 {% if provider.name == 'Google' %}
-  <button class="social-icon" onclick="location.href = '{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}'">
+  <a  href = '{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}'>
     <i class="fab fa-google"></i>
-  </button>
+  </a>
 {% elif provider.name == 'Facebook' %}
-  <button class="social-icon" onclick="location.href = '{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}'">
+  <a  href = '{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}'>
     <i class="fab fa-facebook-f"></i>
-  </button>
+  </a>
 {% endif %}
 
 {% endfor %}

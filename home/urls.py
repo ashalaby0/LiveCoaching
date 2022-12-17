@@ -84,17 +84,17 @@ urlpatterns = [
 
     # admin panel
     path(
-        'admin_panel',
-        views.admin_panel,
-        name='admin_panel'
+        'dashboard',
+        views.dashboard,
+        name='dashboard'
     ),
     path(
-        'admin_panel/manage_coaches', 
+        'dashboard/manage_coaches', 
         views.CoachAdminListView.as_view(), 
         name='manage_coaches'
     ),
     path(
-        'admin_panel/manage_coaches/<int:coach_id>',
+        'dashboard/manage_coaches/<int:coach_id>',
         views.coach_admin_update,
         name='manage_coach'
     ),
@@ -130,6 +130,11 @@ urlpatterns = [
         views.sessions_per_client,
         name='sessions_per_client'
     ),
+    path(
+        'get_upcomming_sessions',
+        views.get_upcomming_sessions,
+        name='get_upcomming_sessions'
+    )
 
 
 ]

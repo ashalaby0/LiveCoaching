@@ -1,8 +1,6 @@
 .coach-img {
     height: 200px;
-    min-height: 200px;
     width: 150px;
-    min-width: 150px;
     border-radius: 20px;
     margin-right: 20px;
 }
@@ -12,17 +10,21 @@
     /* color: var(--main-color4);; */
     color: white;
 }
+
 .custom-btn-outline-primary {
     border-color: var(--main-color);
     color: var(--main-color);
 }
+
 .custom-btn-primary:hover {
     background-color: var(--main-color4);
 }
+
 .custom-btn-primary:checked {
     background-color: var(--main-color4);
     color: var(--main-color4);
 }
+
 .custom-btn-outline-primary:hover {
     color: var(--main-color4);
     border-color: var(--main-color4);
@@ -42,13 +44,30 @@
 /* search min/max slider style */
 .slider::-webkit-slider-thumb {
     /* appearance: none; */
-    background: var(--main-color);    
-    cursor: pointer; 
-  }
+    background: var(--main-color);
+    cursor: pointer;
+}
 
 
 /* change cursor for diabled buttons */
-  :disabled {
+:disabled {
     cursor: not-allowed;
     pointer-events: all !important;
-  }
+}
+
+
+/* page navigation line */
+.page-nav-line {
+    display: flex;
+    padding-left: 10px;
+    font-size: x-small;
+}
+
+.page-nav-line div,
+.page-nav-line div a {
+    font-style: italic;
+}
+
+.page-nav-line div:last-child {
+    color: gray;
+}

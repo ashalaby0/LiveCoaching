@@ -1,8 +1,9 @@
 import datetime
 import json
 from time import time
-from django.db.models.functions import TruncMonth
+from django.db.models.functions import TruncMonth, Length
 from django.db.models import Count
+
 
 
 import jwt
@@ -19,7 +20,6 @@ from phonenumber_field.modelfields import PhoneNumberField
 # coach location filed options
 
 # make the email required for any user
-User._meta.get_field('email')._unique = True  
 User._meta.get_field('email').blank = False
 User._meta.get_field('email').null = False
 
@@ -32,14 +32,18 @@ class Category(models.Model):
 class ClientCustomManager(models.QuerySet):
 
     def get_monthly_stats(self):
-        return self.annotate(month=TruncMonth('joined_at')).values('month').annotate(c=Count('id')).values('joined_at__month', 'count')
+        return self.annotate(month=TruncMonth('joined_at')).values('month').annotate(count=Count('id')).values('joined_at__month', 'count')
 
+    def get_total_session_per_client(self):
+        return self.annotate(no_of_session=Count('session')).values('user__username', 'no_of_session')
+        # return self.all().values('client').annotate(count=Count('id')).values('client__user__username', 'count')
 
 class Client(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    phone_number = PhoneNumberField(default="not-provided", unique=True)
+    phone_number = PhoneNumberField(default="not-provided")
     city = models.CharField(max_length=50, default="not-provided")
     country = models.CharField(max_length=50, default="not-provided")
+    joined_at = models.DateTimeField(auto_now_add=True)
     
     objects = ClientCustomManager.as_manager()
 
@@ -50,7 +54,7 @@ class Client(models.Model):
 class CoachCustomManager(models.QuerySet):
 
     def get_monthly_stats(self):
-        return self.annotate(month=TruncMonth('joined_at')).values('month').annotate(c=Count('id')).values('joined_at__month', 'count')
+        return self.annotate(month=TruncMonth('joined_at')).values('month').annotate(count=Count('id')).values('joined_at__month', 'count')
 
     def get_available_hours(self, pk, day):
         coach_list = self.filter(pk=pk)
@@ -98,8 +102,10 @@ class Coach(models.Model):
     def __str__(self) -> str:
         return self.user.username
 
-
 class SessionCustomManager(models.QuerySet):
+
+    def get_monthly_stats(self):
+        return self.annotate(month=TruncMonth('time')).values('month').annotate(count=Count('id')).values('time__month', 'count')
 
     def generate_zoom_token(self):
         API_KEY = settings.ZOOM_API_KEY
@@ -114,6 +120,8 @@ class SessionCustomManager(models.QuerySet):
     def get_upcomming_sessions(self):
         return self.filter(time__gte=datetime.datetime.now())
 
+    def get_total_session_per_coach(self):
+        return self.all().values('coach').annotate(count=Count('id')).values('coach__user__username', 'count')
 
     def create_zoom_meeting(self, topic, start_time, duration_in_mins, time_zone, agenda):
         formated_time = '2022-12-12T11: 11: 11'  # will be formated from start_time
@@ -163,7 +171,7 @@ class Session(models.Model):
     group_session = models.BooleanField(default=False)
     url = models.URLField(default=None, null=True)
 
-    # objects = SessionCustomManager.as_manager()
+    objects = SessionCustomManager.as_manager()
 
     def __str__(self) -> str:
         return f'{self.category}: {self.coach}'
@@ -182,6 +190,7 @@ class CustomerMessage(models.Model):
     email = models.EmailField()
     message = models.TextField()
     phone_number = PhoneNumberField(blank=True, null=True)
+    closed = models.BooleanField(default=False)
 
 class Payment(models.Model):
     shipment_address = models.CharField(max_length=150)

@@ -96,8 +96,8 @@
           <div class="card custom-text-primary mb-3">
             <div class="card-body d-flex justify-content-between">
               <div class="d-flex justify-content-between">
-                <div>
-                  <a href="#">
+                <div data-bs-toggle="tooltip" title="Coach Profile">
+                  <a href="{% url 'coach_details' coach.id %}">
                     <img
                       src="{{ coach.photo.url }}"
                       class="coach-img img-fluid"

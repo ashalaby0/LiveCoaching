@@ -16,7 +16,7 @@ class ClientModelAdmin(admin.ModelAdmin):
 
 @admin.register(models.Session)
 class SessionModelAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['coach', 'group_session', 'time', 'duration']
 
 
 @admin.register(models.Category)

@@ -107,9 +107,8 @@ def booking(request, pk):
     print(client)
 
     coach = get_object_or_404(models.Coach, pk=pk)
-    private_session_set = models.Session.objects.filter(
-        clients=client.id)
-    group_session_set = models.Session.objects.filter(coach__id=pk)
+    private_session_set = models.Session.objects.filter(clients=client.id).filter(coach__id=pk).filter(group_session=False)
+    group_session_set = models.Session.objects.filter(coach__id=pk).filter(coach__id=pk).filter(group_session=True)
 
     context = {
         'private_session_set': private_session_set,
@@ -205,7 +204,7 @@ def zoom_callback(request):
         fail_silently=False,
     )
 
-    messages.success(request, f"Session Scheduled Successfully & Link sent by mail.")
+    messages.success(request, f"Session Scheduled Successfully & Link sent by mail. {request.user.email}")
     return redirect('home')
     # return HttpResponse(f'''<div class="alert alert-success">URL: <a href='{join_url}'>Join Meeting</a></div><br><span> link sent by mail.. please chck your mail</span> ''')
     # return response.json()

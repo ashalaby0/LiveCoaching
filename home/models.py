@@ -86,6 +86,13 @@ class CoachCustomManager(models.QuerySet):
                     except:
                         pass
 
+                    # remove previous half hour
+                    try:
+                        formated_half_hours.remove(
+                            (i.time - datetime.timedelta(minutes=30)).strftime('%H:%M')) 
+                    except:
+                        pass
+
             return formated_half_hours
         return []
 

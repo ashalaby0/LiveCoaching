@@ -183,7 +183,8 @@ class Session(models.Model):
     duration = models.IntegerField(default=60)
     review = models.CharField(max_length=500, default='')
     group_session = models.BooleanField(default=False)
-    url = models.URLField(default=None, null=True)
+    meeting = models.ForeignKey('ZoomMeeting', on_delete=models.CASCADE, null=True, blank=True)
+    # url = models.URLField(default=None, null=True)
 
     objects = SessionCustomManager.as_manager()
 
@@ -238,7 +239,7 @@ class Payment(models.Model):
         country
         ):
         url = 'https://accept.paymob.com/api/ecommerce/orders'
-        merchant_order_id += 1000 # for testing
+        merchant_order_id += 2000 # for testing
         print(merchant_order_id)
         context = {
             "auth_token":  token,
@@ -431,3 +432,18 @@ class Payment(models.Model):
             amount_cents=coach.price_per_hour * 100
 
             )
+
+
+class ZoomMeetingCustomManager(models.QuerySet):
+    def upcomming_meetings(self, _user):
+        return self.filter(start_time__gte=datetime.datetime.now())
+class ZoomMeeting(models.Model):
+    join_url = models.URLField()
+    start_url = models.URLField()
+    meeting_id = models.IntegerField()
+    start_time = models.DateTimeField()
+    duration = models.IntegerField()
+
+    objects = ZoomMeetingCustomManager.as_manager()
+
+

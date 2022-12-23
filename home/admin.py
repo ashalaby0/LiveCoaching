@@ -27,3 +27,8 @@ class CategoryModelAdmin(admin.ModelAdmin):
 @admin.register(models.CustomerMessage)
 class CustomerMessageModelAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(models.ZoomMeeting)
+class ZoomMeetingModelAdmin(admin.ModelAdmin):
+    pass

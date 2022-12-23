@@ -27,7 +27,7 @@ def home(request):
     )
 
 
-@login_required(login_url='/accounts/login')
+# @login_required(login_url='/accounts/login')
 def coaches(request):
 
     coach_name_q = request.GET.get('coach_name_q') if request.GET.get(
@@ -55,7 +55,7 @@ def coaches(request):
     )
 
 
-@login_required(login_url='/accounts/login')
+# @login_required(login_url='/accounts/login')
 def sessions(request):
 
     coach_name_q = request.GET.get('coach_name_q') if request.GET.get(
@@ -128,25 +128,16 @@ class CoachDetailView(DetailView):
     model = models.Coach
     template_name = 'home/coach_profile.html'
 
-
-def schedule_zoom_meeting(request):
-
-    # meeting_date = request.POST.get('meeting_date')
-    # meeting_topic = request.POST.get('meeting_topic')
-    # meeting_agenda = request.POST.get('meeting_agenda')
-    # request.session['meeting_date'] = meeting_date
-    # request.session['meeting_topic'] = meeting_topic
-    # request.session['meeting_agenda'] = meeting_agenda
-
-    print('$$$$$$$$$$$$$$$$$$$$$$$$$$$')
-    print(request.session['meeting_date'])
-    print('$$$$$$$$$$$$$$$$$$$$$$$$$$$')
+def _get_zoom_token(request):
     ZOOM_OAUTH_REDIRECT_URL = request.build_absolute_uri(
         reverse(settings.ZOOM_OAUTH_REDIRECT_URL_NAME))
     return redirect(settings.ZOOM_USER_AUTHORIZATON_URL_BASE + ZOOM_OAUTH_REDIRECT_URL)
 
+def schedule_zoom_meeting(request):
+    return _get_zoom_token(request)
+    
 
-def zoom_callback(request):
+def zoom_schedule_callback(request):
     response = requests.post(
         url=settings.ZOOM_TOKEN_REQUEST_URL,
         headers={
@@ -156,7 +147,7 @@ def zoom_callback(request):
         data={
             'code': request.GET.get('code'),
             'grant_type': 'authorization_code',
-            'redirect_uri': request.build_absolute_uri(reverse('zoom_callback'))
+            'redirect_uri': request.build_absolute_uri(reverse('zoom_schedule_callback'))
         }
     )
     access_token = response.json()['access_token']
@@ -206,9 +197,10 @@ def zoom_callback(request):
 
     messages.success(request, f"Session Scheduled Successfully & Link sent by mail. {request.user.email}")
     return redirect('home')
-    # return HttpResponse(f'''<div class="alert alert-success">URL: <a href='{join_url}'>Join Meeting</a></div><br><span> link sent by mail.. please chck your mail</span> ''')
-    # return response.json()
 
+def zoom_meeting_callback(request):
+    # not done yet
+    return redirect('home')
 
 def payment_view(request):
 
@@ -461,4 +453,36 @@ def get_upcomming_sessions(request):
     print(result)
     return JsonResponse(
         {'sessions': [x for x in result]}
+    )
+
+# gets upcomming user sessions zoom meetings for current user
+def user_upcomming_zoom_meetings(reqeust):
+    meetings = models.ZoomMeeting.objects.upcomming_meetings(request.user)
+    # this page should load user home page with all upcommign meetings as buttons
+    return render(
+        request=request,
+        template_name='home/user_home_page.html',
+        context={'meetings':meetings, 'ps':settings.ZOOM_MEETING_PASSWORD}
+    )
+    
+def got_to_zoom_meeting_join_page(request):
+    # this page should load the zoom meeting joinning page with only JOIN Button and all fields are hidden
+    return render(
+        request=request,
+        template_name='home/tst_usr_zoom_meetings.html',
+        context={'nm':'72325261745', 'ps':'Gi8Ze5'} # temp for testing
+        # context={'number':'72325261745', 'ps':settings.ZOOM_MEETING_PASSWORD}
+    )
+
+
+def open_zoom_meeting(request):
+    return render(
+        request,
+        template_name='home/zoom/meeting.html',
+        context={}
+    )
+
+def get_zoom_crd_creds(request):
+    return JsonResponse(
+        {'key':'VFlelbBM10XSBHmxUgUGfSsFqR3bQGdy8IkE', 'pass':'QUasaMms1KhNcqRHBRmU2KCQlFEbs2wJKHpK'}
     )

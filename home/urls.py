@@ -77,9 +77,9 @@ urlpatterns = [
         name='schedule_zoom_meeting'
     ),
     path(
-        'zoom_callback',
-        views.zoom_callback,
-        name='zoom_callback'
+        'zoom_schedule_callback',
+        views.zoom_schedule_callback,
+        name='zoom_schedule_callback'
     ),
 
     # admin panel
@@ -134,7 +134,24 @@ urlpatterns = [
         'get_upcomming_sessions',
         views.get_upcomming_sessions,
         name='get_upcomming_sessions'
+    ),
+    path(
+        'tst_usr_zoom_meetings',
+        views.got_to_zoom_meeting_join_page,
+        name='tst_usr_zoom_meetings'
+    ),
+    path(
+        'tst_open_zoom_meeting',
+        views.open_zoom_meeting,
+        name='tst_open_zoom_meeting'
+    ),
+    # url to get zoom sdk credentials
+    path(
+        'EmbdZmCrd',
+        views.get_zoom_crd_creds,
+        name='EmbdZmCrd'
     )
+
 
 
 ]

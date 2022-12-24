@@ -3,6 +3,10 @@ from django.contrib import admin
 # Register your models here.
 from home import models
 
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+
+admin.site.register(models.User, UserAdmin)
 
 @admin.register(models.Coach)
 class CoachModelAdmin(admin.ModelAdmin):

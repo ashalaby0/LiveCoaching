@@ -190,6 +190,7 @@ ZOOM_MEETING_PASSWORD = 123456
 # for ngrok testing
 CSRF_TRUSTED_ORIGINS = ['https://bc9b-197-135-106-132.eu.ngrok.io']
 
+AUTH_USER_MODEL = 'home.User'
 
 
 ACCOUNT_EMAIL_REQUIRED =True

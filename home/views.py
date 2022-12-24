@@ -6,6 +6,8 @@ import hmac
 import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from django.core.mail import send_mail, EmailMessage
 from django.db.models import Q
@@ -19,6 +21,19 @@ from django.core import serializers
 
 
 from . import forms, models, serializers
+
+def signup_view(request):
+    form = forms.SignUpForm(request.POST)
+    if form.is_valid():
+        form.save()
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password1')
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        return redirect('home')
+    else:
+        form = forms.SignUpForm(request.POST)
+    return render(request, 'account/signup.html', {'form': form})
 
 
 def home(request):

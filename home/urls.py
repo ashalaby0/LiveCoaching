@@ -155,6 +155,11 @@ urlpatterns = [
         'get_sorted_coaches/<str:option>/<str:coach_name_q>/<str:coach_speciality_q>/<str:min_price_q>/<str:max_price_q>',
         views.get_sorted_coaches,
         name='get_sorted_coaches'
+    ),
+    path(
+        'signup',
+        views.signup_view,
+        name='signup'
     )
 
 

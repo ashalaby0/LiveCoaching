@@ -1,4 +1,3 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
@@ -26,14 +25,14 @@
     {% csrf_token %}
     <div class="">
       {{ form.username }}
-      <div class="fs-6 text-danger">{{ form.username.error }}</div>
+      <div class="fs-6 text-danger">{{ form.username.errors }}</div>
     </div>
 
     <div class="">
       {{ form.password1 }}
       <div class="fs-6 text-danger">{{ form.password1.errors }}</div>
     </div>
-    
+
     <div class="">
       {{ form.password2 }}
       <div class="fs-6 text-danger">{{ form.password2.errors }}</div>
@@ -45,8 +44,14 @@
       <div class="fs-6 text-danger">{{ form.email.errors }}</div>
     </div>
 
-    <input type="submit" value="Submit" class="btn" style="color: var(--main-color);background-color:var(--main-color4)" />
-  <closeform></closeform>
+    <div class="">
+      {{ form.phone }}
+      <div class="fs-6 text-danger">{{ form.phone.errors }}</div>
+    </div>
+
+    <input type="submit" value="Submit" class="btn"
+      style="color: var(--main-color);background-color:var(--main-color4)" />
+    <closeform></closeform>
   </form>
   <p>
     By clicking the Sign Up button,you agree to our <br />

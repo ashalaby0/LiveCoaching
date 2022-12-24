@@ -16,8 +16,15 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 
+
+from django.contrib.auth.models import AbstractUser
+
+
 # TODO
 # coach location filed options
+
+class User(AbstractUser):
+    phone = models.CharField(max_length=20)
 
 # make the email required for any user
 User._meta.get_field('email').blank = False

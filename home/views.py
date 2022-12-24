@@ -15,8 +15,10 @@ from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, ListView
+from django.core import serializers
 
-from . import forms, models
+
+from . import forms, models, serializers
 
 
 def home(request):
@@ -485,4 +487,28 @@ def open_zoom_meeting(request):
 def get_zoom_crd_creds(request):
     return JsonResponse(
         {'key':'VFlelbBM10XSBHmxUgUGfSsFqR3bQGdy8IkE', 'pass':'QUasaMms1KhNcqRHBRmU2KCQlFEbs2wJKHpK'}
+    )
+
+def get_sorted_coaches(request, option, coach_name_q, coach_speciality_q, min_price_q, max_price_q):
+    media_url = settings.MEDIA_URL 
+    sorted_coaches = models.Coach.objects.filter(price_per_hour__gte=min_price_q).filter(price_per_hour__lte=max_price_q)
+
+    if coach_name_q.lower() != 'empty':
+        sorted_coaches = sorted_coaches.filter(user__username__icontains=coach_name_q.strip())
+    if coach_speciality_q.lower() != 'empty':
+        sorted_coaches = sorted_coaches.filter(speciality__name__icontains=coach_name_q.strip())
+
+    if option == 'plh':
+        sorted_coaches = sorted_coaches.order_by('price_per_hour')
+    elif option == 'phl':
+        sorted_coaches = sorted_coaches.order_by('-price_per_hour')
+    elif option == 'ctchna':
+        sorted_coaches = sorted_coaches.order_by('user__username')
+    elif option == 'catna':
+        sorted_coaches = sorted_coaches.order_by('speciality__name')
+
+
+    serialized_sorted_coaches = [serializers.CoachSerializer(instance=i).data for i in (x for x in sorted_coaches)]
+    return JsonResponse(
+        {'sorted_coaches':serialized_sorted_coaches}
     )

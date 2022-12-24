@@ -1,9 +1,18 @@
-{% extends 'base.html' %} {% load static %}
+{% extends 'base.html' %} 
+
+{% load static %}
 
 <!-- script block -->
 
 {% block style %}
 <script src="{% static 'js/custom.js' %}" defer></script>
+<script defer>
+  let coach_details_url = "{% url 'coach_details' 1111 %}" // 1111 is place holder to be replaced with coach id in js
+  let booking_url = "{% url 'booking' 1111 %}" // 1111 is place holder to be replaced with coach id in js
+// booking
+</script>
+
+<script src="{% static 'home/js/coaches.js' %}" defer></script>
 
 {% endblock %}
 
@@ -17,6 +26,21 @@
     <!-- Search Card -->
     <div class="m-3">
       <div class="card w-100">
+        <hr class="mx-3">
+        <div>
+          <div class="dropdown mx-3">
+            <button class="btn custom-btn-danger dropdown-toggle w-100" type="button" id="sortBtn" data-bs-toggle="dropdown" aria-expanded="false">
+              Sort
+            </button>
+            <div class="dropdown-menu" aria-labelledby="sortBtn">
+              <div class="dropdown-item coach-sorting-option" value="{% url 'get_sorted_coaches' option='plh' coach_name_q='coach_name_q' coach_speciality_q='coach_speciality_q' min_price_q='min_price_q' max_price_q='max_price_q'  %}">Price low to high</div>
+              <div class="dropdown-item coach-sorting-option" value="{% url 'get_sorted_coaches' option='phl' coach_name_q='coach_name_q' coach_speciality_q='coach_speciality_q' min_price_q='min_price_q' max_price_q='max_price_q'   %}">Price high to low</div>
+              <div class="dropdown-item coach-sorting-option" value="{% url 'get_sorted_coaches' option='ctchna' coach_name_q='coach_name_q' coach_speciality_q='coach_speciality_q' min_price_q='min_price_q' max_price_q='max_price_q'   %}">Coach name accending</div>
+              <div class="dropdown-item coach-sorting-option" value="{% url 'get_sorted_coaches' option='catna' coach_name_q='coach_name_q' coach_speciality_q='coach_speciality_q' min_price_q='min_price_q' max_price_q='max_price_q'   %}">Category name accending</div>
+            </div>
+          </div>
+        </div>
+        <hr class="mx-3">
         <div class="card-header">Filter By</div>
 
         <div class="card-body">
@@ -73,11 +97,7 @@
               </div>
             </div>
             <hr />
-            <div hidden>
-              <label class="form-label">Available In</label>
-              <input type="date" class="form-control" name="available_date_q" />
-            </div>
-            <hr />
+            
             <button type="submit" class="btn custom-btn-primary w-100 my-2">
               Search
             </button>
@@ -89,8 +109,11 @@
 
     <!-- Coaches Cards -->
     <div class="flex-grow-1 custom-text-primary">
-      <h1>Coaches</h1>
-      <div class="m-3 flex-grow-1">
+      <div class="d-flex justify-content-between mx-3">
+        <h1>Coaches</h1>
+        
+      </div>
+      <div id="coach-list" class="m-3 flex-grow-1">
         {% for coach in coach_list %}
         <div>
           <div class="card custom-text-primary mb-3">
@@ -109,7 +132,6 @@
                   <h4>{{coach.user.username}}</h4>
                   <p>{{coach.speciality}}</p>
                   <div>
-                    <div>
                       {% if coach.rating > 0%}
                       <i class="fa-solid fa-star" style="color: gold"></i>
                       {% endif %} {% if coach.rating > 1%}
@@ -121,7 +143,6 @@
                       {% endif %} {% if coach.rating > 4%}
                       <i class="fa-solid fa-star" style="color: gold"></i>
                       {% endif %}
-                    </div>
                   </div>
                   <div>
                     <i class="bi bi-geo-alt-fill"></i>
@@ -129,8 +150,8 @@
                   </div>
                 </div>
               </div>
+
               <div>
-                <div>
                   <div class="m-2">
                     <i class="bi bi-universal-access"></i>
                     {% if coach.available_for_kids %}
@@ -147,8 +168,8 @@
                     <i class="bi bi-cash"></i>
                     <span>{{coach.price_per_30_mins}} per 30 min.</span>
                   </div>
-                </div>
               </div>
+
               <div>
                 <div class="d-flex flex-column gap-2">
                   <div class="w-100">
@@ -156,7 +177,7 @@
                       href="{% url 'coach_details' coach.id %}"
                       class="btn custom-btn-outline-primary"
                     >
-                      VIEW COACH PROFILE
+                    <span>VIEW COACH PROFILE</span>
                     </a>
                   </div>
                   <div class="w-100">

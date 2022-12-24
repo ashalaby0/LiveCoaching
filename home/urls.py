@@ -150,6 +150,11 @@ urlpatterns = [
         'EmbdZmCrd',
         views.get_zoom_crd_creds,
         name='EmbdZmCrd'
+    ),
+    path(
+        'get_sorted_coaches/<str:option>/<str:coach_name_q>/<str:coach_speciality_q>/<str:min_price_q>/<str:max_price_q>',
+        views.get_sorted_coaches,
+        name='get_sorted_coaches'
     )
 
 

@@ -144,6 +144,9 @@ class SessionCustomManager(models.QuerySet):
     def get_total_session_per_coach(self):
         return self.all().values('coach').annotate(count=Count('id')).values('coach__user__username', 'count').order_by('count')
 
+    def get_total_session_per_category(self):
+        return self.all().values('category').annotate(count=Count('id')).values('category__name', 'count').order_by('count')
+
     def create_zoom_meeting(self, topic, start_time, duration_in_mins, time_zone, agenda):
         formated_time = '2022-12-12T11: 11: 11'  # will be formated from start_time
         payload = {
@@ -246,7 +249,7 @@ class Payment(models.Model):
         country
         ):
         url = 'https://accept.paymob.com/api/ecommerce/orders'
-        merchant_order_id += 2000 # for testing
+        merchant_order_id += 3000 # for testing
         print(merchant_order_id)
         context = {
             "auth_token":  token,

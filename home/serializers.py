@@ -9,3 +9,14 @@ class CoachSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Coach
         fields = '__all__'
+
+
+class CustomerMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.CustomerMessage
+        fields = '__all__'
+
+class SessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Session
+        fields = '__all__'

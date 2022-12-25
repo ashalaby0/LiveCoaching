@@ -131,10 +131,16 @@ urlpatterns = [
         name='sessions_per_client'
     ),
     path(
-        'get_upcomming_sessions',
-        views.get_upcomming_sessions,
-        name='get_upcomming_sessions'
+        'sessions_per_category',
+        views.sessions_per_category,
+        name='sessions_per_category'
     ),
+    path(
+        'customer_messages',
+        views.customer_messages,
+        name='customer_messages'
+    ),
+  
     path(
         'tst_usr_zoom_meetings',
         views.got_to_zoom_meeting_join_page,
@@ -160,6 +166,11 @@ urlpatterns = [
         'signup',
         views.signup_view,
         name='signup'
+    ),
+    path(
+        'close_customer_message',
+        views.close_customer_message,
+        name='close_customer_message'
     )
 
 

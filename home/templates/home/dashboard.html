@@ -12,7 +12,9 @@
     let session_stats_url = "{% url 'session_stats' %}";
     let sessions_per_coach_url = "{% url 'sessions_per_coach' %}";
     let sessions_per_client_url = "{% url 'sessions_per_client' %}";
-    let get_upcomming_sessions_url = "{% url 'get_upcomming_sessions' %}"
+    let close_customer_message_url = "{% url 'close_customer_message' %}"
+    let sessions_per_category_url = "{% url 'sessions_per_category' %}";
+    let customer_messages_url = "{% url 'customer_messages' %}"
 </script>
 <script src="{% static 'home/js/dashboard.js' %}" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
@@ -86,6 +88,7 @@
     
     </div>
     <div class="d-flex justify-content-around">
+        <!-- session per coach -->
         <div class="custom-card custom-narrow-card">
             <div class="d-flex justify-content-between">
                 <div>
@@ -102,6 +105,26 @@
             <canvas style="height: 70%;" id="sessionPerCoachChart"></canvas>
         
         </div>
+
+        <!-- session per category -->
+        <div class="custom-card custom-narrow-card">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <div class="text-secondary">Session Per Cetegory</div>
+                    <h5>
+                        <i class="fa fa-id-badge" aria-hidden="true"></i>
+                        <span id="maxNumberOfSessionPerCategory"></span>
+                        
+                        
+                    </h5>
+                </div>
+                <div></div>
+            </div>
+            <canvas style="height: 70%;" id="sessionPerCategoryChart"></canvas>
+        
+        </div>
+
+        <!-- session per client -->
         <div class="custom-card custom-narrow-card">
             <div class="d-flex justify-content-between">
                 <div>
@@ -122,7 +145,7 @@
     <div class="custom-card custom-ultra-wide-card">
         <div class="d-flex justify-content-between">
             <div>
-                <div class="text-secondary">Use list group</div>
+                <div class="text-secondary">Upcomming Sessions</div>
                 <h5>
                     <i class="fa fa-user-circle" aria-hidden="true"></i>
                     48
@@ -189,12 +212,7 @@
                         {% for client in session.clients.all %}
                             <div class="list-group-item">{{client}}</div>
                         {% endfor %}
-                        <!-- <a
-                          href="{% url 'coach_details' session.coach.id %}"
-                          class="btn custom-btn-outline-primary"
-                        >
-                          VIEW COACH PROFILE
-                        </a> -->
+                     
                       </div>
                       
                     </div>
@@ -207,15 +225,17 @@
 
 <h3 class="m-3">User Messages</h3>
     <div class="custom-card custom-ultra-wide-card">
-        <div class="d-flex justify-content-between">
+        <div class="d-flex flex-column justify-content-between">
             <div>
-                <div class="text-secondary">Use list group</div>
-                <h5>
+                <div class="text-secondary">user Messages</div>
+                <h5 >
                     <i class="fa fa-user-circle" aria-hidden="true"></i>
-                    48
+                    <span id="noOfMsgs"></span>
                 </h5>
             </div>
-            <div></div>
+            <div id="msgLst" class="list-group">
+
+            </div>
         </div>
         <canvas style="height: 70%;" id="sessionPerClientChart"></canvas>
     </div>

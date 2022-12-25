@@ -2,7 +2,7 @@ import base64
 import datetime
 import hashlib
 import hmac
-
+import json
 import requests
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -121,7 +121,6 @@ def get_coach_available_hours(request, pk, _date):
 
 def booking(request, pk):
     client, status = models.Client.objects.get_or_create(user=request.user)
-    print(client)
 
     coach = get_object_or_404(models.Coach, pk=pk)
     private_session_set = models.Session.objects.filter(clients=client.id).filter(coach__id=pk).filter(group_session=False)
@@ -193,7 +192,6 @@ def zoom_schedule_callback(request):
         }
     )
     
-    print(response.json())
     start_url = response.json()['start_url']
     send_mail(
         'LifeCoaching Session Scheduled',
@@ -336,20 +334,14 @@ def post_pay(request):
     
     messages.error(request, f"Payment failed, insure your credit card inputs are correct and try again.")
     return redirect('home')
-    #     return render(
-    #         request=request,
-    #         template_name='order/result.html',
-    #         context={'result': request.GET.get("success"), 'status': True}
-    #     )
-    # return HttpResponse(f'<h6>RESULT: {result}</h6>')
-
 
 # admin panel
 
 def dashboard(request):
     upcomming_sessions = models.Session.objects.get_upcomming_sessions()
+    print(upcomming_sessions)
     new_customer_messages = models.CustomerMessage.objects.all()
-
+    print(new_customer_messages)
 
 
     context = {
@@ -465,12 +457,29 @@ def sessions_per_client(request):
         # user__username', 'no_of_sessions
     )
 
-
-def get_upcomming_sessions(request):
-    print(result)
+def sessions_per_category(request):
+    result = models.Session.objects.get_total_session_per_category()
     return JsonResponse(
-        {'sessions': [x for x in result]}
+        {i['category__name']:i['count'] for i in result}
     )
+
+def customer_messages(request):
+    result = models.CustomerMessage.objects.filter(closed=False)
+    serialized_customer_messages = [serializers.CustomerMessageSerializer(instance=i).data for i in (x for x in result)]
+
+    return JsonResponse({'messages':serialized_customer_messages})
+
+@ csrf_exempt
+def close_customer_message(request):
+    try:
+        post_data = json.loads(request.body.decode("utf-8"))
+        message_id = post_data['message_id']
+        message = models.CustomerMessage.objects.get(id=message_id)
+        message.closed = True
+        message.save()
+        return JsonResponse({'result':True})
+    except:
+        return JsonResponse({'result':False})
 
 # gets upcomming user sessions zoom meetings for current user
 def user_upcomming_zoom_meetings(reqeust):
@@ -527,3 +536,4 @@ def get_sorted_coaches(request, option, coach_name_q, coach_speciality_q, min_pr
     return JsonResponse(
         {'sorted_coaches':serialized_sorted_coaches}
     )
+

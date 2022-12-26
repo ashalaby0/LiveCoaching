@@ -275,6 +275,12 @@ async function get_customer_messages() {
     msgLstDiv.textContent = ""
     noOfMsgsH5.textContent = customer_messages_obj['messages'].length
 
+    // notifier
+    if (customer_messages_obj['messages'].length == 0 ){
+        document.querySelector('#notification').hidden = true;
+    }
+
+
     customer_messages_obj['messages'].forEach((element, index) => {
         let listGroupItem = document.createElement('div')
         listGroupItem.classList.add('list-group-item', 'list-group-item-action', 'd-flex', 'justify-content-between')

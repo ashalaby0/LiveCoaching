@@ -23,10 +23,16 @@
 {% block content %}
 <!-- TODO -->
 <!-- add number of messages , number of users as bell notification - float right -->
-<div class="d-flex justify-content-between">
+<div class="d-flex justify-content-between m-3">
     <h3 class="m-3">Statistics</h3>
     <div>
-
+        <div style="position: relative;">
+            <a href="#user-messages-section">
+                <i class="fas fa-bell" style="color: var(--main-color4);font-size: 40px;" aria-hidden="true"></i>
+            </a>
+            <div id="notification" style="background-color: var(--main-color);width: 10px;height: 10px;border-radius: 50%;position: absolute;top: 10%;left: 10%;"></div>
+        </div>
+        <!-- <button class="btn btn-danger">Test</button> -->
     </div>
 </div>
 
@@ -148,7 +154,7 @@
                 <div class="text-secondary">Upcomming Sessions</div>
                 <h5>
                     <i class="fa fa-user-circle" aria-hidden="true"></i>
-                    48
+                    <span>{{ upcomming_sessions | length}}</span>
                 </h5>
             </div>
             <div>
@@ -223,7 +229,7 @@
         </div>
     </div>
 
-<h3 class="m-3">User Messages</h3>
+<h3 id="user-messages-section" class="m-3">User Messages</h3>
     <div class="custom-card custom-ultra-wide-card">
         <div class="d-flex flex-column justify-content-between">
             <div>

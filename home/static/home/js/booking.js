@@ -1,16 +1,17 @@
 let activateHour = async (evt) => {
   evt.target.checked = true;
+  evt.target.classList.add('checked');
+  evt.target.nextSibling.classList.add('checked');
   let validPromoCode = await checkPromoCode()
-      console.log(validPromoCode)
-      if (['empty', 'valid'].includes(validPromoCode)){
-        document.querySelector('#book_button').disabled = false
-      }
+  if (['empty', 'valid'].includes(validPromoCode)) {
+    document.querySelector('#book_button').disabled = false
+  }
 };
 
 
 let getAvailHours = (url) => {
   let _date = document.querySelector("#session-date").value
-  url = url.replace('datePlaceHolder',_date)
+  url = url.replace('datePlaceHolder', _date)
   return fetch(url, {
     method: "GET",
     headers: {
@@ -27,7 +28,6 @@ let updateAvailHours = async (evt) => {
   let url = evt.currentTarget.attributes["data-url"].value;
   let availHoursUl = document.querySelector("#avail-hours");
   let availHours = await getAvailHours(url);
-  console.log(availHours);
   if (availHours.length === 0) {
     availHoursUl.innerHTML =
       "<p class='text-center text-danger w-100'>Not Available...</p>";
@@ -48,7 +48,7 @@ let updateAvailHours = async (evt) => {
       newRadioLabel.textContent = element;
 
       newRadio.addEventListener("click", (event) => activateHour(event));
-      
+
       availHoursUl.append(newRadioLabel);
     });
   }
@@ -60,26 +60,35 @@ document
   .addEventListener("change", updateAvailHours);
 
 
-let checkPromoCode = async function(){
+let checkPromoCode = async function () {
   promoCodeInput = document.querySelector('#pCode');
   promoCode = promoCodeInput.value;
   promoCodeValidationUrl = promoCodeInput.attributes['data-url'].value;
-  if (promoCode == ''){
+  if (promoCode == '') {
     return 'empty'
   }
 
 
   let response = await fetch(
     promoCodeValidationUrl,
-    {method: 'POST',body: JSON.stringify({'promoCode':promoCode})}
-    )
+    { method: 'POST', body: JSON.stringify({ 'promoCode': promoCode }) }
+  )
   let responseObj = await response.json()
-  console.log(`validation result:  ${responseObj.result}`)
-  if (!['empty', 'valid'].includes(responseObj.result) && document.querySelector('#book_button').disabled == false){
-    document.querySelector('#book_button').disabled = true
-    console.log('disabled')
+  if ('valid' == responseObj.result) {
+    document.querySelectorAll('[name="sessionHour"]').forEach(
+
+      (element, i) => {
+        if (element.classList.contains('checked')) {
+          document.querySelector('#book_button').disabled = false
+        }
+      }
+    )
   }
-    return responseObj.result
+  else {
+    document.querySelector('#book_button').disabled = true
+  }
+
+  return responseObj.result
 
 }
 

@@ -2,6 +2,9 @@
 
 <!-- css/js section -->
 
+{% block style %}
+<link rel="stylesheet" href="{% static 'home/css/styles.css' %}" />
+{% endblock %}
 {% block script %}
 
 <script src="{% static 'home/js/booking.js' %}" defer></script>
@@ -16,11 +19,7 @@
         <div class="d-flex justify-content-between">
           <div>
             <a href="#">
-              <img
-                src="{{ coach.photo.url }}"
-                class="coach-img img-fluid"
-                alt="coach-img"
-              />
+              <img src="{{ coach.photo.url }}" class="coach-img img-fluid" alt="coach-img" />
             </a>
           </div>
           <div>
@@ -47,105 +46,47 @@
             </div>
           </div>
         </div>
-        <div
-          class="d-flex flex-column justify-content-between align-items-center"
-          style="min-width: 25%; max-width: 50%;"
-        >
+        <div class="d-flex flex-column justify-content-between align-items-center"
+          style="min-width: 25%; max-width: 50%;">
           <form action="{% url 'payment' %}" method="POST">
             {% csrf_token %}
-            <input
-              type="date"
-              data-coach-id="{{coach.id}}"
-              data-url="{% url 'get_coach_available_hours' pk=coach.id _date='datePlaceHolder' %}"
-              class="form-control"
-              id="session-date"
-              name="session_date"
-              min={{today}}
-            />
+            <input type="date" data-coach-id="{{coach.id}}"
+              data-url="{% url 'get_coach_available_hours' pk=coach.id _date='datePlaceHolder' %}" class="form-control"
+              id="session-date" name="session_date" min={{today}} />
             <input name="coach_id" value="{{coach.id}}" hidden />
-            <div
-              class="d-flex justify-content-between w-100 mt-2"
-              style="min-width: 25%"
-            >
+            <div class="d-flex justify-content-between w-100 mt-2" style="min-width: 25%">
               <div class="d-flex flex-column" style="min-width: 100%">
                 <div class="form-check form-check-inline" id="avail-hours">
-                  <div
-                    class="btn-group"
-                    role="group"
-                    aria-label="Basic radio toggle button group"
-                  >
-                    <input
-                      type="radio"
-                      class="btn-check"
-                      name="sessionHour"
-                      id="option1"
-                      autocomplete="off"
-                      checked
-                    />
-                    <label class="btn custom-btn-outline-primary" for="option1"
-                      >--:--</label
-                    >
+                  <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                    <input type="radio" class="btn-check" name="sessionHour" id="option1" autocomplete="off" checked />
+                    <label class="btn custom-btn-outline-primary" for="option1">--:--</label>
 
-                    <input
-                      type="radio"
-                      class="btn-check"
-                      name="sessionHour"
-                      id="option2"
-                      autocomplete="off"
-                    />
-                    <label class="btn custom-btn-outline-primary" for="option2"
-                      >--:--</label
-                    >
+                    <input type="radio" class="btn-check" name="sessionHour" id="option2" autocomplete="off" />
+                    <label class="btn custom-btn-outline-primary" for="option2">--:--</label>
 
-                    <input
-                      type="radio"
-                      class="btn-check"
-                      name="sessionHour"
-                      id="option3"
-                      autocomplete="off"
-                    />
-                    <label class="btn custom-btn-outline-primary" for="option3"
-                      >--:--</label
-                    >
+                    <input type="radio" class="btn-check" name="sessionHour" id="option3" autocomplete="off" />
+                    <label class="btn custom-btn-outline-primary" for="option3">--:--</label>
 
-                    <input
-                      type="radio"
-                      class="btn-check"
-                      name="sessionHour"
-                      id="option4"
-                      autocomplete="off"
-                    />
-                    <label class="btn custom-btn-outline-primary" for="option4"
-                      >--:--</label
-                    >
+                    <input type="radio" class="btn-check" name="sessionHour" id="option4" autocomplete="off" />
+                    <label class="btn custom-btn-outline-primary" for="option4">--:--</label>
 
-                    <input
-                      type="radio"
-                      class="btn-check"
-                      name="sessionHour"
-                      id="option5"
-                      autocomplete="off"
-                    />
-                    <label class="btn custom-btn-outline-primary" for="option5"
-                      >--:--</label
-                    >
+                    <input type="radio" class="btn-check" name="sessionHour" id="option5" autocomplete="off" />
+                    <label class="btn custom-btn-outline-primary" for="option5">--:--</label>
                   </div>
                 </div>
-                <button
-                  id="book_button"
-                  type="submit"
-                  class="btn custom-btn-danger flex-grow-1 mt-2"
-                  style="min-width: 100%"
-                  disabled
-                >
+                <button id="book_button" type="submit" class="btn custom-btn-danger flex-grow-1 mt-2"
+                  style="min-width: 100%" disabled>
                   BOOK
                 </button>
-                <input name="pCode" id="pCode" class="form-control mt-2" placeholder="Promo code..." data-url="{% url 'validate_promo_code' %}";></input>
-                {% if invalid_promo_code %}
-                <label id="pCodeValidation" class="text-danger">{{invalid_promo_code}}</label>
-                {% endif %}
+
+
+                  <input name="pCode" id="pCode" class="form-control mt-2" placeholder="Promo code..."
+                    data-url="{% url 'validate_promo_code' %}" ;></input>
+                  {% if invalid_promo_code %}
+                  <label id="pCodeValidation" class="text-danger">{{invalid_promo_code}}</label>
+                  {% endif %}
+                </div>
               </div>
-            </div>
           </form>
         </div>
       </div>

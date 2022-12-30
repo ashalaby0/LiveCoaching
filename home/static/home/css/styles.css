@@ -23,3 +23,21 @@ body {
   height: 100%;
 }
 
+
+.custom-btn-outline-primary:hover {
+  color: var(--main-color);
+  border-color: var(--main-color);
+  background-color: var(--main-color4);
+}
+
+.custom-btn-outline-primary:checked, .btn-check:checked {
+  color: var(--main-color);
+  border-color: var(--main-color);
+  background-color: var(--main-color4);
+} 
+
+.checked {
+  color: var(--main-color);
+  border-color: var(--main-color);
+  background-color: var(--main-color4);
+}

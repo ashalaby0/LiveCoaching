@@ -183,7 +183,6 @@ class SessionCustomManager(models.QuerySet):
         )
 
         result = response.json()
-        print(result)
 
 
 class Session(models.Model):
@@ -230,7 +229,6 @@ class Payment(models.Model):
         context = {"api_key": "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnVZVzFsSWpvaWFXNXBkR2xoYkNJc0luQnliMlpwYkdWZmNHc2lPall5TURFd05Dd2lZMnhoYzNNaU9pSk5aWEpqYUdGdWRDSjkuNFpXTDFTemZfWC1FUEowcUtldXZ1VVN0WlJrU1dNNm0zRXFGZFlzNlZvS3ZZaEFBcFpSMGg1cURvVkNIZkd2MWFJUWFBSWRJbjZZaFlmejJwMkdqdEE="}
         r = requests.post(url, json=context)
         token = r.json().get('token')
-        print(token)
         if token:
             return True, token
         return False, token
@@ -294,7 +292,6 @@ class Payment(models.Model):
         }
 
         r = requests.post(url, json=context)
-        print(r.json())
         id = r.json().get('id')
         msg = r.json().get('message')
         if not id:
@@ -369,7 +366,6 @@ class Payment(models.Model):
 
         r = requests.post(url, json=context)
         token = r.json().get('token')
-        print(r.json())
         if not token:
             return False, token
         return True,  token
@@ -378,7 +374,8 @@ class Payment(models.Model):
         self, 
         merchant_order_id,
         coach,
-        client
+        client,
+        discount
         ):
 
         if not client.user.first_name:
@@ -412,10 +409,11 @@ class Payment(models.Model):
             return result
         token = result[1]
 
+        print(f'final price: {coach.price_per_hour * (100 - discount)}')
         result = self._paymob_seccond_api_call(
             token=token, 
             merchant_order_id=merchant_order_id,
-            amount_cents=coach.price_per_hour * 100,
+            amount_cents=coach.price_per_hour * (100 - discount),
             item_name=coach.speciality.name,
             quantity=1,
             email=email,
@@ -470,8 +468,6 @@ class PromoCode(models.Model):
         while True:
             new_code = f'NAW' + ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
             if new_code not in current_codes:
-                print(new_code)
-                print(current_codes)
                 break
         self.code = new_code
         super(PromoCode, self).save(*args, **kwargs)

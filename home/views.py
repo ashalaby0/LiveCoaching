@@ -18,6 +18,8 @@ from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import DetailView, ListView
 from django.core import serializers
+from django.contrib.auth.models import User
+
 
 
 from . import forms, models, serializers
@@ -172,6 +174,8 @@ def zoom_schedule_callback(request):
     meeting_agenda = request.session['meeting_agenda']
     client_mail = request.session['client_mail']
     coach_mail = request.session['coach_mail']
+    promo_code = request.session['promo_code'] 
+
     response = requests.post(
         url=settings.ZOOM_MEETING_URL,
         headers={
@@ -229,16 +233,6 @@ def payment_view(request):
     _month = int(_month)
     _day = int(_day)
 
-    # # validate promo code
-    # try:
-    #     promo_code_from_db = models.PromoCode.objects.get(code=promo_code)
-    #     if not promo_code_from_db.valid:
-    #         invalid_promo_code = 'Code not valid any more'
-    #         return render(request, template_name)
-    # except:
-    #     invalid_promo_code = 'Code not found'
-    #     return render(request, template_name)
-
     meeting_date = datetime.datetime(
         _year, _month, _day, session_hour, session_minute).strftime('%Y-%m-%d%T%H:%M')
     meeting_topic = ''
@@ -254,12 +248,20 @@ def payment_view(request):
 
     new_order = models.Order.objects.create(client=client, item=new_session)
 
+    if promo_code:
+        promo_code_record = models.PromoCode.objects.get(code=promo_code)
+        discount = promo_code_record.value
+    else:
+        discount = 0
+    print(f'discount: {discount}')
+
     merchant_order_id = new_order.id
     payment = models.Payment()
     status, payment_key = payment.get_paymob_token(
         merchant_order_id=merchant_order_id,
         coach=coach,
-        client=client
+        client=client,
+        discount=discount
     )
 
     request.session['meeting_date'] = meeting_date
@@ -339,9 +341,13 @@ def post_pay(request):
             'utf-8'), concatenated_str.encode('utf8'), hashlib.sha512).hexdigest()
         result = hmac.compare_digest(generated_hmac, sent_hmac)
         
-        print(f'hmac varification result: {result}')
         print(f'payment success: {request.GET.get("success")}')
         if request.GET.get("success") == 'true':
+            promo_code = request.session['promo_code']
+            client = models.Client.objects.get(user=request.user)
+            used_p_code = models.PromoCode.objects.get(code=promo_code)
+            used_p_code.used_by.add(client)
+            used_p_code.save()
             return redirect('schedule_zoom_meeting')
 
     

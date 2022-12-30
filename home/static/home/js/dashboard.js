@@ -346,3 +346,104 @@ async function get_customer_messages() {
 }
 get_customer_messages()
 setInterval(get_customer_messages, 1800000); // refresh customer messages every 30 Mins
+
+
+// promo codes
+async function end_promo_code(codeId){
+    let response = await fetch(
+        end_promo_code_url,
+        {method: 'POST',body: JSON.stringify({'code_id':codeId})}
+        )
+    let responseObj = await response.json()
+    get_promo_codes()
+}
+
+// generateNewPromoBtn
+async function generateNewPromoCode(){
+    let discount = document.querySelector('#discount').value
+    console.log(`discount: ${discount}`)
+    let response = await fetch(
+        generate_new_promo_code_url,
+        {method: 'POST',body: JSON.stringify({'discount':discount})}
+        )
+    let responseObj = await response.json()
+    get_promo_codes()
+}
+document.querySelector('#generateNewPromoBtn').addEventListener('click', generateNewPromoCode)
+async function get_promo_codes() {
+    const promo_codes_res = await fetch(promo_codes_url);
+    const promo_codes_obj = await promo_codes_res.json()
+    console.log(promo_codes_obj)
+    let noOfCodesH5 = document.querySelector('#noOfCodes')
+    let promoCodeLstDiv = document.querySelector('#promoCodeList')
+    promoCodeLstDiv.textContent = ""
+    noOfCodesH5.textContent = promo_codes_obj['codes'].length
+
+
+    // notifier
+    if (promo_codes_obj['codes'].length == 0 ){
+        document.querySelector('#codeNotification').hidden = true;
+    }
+
+
+    promo_codes_obj['codes'].forEach((element, index) => {
+        let listGroupItem = document.createElement('div')
+        listGroupItem.classList.add('list-group-item', 'list-group-item-action', 'd-flex', 'justify-content-between')
+        
+        let listGroupItemOuterDiv = document.createElement('div')
+        listGroupItemOuterDiv.classList.add('d-flex', 'flex-column', 'w-100')
+
+        
+        // upper div
+        let listGroupNav = document.createElement('div')
+        listGroupNav.classList.add('d-flex', 'justify-content-between')
+        
+        // nav left content
+        let  listGroupNavLeftDiv = document.createElement('div')
+        listGroupNavLeftDiv.textContent = element.code
+        
+
+        // second div
+        let listGroupSecondDiv = document.createElement('div')
+        listGroupSecondDiv.textContent = `${element.value} %`
+
+        // Third div
+        let listGroupThirdDiv = document.createElement('div')
+        listGroupThirdDiv.classList.add('badge', 'rounded-pill', 'bg-warning')
+        listGroupThirdDiv.style.height = '50%'
+        listGroupThirdDiv.textContent = `${element.used_by.length}`
+
+        // nav right content
+        let  listGroupNavRightDiv = document.createElement('div')
+
+
+        // create end button
+        let listGroupEndBtn = document.createElement('button')
+        listGroupEndBtn.classList.add('btn', 'btn-outline-danger', 'me-2')
+        listGroupEndBtn.id = `end${element.id}`
+        let endIcon = document.createElement('i')
+        endIcon.classList.add('fa', 'fa-trash')
+        listGroupEndBtn.append(endIcon)
+        listGroupEndBtn.addEventListener('click', () => end_promo_code(element.id))
+        
+        // add buttons
+        listGroupNavRightDiv.append(listGroupEndBtn)
+
+        // add nav content
+        listGroupNav.append(listGroupNavLeftDiv)
+        listGroupNav.append(listGroupSecondDiv)
+        listGroupNav.append(listGroupThirdDiv)
+        listGroupNav.append(listGroupNavRightDiv)
+
+
+        // add main item content
+        listGroupItemOuterDiv.append(listGroupNav)
+        listGroupItem.append(listGroupItemOuterDiv)
+
+        // add item to message div
+        promoCodeLstDiv.append(listGroupItem)
+        
+    });
+
+}
+get_promo_codes()

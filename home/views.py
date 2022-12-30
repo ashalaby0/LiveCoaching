@@ -223,10 +223,21 @@ def payment_view(request):
     session_hour = request.POST.get('sessionHour')
     session_hour, session_minute = [int(x) for x in session_hour.split(':')]
     session_date = request.POST.get('session_date')
+    promo_code = request.POST.get('pCode')
     _year, _month, _day = session_date.split('-')
     _year = int(_year)
     _month = int(_month)
     _day = int(_day)
+
+    # # validate promo code
+    # try:
+    #     promo_code_from_db = models.PromoCode.objects.get(code=promo_code)
+    #     if not promo_code_from_db.valid:
+    #         invalid_promo_code = 'Code not valid any more'
+    #         return render(request, template_name)
+    # except:
+    #     invalid_promo_code = 'Code not found'
+    #     return render(request, template_name)
 
     meeting_date = datetime.datetime(
         _year, _month, _day, session_hour, session_minute).strftime('%Y-%m-%d%T%H:%M')
@@ -256,7 +267,9 @@ def payment_view(request):
     request.session['meeting_agenda'] = meeting_agenda
     request.session['client_mail'] = client.user.email
     request.session['coach_mail'] = coach.user.email
-    print(f'client_mail: {client.user.email}')
+    request.session['promo_code'] = promo_code
+
+    print(f'promo_code: {promo_code}')
 
     if status:
         iframe_page = f'https://accept.paymob.com/api/acceptance/iframes/698300?payment_token={payment_key}'
@@ -342,11 +355,14 @@ def dashboard(request):
     print(upcomming_sessions)
     new_customer_messages = models.CustomerMessage.objects.all()
     print(new_customer_messages)
+    valid_promo_codes = models.PromoCode.objects.filter(valid=True)
+    print(valid_promo_codes)
 
 
     context = {
         'upcomming_sessions':upcomming_sessions,
-        'new_customer_messages': new_customer_messages
+        'new_customer_messages': new_customer_messages,
+        'valid_promo_codes': valid_promo_codes
     }
     return render(request, template_name="home/dashboard.html", context=context)
 
@@ -462,7 +478,50 @@ def sessions_per_category(request):
     return JsonResponse(
         {i['category__name']:i['count'] for i in result}
     )
+@csrf_exempt
+def validate_promo_code(request):
+    post_data = json.loads(request.body.decode("utf-8"))
+    p_code = post_data['promoCode']
+    print(p_code)
+    try:
+        promo_code = models.PromoCode.objects.get(code=p_code)
+        if not promo_code.valid:
+            return JsonResponse({'result': 'invalid'})
+        return JsonResponse({'result': 'valid'})
+    except:
+        return JsonResponse({'result': 'incorrect'})
 
+
+def promo_codes(request):
+    result = models.PromoCode.objects.filter(valid=True)
+    serialized_promo_codes = [serializers.PromoCodeSerializer(instance=i).data for i in (x for x in result)]
+
+    print(serialized_promo_codes)
+    return JsonResponse({'codes':serialized_promo_codes})
+
+@ csrf_exempt
+def end_promo_code(request):
+    try:
+        post_data = json.loads(request.body.decode("utf-8"))
+        code_id = post_data['code_id']
+        code = models.PromoCode.objects.get(id=code_id)
+        code.valid = False
+        code.save()
+        return JsonResponse({'result':True})
+    except:
+        return JsonResponse({'result':False})
+
+@ csrf_exempt
+def generate_new_promo_code(request):
+    try:
+        post_data = json.loads(request.body.decode('utf-8'))
+        discount = post_data['discount']
+        models.PromoCode.objects.create(value=discount)
+        return JsonResponse({'result': True})
+    except:
+        return JsonResponse({'result':False})
+
+# promo codes
 def customer_messages(request):
     result = models.CustomerMessage.objects.filter(closed=False)
     serialized_customer_messages = [serializers.CustomerMessageSerializer(instance=i).data for i in (x for x in result)]
@@ -480,6 +539,9 @@ def close_customer_message(request):
         return JsonResponse({'result':True})
     except:
         return JsonResponse({'result':False})
+
+
+
 
 # gets upcomming user sessions zoom meetings for current user
 def user_upcomming_zoom_meetings(reqeust):

@@ -36,3 +36,8 @@ class CustomerMessageModelAdmin(admin.ModelAdmin):
 @admin.register(models.ZoomMeeting)
 class ZoomMeetingModelAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(models.PromoCode)
+class PromoCodeModelAdmin(admin.ModelAdmin):
+    pass

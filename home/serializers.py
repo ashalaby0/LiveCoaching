@@ -20,3 +20,8 @@ class SessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Session
         fields = '__all__'
+
+class PromoCodeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.PromoCode
+        fields = '__all__'

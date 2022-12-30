@@ -135,11 +135,7 @@ urlpatterns = [
         views.sessions_per_category,
         name='sessions_per_category'
     ),
-    path(
-        'customer_messages',
-        views.customer_messages,
-        name='customer_messages'
-    ),
+    
   
     path(
         'tst_usr_zoom_meetings',
@@ -167,10 +163,36 @@ urlpatterns = [
         views.signup_view,
         name='signup'
     ),
+
+    path(
+        'customer_messages',
+        views.customer_messages,
+        name='customer_messages'
+    ),
     path(
         'close_customer_message',
         views.close_customer_message,
         name='close_customer_message'
+    ),
+    path(
+        'promo_codes',
+        views.promo_codes,
+        name='promo_codes'
+    ),
+    path(
+        'end_promo_code',
+        views.end_promo_code,
+        name='end_promo_code'
+    ),
+    path(
+        'generate_new_promo_code',
+        views.generate_new_promo_code,
+        name='generate_new_promo_code'
+    ),
+    path(
+        'validate_promo_code',
+        views.validate_promo_code,
+        name='validate_promo_code'
     )
 
 

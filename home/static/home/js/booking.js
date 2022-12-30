@@ -1,6 +1,10 @@
-let activateHour = (evt) => {
+let activateHour = async (evt) => {
   evt.target.checked = true;
-  document.querySelector('#book_button').disabled = false
+  let validPromoCode = await checkPromoCode()
+      console.log(validPromoCode)
+      if (['empty', 'valid'].includes(validPromoCode)){
+        document.querySelector('#book_button').disabled = false
+      }
 };
 
 
@@ -44,10 +48,39 @@ let updateAvailHours = async (evt) => {
       newRadioLabel.textContent = element;
 
       newRadio.addEventListener("click", (event) => activateHour(event));
+      
       availHoursUl.append(newRadioLabel);
     });
   }
 };
+
+
 document
   .querySelector("#session-date")
   .addEventListener("change", updateAvailHours);
+
+
+let checkPromoCode = async function(){
+  promoCodeInput = document.querySelector('#pCode');
+  promoCode = promoCodeInput.value;
+  promoCodeValidationUrl = promoCodeInput.attributes['data-url'].value;
+  if (promoCode == ''){
+    return 'empty'
+  }
+
+
+  let response = await fetch(
+    promoCodeValidationUrl,
+    {method: 'POST',body: JSON.stringify({'promoCode':promoCode})}
+    )
+  let responseObj = await response.json()
+  console.log(`validation result:  ${responseObj.result}`)
+  if (!['empty', 'valid'].includes(responseObj.result) && document.querySelector('#book_button').disabled == false){
+    document.querySelector('#book_button').disabled = true
+    console.log('disabled')
+  }
+    return responseObj.result
+
+}
+
+document.querySelector('#pCode').addEventListener('keyup', checkPromoCode)

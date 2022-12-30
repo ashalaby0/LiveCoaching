@@ -12,9 +12,12 @@
     let session_stats_url = "{% url 'session_stats' %}";
     let sessions_per_coach_url = "{% url 'sessions_per_coach' %}";
     let sessions_per_client_url = "{% url 'sessions_per_client' %}";
-    let close_customer_message_url = "{% url 'close_customer_message' %}"
     let sessions_per_category_url = "{% url 'sessions_per_category' %}";
     let customer_messages_url = "{% url 'customer_messages' %}"
+    let close_customer_message_url = "{% url 'close_customer_message' %}"
+    let promo_codes_url = "{% url 'promo_codes' %}"
+    let end_promo_code_url = "{% url 'end_promo_code' %}"
+    let generate_new_promo_code_url = "{% url 'generate_new_promo_code' %}"
 </script>
 <script src="{% static 'home/js/dashboard.js' %}" defer></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
@@ -229,7 +232,7 @@
         </div>
     </div>
 
-<h3 id="user-messages-section" class="m-3">User Messages</h3>
+    <h3 id="user-messages-section" class="m-3">User Messages</h3>
     <div class="custom-card custom-ultra-wide-card">
         <div class="d-flex flex-column justify-content-between">
             <div>
@@ -241,6 +244,29 @@
             </div>
             <div id="msgLst" class="list-group">
 
+            </div>
+        </div>
+        <canvas style="height: 70%;" id="sessionPerClientChart"></canvas>
+    </div>
+
+    <h3 id="user-messages-section" class="m-3">Promo Codes</h3>
+    <div class="custom-card custom-ultra-wide-card">
+        <div class="d-flex flex-column justify-content-between">
+            <div>
+                <div class="text-secondary">Valid Codes</div>
+                <h5 >
+                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+                    <span id="noOfCodes"></span>
+                </h5>
+            </div>
+            <div>
+                <div class="input-group mb-3" id="generateNewPromoDiv">
+                    <span class="input-group-text">New Promo Code: </span>
+                    <input type="number" class="form-control" min="1" max="100" placeholder="Discount.." id="discount">
+                    <button id="generateNewPromoBtn" type="button" class="btn btn-outline-success"><i class="fa fa-plus"></i></button>
+                </div>
+                <div id="promoCodeList" class="list-group" data-url="">
+                </div>
             </div>
         </div>
         <canvas style="height: 70%;" id="sessionPerClientChart"></canvas>

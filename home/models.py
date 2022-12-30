@@ -3,7 +3,8 @@ import json
 from time import time
 from django.db.models.functions import TruncMonth, Length
 from django.db.models import Count
-
+import random
+import string
 
 
 import jwt
@@ -457,3 +458,20 @@ class ZoomMeeting(models.Model):
     objects = ZoomMeetingCustomManager.as_manager()
 
 
+
+class PromoCode(models.Model):
+    value = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)])
+    valid = models.BooleanField(default=True)
+    used_by = models.ManyToManyField(Client)
+    code = models.CharField(max_length=50, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        current_codes = {x.code for x in PromoCode.objects.all()}
+        while True:
+            new_code = f'NAW' + ''.join(random.choices(string.ascii_uppercase + string.digits, k=10))
+            if new_code not in current_codes:
+                print(new_code)
+                print(current_codes)
+                break
+        self.code = new_code
+        super(PromoCode, self).save(*args, **kwargs)

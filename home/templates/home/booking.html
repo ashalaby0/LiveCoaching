@@ -3,6 +3,7 @@
 <!-- css/js section -->
 
 {% block script %}
+
 <script src="{% static 'home/js/booking.js' %}" defer></script>
 {% endblock %}
 
@@ -139,6 +140,10 @@
                 >
                   BOOK
                 </button>
+                <input name="pCode" id="pCode" class="form-control mt-2" placeholder="Promo code..." data-url="{% url 'validate_promo_code' %}";></input>
+                {% if invalid_promo_code %}
+                <label id="pCodeValidation" class="text-danger">{{invalid_promo_code}}</label>
+                {% endif %}
               </div>
             </div>
           </form>

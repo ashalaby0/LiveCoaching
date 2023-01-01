@@ -5,6 +5,7 @@
 <!-- script block -->
 
 {% block style %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
 <script src="{% static 'js/custom.js' %}" defer></script>
 <script defer>
   let coach_details_url = "{% url 'coach_details' 1111 %}" // 1111 is place holder to be replaced with coach id in js

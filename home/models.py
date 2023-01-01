@@ -44,14 +44,16 @@ class ClientCustomManager(models.QuerySet):
 
     def get_total_session_per_client(self):
         return self.annotate(no_of_session=Count('session')).values('user__username', 'no_of_session').order_by('no_of_session')
-        # return self.all().values('client').annotate(count=Count('id')).values('client__user__username', 'count')
 
 class Client(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    phone_number = PhoneNumberField(default="not-provided")
     city = models.CharField(max_length=50, default="not-provided")
     country = models.CharField(max_length=50, default="not-provided")
     joined_at = models.DateTimeField(auto_now_add=True)
+    gender = models.CharField(max_length=6, choices=(('Male','Male'), ('Female','Female')), blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+    photo = models.ImageField(upload_to='photo/client/%Y/%m/%d', blank=True)
+
     
     objects = ClientCustomManager.as_manager()
 
@@ -114,7 +116,7 @@ class Coach(models.Model):
     price_per_hour = models.IntegerField(default=0) # in 100 cents
     price_per_30_mins = models.IntegerField(default=0) # in 100 cents
     available_for_kids = models.BooleanField(default=False)
-    photo = models.ImageField(upload_to='photo/%Y/%m/%d', blank=True)
+    photo = models.ImageField(upload_to='photo/coach/%Y/%m/%d', blank=True)
     working_hours_start = models.TimeField(default=datetime.time(8, 0, 0))
     working_hours_end = models.TimeField(default=datetime.time(16, 0, 0))
     joined_at = models.DateTimeField(auto_now_add=True)
@@ -199,7 +201,7 @@ class Session(models.Model):
     objects = SessionCustomManager.as_manager()
 
     def __str__(self) -> str:
-        return f'{self.category}: {self.coach}'
+        return f'{self.category}: {self.coach} : {self.time}'
 
 
 class Order(models.Model):

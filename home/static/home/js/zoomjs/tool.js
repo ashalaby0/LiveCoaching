@@ -33,21 +33,12 @@ var testTool = {
       navigator.userAgent.match(/Windows Phone/i)
     );
   },
-  getMeetingConfig: function () {
-    return {
-      mn: parseInt(document.getElementById("meeting_number").value),
-      name: testTool.b64EncodeUnicode(
-        document.getElementById("display_name").value
-      ),
-      pwd: document.getElementById("meeting_pwd").value,
-      role: parseInt(document.getElementById("meeting_role").value, 10),
-      email: testTool.b64EncodeUnicode(
-        document.getElementById("meeting_email").value
-      ),
-      lang: document.getElementById("meeting_lang").value,
-      signature: "",
-      china: document.getElementById("meeting_china").value,
-    };
+  getMeetingConfig: async function () {
+
+    let response = await fetch(document.querySelector('#join_meeting').attributes['data-url-mtninf'].value);
+    const data = await response.json();
+    return data;
+    
   },
   createZoomNode: function (id, url) {
     const zoomIframe = document.createElement("iframe");

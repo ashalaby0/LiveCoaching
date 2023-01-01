@@ -3,162 +3,156 @@
 {% load static %}
 
 {% block content %}
-<!-- Start Landing -->
-<div class="landing">
-  
-  <div class="container">
-    <div class="text">
-      <h1>Welcome To Nawarly World</h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fuga numquam, velit unde error odit, quod, sit ullam
-        perspiciatis quia totam perferendis quo neque dolore non quas iste accusamus saepe dolor.</p>
+    <!-- Start brief for nawarly -->
+    <div class="brief">
+      <div class="container">
+        <div class="text">
+          <h1>Welcome To Nawarly World</h1>
+          <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam atque, eaque cumque tenetur nam, quidem harum reiciendis eum pariatur minima tempore earum mollitia repudiandae. Quas autem enim eligendi nihil est?</p>
+        </div>
+        <div class="image-brief">
+          <img src="{% static 'images/interview-pana2x.png' %}" alt="" />
+        </div>
+      </div>
+      <a href="#coach" class="go-down">
+        <i class="fas fa-angle-double-down fa-2x"></i>
+      </a>
     </div>
-  </div>
-</div>
-<!-- End Landing -->
+    <!-- End brief for nawarly -->
 
-<!-- Start Categories -->
-<div class="categories" id="categories">
-  <h2 class="main-title">Category</h2>
-  <div class="container">
-    <div class="box">
-      <div class="image">
-        <img decoding="async" src="{% static 'home/images/life-coach.jpg' %}" alt="" />
-      </div>
-    </div>
-    <div class="box">
-      <div class="image">
-        <img decoding="async" src="{% static 'home/images/life-coach2.jpg' %}" alt="" />
-      </div>
-    </div>
-    <div class="box">
-      <div class="image">
-        <img decoding="async" src="{% static 'home/images/life-coach.jpg' %}" alt="" />
-      </div>
-    </div>
-    <div class="box">
-      <div class="image">
-        <img decoding="async" src="{% static 'home/images/life-coach2.jpg' %}" alt="" />
-      </div>
-    </div>
-    <div class="box">
-      <div class="image">
-        <img decoding="async" src="{% static 'home/images/life-coach.jpg' %}" alt="" />
-      </div>
-    </div>
-    <div class="box">
-      <div class="image">
-        <img decoding="async" src="{% static 'home/images/life-coach2.jpg' %}" alt="" />
-      </div>
-    </div>
-  </div>
-</div>
-<!-- End Categories -->
+    <!-- Start coaches -->
+    <section id="coach" class="coaches text-center">
 
-<!-- Start Coaches -->
-<div class="coaches" id="coaches">
-  <h2 class="main-title">Coaches</h2>
-  <div class="container">
-    <div class="box">
-      <img decoding="async" src="{% static 'home/images/pic.jpg' %}" alt="" />
-      <h3>Shaher</h3>
-      <span class="title">Life Coach</span>
-      <div class="rate">
-        <ion-icon name="star"></ion-icon>
-        <ion-icon name="star"></ion-icon>
-        <ion-icon name="star"></ion-icon>
-        <ion-icon name="star"></ion-icon>
-        <ion-icon name="star"></ion-icon>
-      </div>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
-        quaerat ducimus
-      </p>
-    </div>
-    <div class="box">
-      <img decoding="async" src="{% static 'home/images/pic2.png' %}" alt="" />
-      <h3>Omaima Mohsen</h3>
-      <span class="title">Life Coach</span>
-      <div class="rate">
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="far fa-star"></i>
-      </div>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
-        quaerat ducimus
-      </p>
-    </div>
-    <div class="box">
-      <img decoding="async" src="{% static 'home/images/pic2.png' %}" alt="" />
-      <h3>Shadin Nabil</h3>
-      <span class="title">Life Coach</span>
-      <div class="rate">
-        <i class="filled fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="far fa-star"></i>
-      </div>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
-        quaerat ducimus
-      </p>
-    </div>
-    <div class="box">
-      <img decoding="async" src="{% static 'home/images/pic.jpg' %}" alt="" />
-      <h3>Amr ay 7aga</h3>
-      <span class="title">Life Coach</span>
-      <div class="rate">
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-      </div>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
-        quaerat ducimus
-      </p>
-    </div>
-    <div class="box">
-      <img decoding="async" src="{% static 'home/images/pic.jpg' %}" alt="" />
-      <h3>Sherief Ashraf</h3>
-      <span class="title">Life Coach</span>
-      <div class="rate">
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="far fa-star"></i>
-        <i class="far fa-star"></i>
-      </div>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
-        quaerat ducimus
-      </p>
-    </div>
-    <div class="box">
-      <img decoding="async" src="{% static 'home/images/pic.jpg' %}" alt="" />
-      <h3>Shalaboka</h3>
-      <span class="title">Life Coach</span>
-      <div class="rate">
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="filled fas fa-star"></i>
-        <i class="far fa-star"></i>
-        <i class="far fa-star"></i>
-      </div>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Maiores et reiciendis voluptatum, amet est natus
-        quaerat ducimus
-      </p>
-    </div>
-  </div>
-  <div class="d-flex justify-content-center fst-italic mt-5">
-    <a href="{% url 'coaches' %}" class="btn link-light" style="background-color: var(--main-color4);color: var(--main-color);">View All Coaches...</a>
-  </div>
-</div>
+      <h1 class="coach-h1">Our Coaches</h1>
 
-<!-- End Coaches -->
+      <div class="container">
+      
+        <div id="carousel_testimonials" class="carousel slide" data-bs-ride="carousel">
+                        
+          <div class="carousel-inner">
+            
+            <div class="carousel-item active">
+                <p class="lead">Mohamed Maher is a Certified Professional Life and Relationship Coach from the International Coach Federation (ICF)
+
+                  Mohamed is a co-founder of “Insights Lab”, It is a company that works on awareness and training services.
+                  
+                  Also, he is a co-founder of an NGO called “Bena2” which works in charity and development in Egypt.</p>
+                <span>Mohamed Maher</span>
+            </div>
+            
+            <div class="carousel-item">
+                <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit ut reprehenderit id modi? Molestiae totam tempore, exercitationem aut ipsam asperiores, quia consequatur rerum aspernatur dicta, sunt dignissimos ipsum error quidem.</p>
+                <span>coach2</span>
+            </div>
+            
+            <div class="carousel-item">
+                <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, suscipit! Ullam cumque animi quaerat beatae consequatur ab, voluptatem maiores similique maxime veniam magnam earum odit totam saepe. Alias, soluta eos.</p>
+                <span>coach3</span>
+            </div>
+            
+            <div class="carousel-item">
+                <p class="lead">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsam minus sed distinctio eius voluptatem id iste voluptates voluptatum repudiandae, dolorem earum cumque optio, maiores ipsum sunt quibusdam! Quibusdam, cupiditate porro?</p>
+                <span>More Coaches</span>
+            </div>
+            
+          </div>
+          
+          <ol class="carousel-indicators">
+            <li data-bs-target="#carousel_testimonials" data-bs-slide-to="0" class="active">
+                <img src="{% static 'images/maher.jpg' %}" width="100" height="100" alt="coach1" />
+            </li>
+            <li data-bs-target="#carousel_testimonials" data-bs-slide-to="1">
+                <img src="{% static 'images/ceo.png' %}" width="100" height="100" alt="coach2" />
+            </li>
+            <li data-bs-target="#carousel_testimonials" data-bs-slide-to="2">
+                <img src="{% static 'images/avatar-05.png' %}" width="100" height="100" alt="coach3" />
+            </li>
+            <li data-bs-target="#carousel_testimonials" data-bs-slide-to="3">
+                <img src="{% static 'images/more.png' %}" width="100" height="100" alt="coach4" />
+            </li>
+          </ol>
+          
+        </div>
+
+     </div>
+
+    </section>
+
+    <section class="coach-search text-center">
+      <div class="container">
+          <form action="{% url 'coaches' %}" class="form-inline mb-7">
+              <input name="coach_name_q" class="form-control input-lg" type="text" placeholder="Search For Coach">
+              <button class="btn btn-lg"><i class="fa fa-search fa-lg"></i> Search</button>
+          </form>
+      </div>
+    </section>
+    <!-- End coaches -->
+
+     <!-- Start Articles -->
+     <div class="articles" id="articles">
+
+      <h2 class="main-title">Articles</h2>
+
+      <div class="container">
+
+        <div class="box">
+          <img src="{% static 'images/features-02.jpg' %}" alt="" />
+          <div class="content">
+            <h3>مقالة بالعربي</h3>
+            <p> مقالة باللغة العربية  ,,, لا تؤجل عمل اليوم الى الغد يا حمادة </p>
+          </div>
+          <div class="info">
+            <a href="">Read More</a>
+            <i class="fas fa-long-arrow-alt-right"></i>
+          </div>
+        </div>
+
+        <div class="box">
+          <img src="{% static 'images/art2.jpg' %}" alt="" />
+          <div class="content">
+            <h3>Article two</h3>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit</p>
+          </div>
+          <div class="info">
+            <a href="">Read More</a>
+            <i class="fas fa-long-arrow-alt-right"></i>
+          </div>
+        </div>
+
+        <div class="box">
+          <img src="{% static 'images/features-01.jpg' %}" alt="" />
+          <div class="content">
+            <h3>Article three</h3>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit</p>
+          </div>
+          <div class="info">
+            <a href="">Read More</a>
+            <i class="fas fa-long-arrow-alt-right"></i>
+          </div>
+        </div>
+
+        <div class="box">
+          <img src="{% static 'images/art2.jpg' %}" alt="" />
+          <div class="content">
+            <h3>Article four</h3>
+            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit</p>
+          </div>
+          <div class="info">
+            <a href="">Read More</a>
+            <i class="fas fa-long-arrow-alt-right"></i>
+          </div>
+        </div>
+ 
+      </div>
+
+      <div class="more-article">
+        <a href="">More Articles</a>
+      </div>
+
+    </div>
+
+    <div class="spikes"></div>
+    <!-- End Articles -->
+
+
 {% endblock %}

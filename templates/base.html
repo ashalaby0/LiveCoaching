@@ -1,148 +1,55 @@
+{% extends 'base_no_footer.html' %}
+
 {% load static %}
+{% block footer %}
+<!-- Start Footer -->
+<div class="footer pt-5 pb-5 text-white-50 text-center text-md-start">
 
-<!DOCTYPE html>
-<html lang="en">
+  <div class="container">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nawarly</title>
+    <div class="row">
 
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" />
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}" defer></script>
-
-    <link rel="stylesheet" href="{% static 'css/normalize.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/base.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/all.min.css' %}" />
-
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
-
-
-
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" defer></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js" defer></script>
-  </head>
-  {% block style %} {% endblock %}
-  <body>
-    <!-- Start Header -->
-    <div class="header" id="header">
-      <div class="container">
-        <a href="http://localhost:8000/" class="logo">
-          <div class="d-flex flex-column">
-            <div>Nawarly</div>
-            <div class="fs-6 text-center text-secondary text-capitalize" style="font-size: 10px;">
-              <i class="fa fa-user-circle" aria-hidden="true"></i>  
-              <span>{{user}}</span>
-            </div>          
+      <div class="col-md-6 col-lg-6">
+        <div class="info mb-5">
+          <a class="navbar-brand" href="#">
+            <img src="{% static 'images/nawarly.png' %}" alt="Logo" width="40" height="40"
+              class="logo d-inline-block align-text-top">
+            Nawarly
+          </a>
+          <div class="copyright">
+            Created By <span>AS Software</span>
+            <div>&copy; 2023 - <span>Nawarly</span></div>
           </div>
-        </a>
-        <ul class="main-nav">
-          <li><a href="{% url 'home' %}">Home</a></li>
-          <li><a href="{% url 'coaches' %}">Coaches</a></li>
-          <!-- <li><a href="{% url 'sessions' %}">Group Sessions</a></li> -->
-          <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
-          <li>
-            <a href="#">Category</a>
-            <!-- Start Categories menu -->
-            <div class="mega-menu">
-              <ul class="links">
-                <li>
-                  <a href="{% url 'coaches' %}?coach_speciality_q=Relations">Relations</a>
-                </li>
-                <li>
-                  <a href="{% url 'coaches' %}?coach_speciality_q=Startup">Startup</a>
-                </li>
-                <li>
-                  <a href="{% url 'coaches' %}?coach_speciality_q=Social">Social Life</a>
-                </li>
-                <li>
-                  <a href="{% url 'coaches' %}?coach_speciality_q=Skills">Skills</a>
-                </li>
-                <li>
-                  <a href="{% url 'coaches' %}?coach_speciality_q=ay 7aga">ay 7aga</a>
-                </li>
-              </ul>
-            </div>
-            <!-- End Categories menu -->
-          {% if user.is_superuser %}
-          <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-          {% endif %}
-          </li>
-          <li>
-            {% if request.user.is_authenticated %}
-              <a href="/accounts/logout" class="nav-item nav-link"> LogOut </a>
-            {% else %}
-              <a href="/accounts/login" class="nav-item nav-link"> LogIn </a>
-            {% endif %}
-        </li>
-        </ul>
-      </div>
-    </div>
-    <!-- End Header -->
-    <div id="main-content">
-      {% if messages %}
-      <div class="messages text-center">
-        {% for message in messages %}
-        <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible fs-6" {% endif %}>
-          <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
-          {{message}}
         </div>
-        {% endfor %}
       </div>
-      {% endif %}
-      {% block content %}
-      
-      {% endblock %}
-    </div>
-    <!-- Start Footer -->
-    <div class="footer">
-      <div class="container">
-        <div class="box">
-          <h3>Nawarly</h3>
-          <ul class="social">
+
+      <div class="col-md-6 col-lg-6">
+        <div class="contact">
+          <h5 class="text-light">Contact Us</h5>
+          <p class="lh-lg mt-3 mb-5">Feel free to contact us for more information or to make a reservation!</p>
+          <a class="btn btn-warning" href="contact.html">Contact Us</a>
+          <ul class="d-flex mt-5 list-unstyled gap-3">
             <li>
-              <a href="#" class="facebook">
-                <ion-icon name="logo-facebook"></ion-icon>
-              </a>
+              <a class="d-block text-light" href="#"><i
+                  class="fa-brands fa-facebook fa-lg facebook rounded-circle p-2"></i></a>
             </li>
             <li>
-              <a href="#" class="twitter">
-                <ion-icon name="logo-instagram"></ion-icon>
-              </a>
+              <a class="d-block text-light" href="#"><i
+                  class="fa-brands fa-twitter fa-lg twitter rounded-circle p-2"></i></a>
             </li>
             <li>
-              <a href="#" class="youtube">
-                <ion-icon name="logo-youtube"></ion-icon>
-              </a>
+              <a class="d-block text-light" href="#"><i
+                  class="fa-brands fa-instagram fa-lg instagram rounded-circle p-2"></i></a>
             </li>
+            <li>
           </ul>
         </div>
-        <div class="box">
-          <div class="line">
-            <i class="fas fa-map-marker-alt fa-fw"></i>
-            <div class="info">Egypt, Cairo</div>
-          </div>
-          <div class="line">
-            <i class="far fa-clock fa-fw"></i>
-            <div class="info">Business Hours: From 10:00 To 18:00</div>
-          </div>
-          <div class="line">
-            <i class="fas fa-phone-volume fa-fw"></i>
-            <div class="info">
-              <span>+2010000000</span>
-              <span>+2011111111</span>
-            </div>
-          </div>
-        </div>
       </div>
-      <p class="copyright">Copyright © 2023 Nawarly. All Rights Reserved.</p>
+
     </div>
-    <!-- End Footer -->
 
-  
-  {% block script %}
-  {% endblock %}
-  </body>
+  </div>
 
-</html>
+</div>
+<!-- End Footer -->
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base_no_footer.html' %}
+{% load static %}
+
+{% block content %}
+
+<body style="background-color: var(--main-color);">
+  <!-- Start Profile -->
+  <div class="content-profile w-full">
+
+    <form method="post" enctype="multipart/form-data" class="settings-page m-20">
+      <!-- Start General Info Box -->
+      <div class="prof-box p-20 bg-white rad-10">
+        {% csrf_token %}
+        <hr>
+        {{client_form}}
+        <hr>
+        {{user_form}}
+        <hr>
+        <div class="d-flex flex-row-reverse m-3">
+          <button type="submit" class="btn btn-outline-primary">Save</hr>
+        </div>
+        <!-- End General Info Box -->
+
+      </div>
+
+      </hr>
+      <!-- End Profile -->
+</body>
+
+{% endblock %}

@@ -12,55 +12,7 @@
     <script src="https://source.zoom.us/zoom-meeting-2.9.5.min.js" defer></script>
     <script src="{% static 'home/js/zoomjs/tool.js' %}" defer></script>
     <script src="{% static 'home/js/zoomjs/vconsole.min.js' %}" defer></script>
-    <script src="{% static 'home/js/zoomjs/index.js' %}" defer></script>
-
-
-    <style>
-        .sdk-select {
-            height: 34px;
-            border-radius: 4px;
-        }
-
-        .websdktest button {
-            float: right;
-            margin-left: 5px;
-        }
-
-        #nav-tool {
-            margin-bottom: 0px;
-        }
-
-        #show-test-tool {
-            position: absolute;
-            top: 100px;
-            left: 0;
-            display: block;
-            z-index: 99999;
-        }
-
-        #display_name {
-            width: 250px;
-        }
-
-
-        #websdk-iframe {
-            width: 700px;
-            height: 500px;
-            border: 1px;
-            border-color: red;
-            border-style: dashed;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            left: 50%;
-            margin: 0;
-        }
-
-        /* .form-group {
-            display: none!important;
-        } */
-    </style>
+    <script src="{% static 'home/js/zoomjs/index.js' %}" defer></script>  
 
 
 {% endblock %}
@@ -80,7 +32,7 @@
                     </div>
                     <div class="form-group">
                         <input type="text" name="meeting_number" id="meeting_number" value="{{mn}}" maxLength="200"
-                            style="width:150px" placeholder="Meeting Number" class="form-control" required data-url="{% url 'tst_open_zoom_meeting'%}">
+                            style="width:150px" placeholder="Meeting Number" class="form-control" required data-url="{% url 'join_meeting'%}">
                     </div>
                     <div class="form-group">
                         <input type="text" name="meeting_pwd" id="meeting_pwd" value="{{ps}}" style="width:150px"

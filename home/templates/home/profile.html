@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<body style="background-image: linear-gradient(white, var(--main-color3));">
+    <div class="content w-full">
+        <div class="profile-page m-20">
+    
+          <div class="overview bg-white rad-10 d-flex align-center">
+    
+            <div class="avatar-box txt-c p-20">
+                {% if client.photo %}
+                <img class="rad-half mb-10" src="{{ client.photo.url }}" alt="Upload Your Photo" />
+                {% else %}
+                <div class="rad-half mb-10" data-bs-toggle="tooltip" title="Upload Your Photo">
+                    <i class="fa fa-user" style="width: 40%;height: 40%;"></i>
+                </div>
+                {% endif %}
+                <a href="{% url 'profile_edit' %}"><i class="fa fa-edit"></i></a>
+              <h3 class="m-0">{{client.user.username}}</h3>
+            </div>
+    
+            <div class="info-box w-full txt-c-mobile">
+              <!-- Start Information Row -->
+              <div class="box p-20 d-flex align-center">
+                <h4 class="c-blue fs-11 m-3 w-full"></h4>
+                <div class="fs-14">
+                  <span class="c-grey">Full Name:</span>
+                  <span>{{client.user.get_full_name}}</span>
+                </div>
+                <div class="fs-14">
+                  <span class="c-grey">Gender:</span>
+                  <span>{{client.gender}}</span>
+                </div>
+                <div class="fs-14">
+                  <span class="c-grey">Country:</span>
+                  <span>{{client.country}}</span>
+                </div>
+              </div>
+              <!-- End Information Row -->
+    
+              <!-- Start Information Row -->
+              <div class="box p-20 d-flex align-center">
+                <h4 class="c-blue w-full fs-11 m-3"></h4>
+                <div class="fs-14">
+                  <span class="c-grey">Email:</span>
+                  <span>{{client.user.email}}</span>
+                </div>
+                <div class="fs-14">
+                  <span class="c-grey">Phone:</span>
+                  <span>{{client.user.phone}}</span>
+                </div>
+                <div class="fs-14">
+                  <span class="c-grey">Date Of Birth:</span>
+                  <span>{{client.date_of_birth}}</span>
+                </div>
+              </div>
+              <!-- End Information Row -->
+              
+            </div>
+          </div>
+    
+          <div class="other-data d-flex gap-20">
+    
+            <div class="activities p-20 bg-white rad-10 mt-20">
+    
+              <h2 class="mt-0 mb-20">Latest Activities</h2>
+    
+              <ul class="m-0">
+                {% for session in latest_sessions %}
+                <li class="d-flex align-center mt-15">
+                  <span class="key bg-green mr-15 d-block rad-half"></span>
+                  <div class="pl-15 green">
+                    <p class="fs-14 fw-bold mt-0 mb-5">Session with {{ session.coach.user.username }}</p>
+                    <span class="fs-13 c-grey">{{session.time}}</span>
+                  </div>
+                </li>
+                {% endfor %}
+    
+                
+              </ul>
+    
+            </div>
+            
+            <div class="activities p-20 bg-white rad-10 mt-20">
+    
+              <h2 class="mt-0 mb-20">Upcoming Activities</h2>
+    
+              <ul class="m-0">
+                {% for session in upcomming_sessions %}
+                <li class="d-flex align-center mt-15">
+                  <span class="key bg-blue mr-15 d-block rad-half"></span>
+                  <div class="pl-15 blue">
+                    <p class="fs-14 fw-bold mt-0 mb-5">Session with {{session.coach.user.username}}</p>
+                    <span class="fs-13 c-grey">{{session.time}}</span>
+                    <a 
+                    class="join join_meeting" 
+                    data-url-embd="{% url 'EmbdZmCrd' %}" 
+                    data-url-jn="{% url 'join_meeting'%}" 
+                    data-url-mtninf="{% url 'get_zoom_meeting_data' session.id %}"
+                    href="{% url 'navigate_to_meeting' session.id %}"
+                    target="_blank"
+                    >Join</a>
+                </div>
+                  
+                </li>
+                {% endfor %}
+              </ul>
+    
+            </div>
+    
+          </div>
+    
+        </div>
+    
+        
+        
+      </div>
+</body>
+
+{% endblock %}

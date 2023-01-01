@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+
+{% load static %}
+
+{% block style %}
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/2.9.5/css/bootstrap.css" />
+    <link type="text/css" rel="stylesheet" href="https://source.zoom.us/2.9.5/css/react-select.css" />
+
+    <script src="https://source.zoom.us/2.9.5/lib/vendor/react.min.js" defer></script>
+    <script src="https://source.zoom.us/2.9.5/lib/vendor/react-dom.min.js" defer></script>
+    <script src="https://source.zoom.us/2.9.5/lib/vendor/redux.min.js" defer></script>
+    <script src="https://source.zoom.us/2.9.5/lib/vendor/redux-thunk.min.js" defer></script>
+    <script src="https://source.zoom.us/2.9.5/lib/vendor/lodash.min.js" defer></script>
+    <script src="https://source.zoom.us/zoom-meeting-2.9.5.min.js" defer></script>
+    <script src="{% static 'home/js/zoomjs/tool.js' %}" defer></script>
+    <script src="{% static 'home/js/zoomjs/vconsole.min.js' %}" defer></script>
+    <script src="{% static 'home/js/zoomjs/index.js' %}" defer></script>
+
+
+{% endblock %}
+
+
+{% block content %}
+        <div class="container m-3 vh-100 fw-bolder fs-1 d-flex justify-content-center"> 
+            <div id="join_meeting" class="join_meeting " data-url-embd="{% url 'EmbdZmCrd' %}" data-url-jn="{% url 'join_meeting'%}" data-url-mtninf="{% url 'get_zoom_meeting_data' 16 %}" >
+                Directing to Meeting ...
+            </div>
+            </div>
+    </nav>
+{% endblock %}

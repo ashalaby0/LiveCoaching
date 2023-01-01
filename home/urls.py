@@ -138,14 +138,14 @@ urlpatterns = [
     
   
     path(
-        'tst_usr_zoom_meetings',
-        views.got_to_zoom_meeting_join_page,
-        name='tst_usr_zoom_meetings'
+        'navigate_to_meeting/<int:session_id>',
+        views.navigate_to_meeting,
+        name='navigate_to_meeting'
     ),
     path(
-        'tst_open_zoom_meeting',
-        views.open_zoom_meeting,
-        name='tst_open_zoom_meeting'
+        'join_meeting',
+        views.join_meeting,
+        name='join_meeting'
     ),
     # url to get zoom sdk credentials
     path(
@@ -193,6 +193,21 @@ urlpatterns = [
         'validate_promo_code',
         views.validate_promo_code,
         name='validate_promo_code'
+    ),
+    path(
+        'profile',
+        views.profile,
+        name='profile'
+    ),
+    path(
+        'get_zoom_meeting_data/<int:session_id>',
+        views.get_zoom_meeting_data,
+        name='get_zoom_meeting_data'
+    ),
+    path(
+        'profile_edit',
+        views.profile_edit,
+        name='profile_edit'
     )
 
 

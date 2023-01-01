@@ -5,7 +5,7 @@ import hmac
 import json
 import requests
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
@@ -355,7 +355,7 @@ def post_pay(request):
     return redirect('home')
 
 # admin panel
-
+@user_passes_test(lambda u: u.is_superuser)
 def dashboard(request):
     upcomming_sessions = models.Session.objects.get_upcomming_sessions()
     print(upcomming_sessions)
@@ -412,29 +412,30 @@ def contact_us(request):
 
     if request.method == 'POST':
         form = forms.CustomerMessageForm(request.POST)
+        context = {'form': form}
         if form.is_valid():
             form.save()
-            messages.success(request, "Submitted Successfully !.")
+            messages.success(request, "Sent Successfully !.")
             form = forms.CustomerMessageForm()
             context = {'form': form}
 
 
-        subject = 'New Customer Message'
-        html_content = f"""
-        <span><strong>Name</strong></span>:  <span>{request.POST['full_name']}</span>
-        <br>
-        <span><strong>Email</strong></span>: <span>{request.POST['email']}</span>
-        <br>
-        <span><strong>Message</strong></span>: <span>{request.POST['message']}</span>
-        <br>
-        """
-        from_email = settings.EMAIL_HOST_USER
-        to_list = [settings.EMAIL_HOST_USER]
+            subject = 'New Customer Message'
+            html_content = f"""
+            <span><strong>Name</strong></span>:  <span>{request.POST['full_name']}</span>
+            <br>
+            <span><strong>Email</strong></span>: <span>{request.POST['email']}</span>
+            <br>
+            <span><strong>Message</strong></span>: <span>{request.POST['message']}</span>
+            <br>
+            """
+            from_email = settings.EMAIL_HOST_USER
+            to_list = [settings.EMAIL_HOST_USER]
 
-        msg = EmailMessage(subject, html_content, from_email, to_list)
-        msg.content_subtype = "html"  # Main content is now text/html
-        msg.send()
-        print('mail sent')
+            msg = EmailMessage(subject, html_content, from_email, to_list)
+            msg.content_subtype = "html"  # Main content is now text/html
+            msg.send()
+            print('mail sent')
 
 
     return render(
@@ -559,17 +560,16 @@ def user_upcomming_zoom_meetings(reqeust):
         context={'meetings':meetings, 'ps':settings.ZOOM_MEETING_PASSWORD}
     )
     
-def got_to_zoom_meeting_join_page(request):
+def navigate_to_meeting(request, session_id):
     # this page should load the zoom meeting joinning page with only JOIN Button and all fields are hidden
     return render(
         request=request,
-        template_name='home/tst_usr_zoom_meetings.html',
-        context={'nm':'72325261745', 'ps':'Gi8Ze5'} # temp for testing
-        # context={'number':'72325261745', 'ps':settings.ZOOM_MEETING_PASSWORD}
+        template_name='home/navigate_to_meeting.html',
+        context={'session_id':session_id} # temp for testing
     )
 
 
-def open_zoom_meeting(request):
+def join_meeting(request):
     return render(
         request,
         template_name='home/zoom/meeting.html',
@@ -605,3 +605,71 @@ def get_sorted_coaches(request, option, coach_name_q, coach_speciality_q, min_pr
         {'sorted_coaches':serialized_sorted_coaches}
     )
 
+
+def profile(request):
+
+    client = models.Client.objects.get(user=request.user)
+    latest_sessions = client.session_set.filter(time__lte=datetime.datetime.now())
+    upcomming_sessions = client.session_set.filter(time__gte=datetime.datetime.now())
+    return render(
+        request=request,
+        template_name='home/profile.html',
+        context={
+            'client':client,
+            'latest_sessions':latest_sessions,
+            'upcomming_sessions':upcomming_sessions,
+            }
+    )
+
+def get_zoom_meeting_data(request, session_id):
+    session = models.Session.objects.get(pk=session_id)
+    meeting_number = session.meeting.meeting_id
+    data = {
+        'mn': meeting_number,
+        'name': f'{session.category} with {session.coach}',
+        'pwd': settings.ZOOM_MEETING_PASSWORD,
+        'email': request.user.email,
+        'role':0
+    }
+
+    # for testing
+    data['pwd'] = 'Jh6cEE'
+    return JsonResponse(data)
+
+
+
+def profile_edit(request):
+    
+    client = models.Client.objects.get(user=request.user)
+    
+    try:
+
+        if request.method == 'POST':
+            print(request.FILES)
+            client_form = forms.ClientModelForm(data=request.POST, files=request.FILES, instance=client)
+            user_form = forms.UserModelForm(data=request.POST, files=request.FILES, instance=request.user)
+            if client_form.is_valid() and user_form.is_valid():
+                client_form.save()
+                user_form.save()
+                return redirect('profile')
+        else:
+            # client case
+            client_form = forms.ClientModelForm(instance=client)
+            user_form = forms.UserModelForm(instance=request.user)
+
+
+        return render(
+            request=request, 
+            template_name='home/profile_edit.html', 
+            context={'client_form': client_form, 'user_form':user_form}
+            )
+
+    except Exception as e:
+        print(repr(e))
+        #TODO coach case ... not handled yet
+        coach = models.Coach.objects.get(user=request.user)
+        return render(
+            request=request, 
+            template_name='home/profile_edit.html', 
+            context={'coach': coach}
+            )

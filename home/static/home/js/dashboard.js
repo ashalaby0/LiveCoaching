@@ -258,7 +258,7 @@ async function get_sessions_per_category_data() {
 get_sessions_per_category_data()
 
 
-// customer messages
+// user messages
 async function close_customer_message(messageId){
     let response = await fetch(
         close_customer_message_url,
@@ -295,7 +295,7 @@ async function get_customer_messages() {
         
         // nav left content
         let  listGroupNavLeftDiv = document.createElement('div')
-        listGroupNavLeftDiv.textContent = element.full_name
+        listGroupNavLeftDiv.textContent = `${element.full_name} (${element.email})`
         
         // nav right content
         let  listGroupNavRightDiv = document.createElement('div')

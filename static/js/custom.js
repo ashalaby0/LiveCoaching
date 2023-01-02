@@ -9,9 +9,9 @@ const queryParams = new Proxy(new URLSearchParams(window.location.search), {
 const coach_name_q_input = document.querySelector('[name="coach_name_q"]')
 coach_name_q_input.value = queryParams.coach_name_q;
 
-// // keep coach speciality input search value
-const coach_speciality_q_input = document.querySelector('[name="coach_speciality_q"]')
-coach_speciality_q_input.value = queryParams.coach_speciality_q;
+// // keep coach category input search value
+const coach_category_q_input = document.querySelector('[name="coach_category_q"]')
+coach_category_q_input.value = queryParams.coach_category_q;
 
 // // keep min price input search value
 const min_price_q_input = document.querySelector('[name="min_price_q"]')

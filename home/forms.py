@@ -7,7 +7,21 @@ from . import models
 class ClientModelForm(forms.ModelForm):
     class Meta:
         model = models.Client
-        fields = ('city', 'country', 'gender', 'date_of_birth', 'photo')
+        fields = ('photo', )
+        widgets = {
+            'photo': forms.TextInput(attrs={
+                'class':"b-none border-ccc p-10 rad-6 d-block w-full",
+                'type':"file",
+                'id':"pic"
+                }
+                ),
+        }
+
+class CoachModelForm(forms.ModelForm):
+    class Meta:
+        model = models.Coach
+        fields = ('category', 'price_per_hour','price_per_30_mins', 'available_for_kids', 'working_hours_start', 'working_hours_end', 'bio', 'photo')
+
 
         widgets = {
             'photo': forms.TextInput(attrs={
@@ -16,32 +30,38 @@ class ClientModelForm(forms.ModelForm):
                 'id':"pic"
                 }
                 ),
-            'date_of_birth': forms.DateInput(attrs={
+            'category': forms.TextInput(attrs={
                 "class":"b-none border-ccc p-10 rad-6 d-block w-full",
-                "id":"date",
-                "type":"date"
+                "type":"text"
             }
             ),
-            'gender': forms.Select(attrs={
-                "id":"gender",
-                "class":"form-select form-select-lg mb-3"
+            'price_per_hour': forms.TextInput(attrs={
+                "type":"number",
+                "class":"form-control mb-3 w-100"
             }
             ),
-            
+            'price_per_30_mins': forms.TextInput(attrs={
+                "type":"number",
+                "class":"form-control mb-3 w-100"
+            }
+            ),
+            'available_for_kids': forms.TextInput(attrs={
+                "class":"btn-check mb-3 w-100"
+            }
+            ),
+            'working_hours_start': forms.TimeInput(attrs={
+                'type':'time',
+                "class":"form-control mb-3 w-100"
+            }),
+            'working_hours_end': forms.TimeInput(attrs={
+                'type':'time',
+                "class":"form-control mb-3 w-100"
+            }),
+            'bio': forms.Textarea(attrs={
+                'class':"form-control mb-3 w-100"
+            })
         }
 
-
-
-class CoachModelForm(forms.ModelForm):
-    class Meta:
-        model = models.Coach
-        fields = '__all__'
-
-
-class CategoryModelForm(forms.ModelForm):
-    class Meta:
-        model = models.Category
-        fields = '__all__'
 
 
 class SessionModelForm(forms.ModelForm):
@@ -56,8 +76,29 @@ class SessionModelForm(forms.ModelForm):
 class UserModelForm(forms.ModelForm):
     class Meta:
         model = models.User
-        fields = ('username', 'first_name', 'last_name', 'email', 'phone')
+        fields = ('username', 'first_name', 'last_name', 'email', 'phone', 'city', 'country', 'gender', 'date_of_birth')
         widgets = {
+            'username': forms.TextInput(attrs={
+                "class" : "b-none border-ccc p-10 mt-3 rad-6 d-block w-full",
+                "type":"text",
+                "id":"first",
+                'placeholder': 'User Name'
+                }
+                ),
+            'city': forms.TextInput(attrs={
+                "class" : "b-none border-ccc p-10 mt-3 rad-6 d-block w-full",
+                "type":"text",
+                "id":"first",
+                'placeholder': 'City'
+                }
+                ),
+            'country': forms.TextInput(attrs={
+                "class" : "b-none border-ccc p-10 mt-3 rad-6 d-block w-full",
+                "type":"text",
+                "id":"first",
+                'placeholder': 'Country'
+                }
+                ),
             'first_name': forms.TextInput(attrs={
                 "class" : "b-none border-ccc p-10 mt-3 rad-6 d-block w-full",
                 "type":"text",
@@ -72,16 +113,29 @@ class UserModelForm(forms.ModelForm):
                 'placeholder': 'Last Name'
                 }
                 ),
-            'phone': forms.TextInput(attrs={
-                "class":"b-none border-ccc p-10 rad-6 w-full mr-10",
-                "id":"number",
-                "placeholder":"Phone Number"
-            }),
+            
             'email': forms.TextInput(attrs={
                 "class":"b-none border-ccc p-10 mt-3 rad-6 w-full mr-10",
                 "id":"email",
                 "type":"email"
             }),
+            'phone': forms.TextInput(attrs={
+                "class":"b-none border-ccc p-10 rad-6 w-full mr-10",
+                "id":"number",
+                "placeholder":"Phone Number"
+                }
+                ),
+            'date_of_birth': forms.DateInput(attrs={
+                "class":"b-none border-ccc p-10 rad-6 d-block w-full",
+                "id":"date",
+                "type":"date"
+            }
+            ),
+            'gender': forms.Select(attrs={
+                "id":"gender",
+                "class":"form-select form-select-lg mb-3 d-block w-100"
+            }
+            ),
 
 
         }
@@ -114,3 +168,10 @@ class CustomerMessageForm(forms.ModelForm):
             'message': forms.Textarea(attrs={'placeholder': 'Your Message', "rows":"5", 'class':'form-control input-lg'})
         }
         fields = '__all__'
+
+
+class CertificateForm(forms.ModelForm):
+    class Meta:
+        model = models.Certificate
+        fields = '__all__'
+        

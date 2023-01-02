@@ -30,10 +30,10 @@
             <div class="mt-2">
               <input
                 type="text"
-                id="specialityInput"
+                id="categoryInput"
                 class="form-control"
-                name="coach_speciality_q"
-                placeholder="Coach Speciality ..."
+                name="coach_category_q"
+                placeholder="Coach category ..."
               />
             </div>
             <hr />
@@ -102,7 +102,7 @@
                 </div>
                 <div>
                   <h4>{{coach.user.username}}</h4>
-                  <p>{{coach.speciality}}</p>
+                  <p>{{coach.category}}</p>
                   <div>
                     <div>
                       {% if coach.rating > 0%}

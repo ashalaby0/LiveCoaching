@@ -39,10 +39,14 @@ def signup_view(request):
 
 
 def home(request):
+    featured_coaches = models.Coach.objects.filter(featured=True)
+    if not featured_coaches:
+        featured_coaches = models.Coach.objects.all()
+    
     return render(
         request=request,
         template_name='home/home.html',
-        context={}
+        context={'featured_coaches': featured_coaches, 'no_of_featured_coaches': len(featured_coaches)}
     )
 
 
@@ -51,8 +55,8 @@ def coaches(request):
 
     coach_name_q = request.GET.get('coach_name_q') if request.GET.get(
         'coach_name_q') != None else ''
-    coach_speciality_q = request.GET.get('coach_speciality_q') if request.GET.get(
-        'coach_speciality_q') != None else ''
+    coach_category_q = request.GET.get('coach_category_q') if request.GET.get(
+        'coach_category_q') != None else ''
     min_price_q = request.GET.get('min_price_q') if request.GET.get(
         'min_price_q') != None else 0
     max_price_q = request.GET.get('max_price_q') if request.GET.get(
@@ -63,7 +67,7 @@ def coaches(request):
 
     coach_list = models.Coach.objects.filter(
         Q(user__username__icontains=coach_name_q) &
-        Q(speciality__name__icontains=coach_speciality_q) &
+        Q(category__icontains=coach_category_q) &
         Q(price_per_hour__gte=min_price_q) &
         Q(price_per_hour__lte=max_price_q)
     )
@@ -79,8 +83,8 @@ def sessions(request):
 
     coach_name_q = request.GET.get('coach_name_q') if request.GET.get(
         'coach_name_q') != None else ''
-    coach_speciality_q = request.GET.get('coach_speciality_q') if request.GET.get(
-        'coach_speciality_q') != None else ''
+    coach_category_q = request.GET.get('coach_category_q') if request.GET.get(
+        'coach_category_q') != None else ''
     min_price_q = request.GET.get('min_price_q') if request.GET.get(
         'min_price_q') != None else 0
     max_price_q = request.GET.get('max_price_q') if request.GET.get(
@@ -95,7 +99,7 @@ def sessions(request):
 
         session_list = models.Session.objects.filter(
             Q(coach__user__username__icontains=coach_name_q) &
-            Q(coach__speciality__icontains=coach_speciality_q) &
+            Q(coach__category__icontains=coach_category_q) &
             Q(coach__price_per_hour__gte=min_price_q) &
             Q(coach__price_per_hour__lte=max_price_q) &
             Q(group_session=True) &
@@ -104,7 +108,7 @@ def sessions(request):
     else:
         session_list = models.Session.objects.filter(
             Q(coach__user__username__icontains=coach_name_q) &
-            Q(coach__speciality__name__icontains=coach_speciality_q) &
+            Q(coach__category__icontains=coach_category_q) &
             Q(coach__price_per_hour__gte=min_price_q) &
             Q(coach__price_per_hour__lte=max_price_q) &
             Q(group_session=True)
@@ -215,7 +219,7 @@ def zoom_schedule_callback(request):
     )
 
     messages.success(request, f"Session Scheduled Successfully & Link sent by mail. {request.user.email}")
-    return redirect('home')
+    return redirect('profile')
 
 def zoom_meeting_callback(request):
     # not done yet
@@ -243,7 +247,7 @@ def payment_view(request):
         _year, _month, _day, session_hour, 0, 0)
     coach = models.Coach.objects.get(pk=coach_id)
     new_session = models.Session.objects.create(
-        coach=coach, time=_time, category=coach.speciality, group_session=False)
+        coach=coach, time=_time, category=coach.category, group_session=False)
     new_session.clients.add(client)
 
     new_order = models.Order.objects.create(client=client, item=new_session)
@@ -380,30 +384,44 @@ class CoachAdminListView(ListView):
 
 def coach_admin_update(request, coach_id):
 
-    coach = models.Coach.objects.get(pk=coach_id)
-    user = coach.user
+    try:
+        coach = models.Coach.objects.get(pk=coach_id)
+        user = coach.user
 
-    if request.method == 'POST':
+        if request.method == 'POST':
 
-        coach_form = forms.CoachModelForm(request.POST, instance=coach)
-        user_form = forms.UserModelForm(request.POST, instance=user)
-        if coach_form.is_valid() and user_form.is_valid():
-            coach_form.save()
-            user_form.save()
-            return redirect('manage_coaches')
-    else:
-        user_form = forms.UserModelForm(instance=user)
-        coach_form = forms.CoachModelForm(instance=coach)
+            coach_form = forms.CoachModelForm(files=request.FILES, data=request.POST, instance=coach)
+            user_form = forms.UserModelForm(files=request.FILES, data=request.POST, instance=user)
+            print(request.FILES)
+            if coach_form.is_valid() and user_form.is_valid():
+                print(coach_form.cleaned_data)
+                coach_form.save()
+                user_form.save()
+                return redirect('manage_coaches')
+            else:
+                return render(
+                    request=request,
+                    template_name='home/manage_coach.html',
+                    context={
+                        'user_form': user_form,
+                        'coach_form': coach_form
+                    }
+                )
+        else:
+            user_form = forms.UserModelForm(instance=user)
+            coach_form = forms.CoachModelForm(instance=coach)
 
 
-    return render(
-        request=request,
-        template_name='home/manage_coach.html',
-        context={
-            'user_form': user_form,
-            'coach_form': coach_form
-        }
-    )
+        return render(
+            request=request,
+            template_name='home/manage_coach.html',
+            context={
+                'user_form': user_form,
+                'coach_form': coach_form
+            }
+        )
+    except Exception as e:
+        print(repr(e))
 
 def contact_us(request):
 
@@ -483,7 +501,7 @@ def sessions_per_client(request):
 def sessions_per_category(request):
     result = models.Session.objects.get_total_session_per_category()
     return JsonResponse(
-        {i['category__name']:i['count'] for i in result}
+        {i['coach__category']:i['count'] for i in result}
     )
 @csrf_exempt
 def validate_promo_code(request):
@@ -581,14 +599,14 @@ def get_zoom_crd_creds(request):
         {'key':'VFlelbBM10XSBHmxUgUGfSsFqR3bQGdy8IkE', 'pass':'QUasaMms1KhNcqRHBRmU2KCQlFEbs2wJKHpK'}
     )
 
-def get_sorted_coaches(request, option, coach_name_q, coach_speciality_q, min_price_q, max_price_q):
+def get_sorted_coaches(request, option, coach_name_q, coach_category_q, min_price_q, max_price_q):
     media_url = settings.MEDIA_URL 
     sorted_coaches = models.Coach.objects.filter(price_per_hour__gte=min_price_q).filter(price_per_hour__lte=max_price_q)
 
     if coach_name_q.lower() != 'empty':
         sorted_coaches = sorted_coaches.filter(user__username__icontains=coach_name_q.strip())
-    if coach_speciality_q.lower() != 'empty':
-        sorted_coaches = sorted_coaches.filter(speciality__name__icontains=coach_name_q.strip())
+    if coach_category_q.lower() != 'empty':
+        sorted_coaches = sorted_coaches.filter(category__icontains=coach_name_q.strip())
 
     if option == 'plh':
         sorted_coaches = sorted_coaches.order_by('price_per_hour')
@@ -597,7 +615,7 @@ def get_sorted_coaches(request, option, coach_name_q, coach_speciality_q, min_pr
     elif option == 'ctchna':
         sorted_coaches = sorted_coaches.order_by('user__username')
     elif option == 'catna':
-        sorted_coaches = sorted_coaches.order_by('speciality__name')
+        sorted_coaches = sorted_coaches.order_by('category')
 
 
     serialized_sorted_coaches = [serializers.CoachSerializer(instance=i).data for i in (x for x in sorted_coaches)]
@@ -608,68 +626,142 @@ def get_sorted_coaches(request, option, coach_name_q, coach_speciality_q, min_pr
 
 def profile(request):
 
-    client = models.Client.objects.get(user=request.user)
-    latest_sessions = client.session_set.filter(time__lte=datetime.datetime.now())
-    upcomming_sessions = client.session_set.filter(time__gte=datetime.datetime.now())
-    return render(
-        request=request,
-        template_name='home/profile.html',
-        context={
-            'client':client,
-            'latest_sessions':latest_sessions,
-            'upcomming_sessions':upcomming_sessions,
-            }
-    )
+    try:
+        # client case
+        client = models.Client.objects.get(user=request.user)
+        latest_sessions = client.session_set.filter(time__lte=datetime.datetime.now())
+        upcomming_sessions = client.session_set.filter(time__gte=datetime.datetime.now())
+        return render(
+            request=request,
+            template_name='home/profile.html',
+            context={
+                'person':client,
+                'latest_sessions':latest_sessions,
+                'upcomming_sessions':upcomming_sessions,
+                'is_coach':False
+                }
+        )
+    except:
+        # coach case
+        coach = models.Coach.objects.get(user=request.user)
+        latest_sessions = coach.session_set.filter(time__lte=datetime.datetime.now())
+        upcomming_sessions = coach.session_set.filter(time__gte=datetime.datetime.now())
+        return render(
+            request=request,
+            template_name='home/profile.html',
+            context={
+                'person':coach,
+                'latest_sessions':latest_sessions,
+                'upcomming_sessions':upcomming_sessions,
+                'is_coach':True
+                }
+        )
 
 def get_zoom_meeting_data(request, session_id):
     session = models.Session.objects.get(pk=session_id)
     meeting_number = session.meeting.meeting_id
     data = {
         'mn': meeting_number,
-        'name': f'{session.category} with {session.coach}',
+        'name': f'{session.coach.category} with {session.coach}',
         'pwd': settings.ZOOM_MEETING_PASSWORD,
         'email': request.user.email,
         'role':0
     }
-
-    # for testing
-    data['pwd'] = 'Jh6cEE'
     return JsonResponse(data)
 
 
 
+def client_profile_edit(request, client):
+    if request.method == 'POST':
+        client_form = forms.ClientModelForm(data=request.POST, files=request.FILES, instance=client)
+        user_form = forms.UserModelForm(data=request.POST, files=request.FILES, instance=request.user)
+        if  client_form.is_valid() and user_form.is_valid():
+            user_form.save()
+            client_form.save()
+            return redirect('profile')
+    else:
+        client_form = forms.ClientModelForm(instance=client)
+        user_form = forms.UserModelForm(instance=request.user)
+
+
+    return render(
+        request=request, 
+        template_name='home/profile_edit.html', 
+        context={'user_form':user_form, 'client_form':client_form, 'is_coach':False}
+        )
+
+def coach_profile_edit(request, coach):
+    if request.method == 'POST':
+        print(request.FILES)
+        coach_form = forms.CoachModelForm(data=request.POST, files=request.FILES, instance=coach)
+        user_form = forms.UserModelForm(data=request.POST, files=request.FILES, instance=request.user)
+        if coach_form.is_valid() and user_form.is_valid():
+            coach_form.save()
+            user_form.save()
+            return redirect('profile')
+    else:
+        coach_form = forms.CoachModelForm(instance=coach)
+        user_form = forms.UserModelForm(instance=request.user)
+
+
+    return render(
+        request=request, 
+        template_name='home/profile_edit.html', 
+        context={'coach_form': coach_form, 'user_form':user_form, 'is_coach':True}
+        )
+
 def profile_edit(request):
-    
-    client = models.Client.objects.get(user=request.user)
-    
+    # 
     try:
-
-        if request.method == 'POST':
-            print(request.FILES)
-            client_form = forms.ClientModelForm(data=request.POST, files=request.FILES, instance=client)
-            user_form = forms.UserModelForm(data=request.POST, files=request.FILES, instance=request.user)
-            if client_form.is_valid() and user_form.is_valid():
-                client_form.save()
-                user_form.save()
-                return redirect('profile')
-        else:
-            # client case
-            client_form = forms.ClientModelForm(instance=client)
-            user_form = forms.UserModelForm(instance=request.user)
+        # if the user is client
+        client = models.Client.objects.get(user=request.user)
+        return client_profile_edit(request=request, client=client)
+    except Exception as e:
+        # if the user is coach
+        coach = models.Coach.objects.get(user=request.user)
+        return coach_profile_edit(request=request, coach=coach)
+        
 
 
-        return render(
-            request=request, 
-            template_name='home/profile_edit.html', 
-            context={'client_form': client_form, 'user_form':user_form}
-            )
+# 
+@ csrf_exempt
+def remove_certificate(request):
+    try:
+        post_data = json.loads(request.body.decode("utf-8"))
+        cert_id = post_data['cert_id']
+        models.Certificate.objects.get(id=cert_id).delete()
+        return JsonResponse({'result':True})
+    except:
+        return JsonResponse({'result':False})
 
+@ csrf_exempt
+def add_new_certificate_to_coach(request):
+    print(request.user)
+    try:
+        if request.method == "POST":
+            form = forms.CertificateForm(request.POST, request.FILES)
+            if form.is_valid():
+                cert_instance = form.save()
+                cert_instance.coach = models.Coach.objects.get(user=request.user)
+                cert_instance.save()
+                return JsonResponse({'result':True})
+            else:
+                return JsonResponse({'result':False})
     except Exception as e:
         print(repr(e))
-        #TODO coach case ... not handled yet
-        coach = models.Coach.objects.get(user=request.user)
-        return render(
-            request=request, 
-            template_name='home/profile_edit.html', 
-            context={'coach': coach}
-            )
+
+        return JsonResponse({'result':False})
+
+@ csrf_exempt
+def get_all_certificates(request):
+    try:
+        print('start')
+        result = models.Certificate.objects.filter(coach=models.Coach.objects.get(user=request.user))
+        print(result)
+        serialized_certificates = [serializers.CertificateSerializer(instance=i).data for i in (x for x in result)]
+
+        print(serialized_certificates)
+        return JsonResponse({'certificates':serialized_certificates})
+    except Exception as e:
+        print(repr(e))
+        return JsonResponse({'certificates': []})

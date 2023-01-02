@@ -154,7 +154,7 @@ urlpatterns = [
         name='EmbdZmCrd'
     ),
     path(
-        'get_sorted_coaches/<str:option>/<str:coach_name_q>/<str:coach_speciality_q>/<str:min_price_q>/<str:max_price_q>',
+        'get_sorted_coaches/<str:option>/<str:coach_name_q>/<str:coach_category_q>/<str:min_price_q>/<str:max_price_q>',
         views.get_sorted_coaches,
         name='get_sorted_coaches'
     ),
@@ -208,6 +208,21 @@ urlpatterns = [
         'profile_edit',
         views.profile_edit,
         name='profile_edit'
+    ),
+    path(
+        'remove_certificate',
+        views.remove_certificate,
+        name='remove_certificate'
+    ),
+    path(
+        'add_new_certificate_to_coach',
+        views.add_new_certificate_to_coach,
+        name='add_new_certificate_to_coach'
+    ),
+    path(
+        'get_all_certificates',
+        views.get_all_certificates,
+        name='get_all_certificates'
     )
 
 

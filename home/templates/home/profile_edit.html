@@ -1,6 +1,17 @@
 {% extends 'base_no_footer.html' %}
 {% load static %}
 
+{% block style %}
+
+
+<script>
+    let remove_certificate_url = "{% url 'remove_certificate' %}";
+    let add_new_certificate_to_coach_url = "{% url 'add_new_certificate_to_coach' %}";
+    let get_all_certificates_url = "{% url 'get_all_certificates' %}";
+</script>
+<script src="{% static 'home/js/profile_edit.js' %}" defer></script>
+{% endblock %}
+
 {% block content %}
 
 <body style="background-color: var(--main-color);">
@@ -12,10 +23,22 @@
       <div class="prof-box p-20 bg-white rad-10">
         {% csrf_token %}
         <hr>
-        {{client_form}}
-        <hr>
         {{user_form}}
         <hr>
+        {{client_form}}
+        {{coach_form}}
+        <div class="input-group mb-3" id="generateNewPromoDiv">
+          <input type="text" class="form-control" placeholder="Certificate Name.." id="certTitle">
+          <input type="file" class="form-control"  id="cert">
+          <button id="addNewCertificate" type="button" class="btn btn-outline-success"><i class="fa fa-plus"></i></button>
+        </div>
+
+        {% if is_coach %}
+        <div id="certificateList" class="list-group" data-url="">
+        </div>
+        <hr>
+        {% endif %}
+
         <div class="d-flex flex-row-reverse m-3">
           <button type="submit" class="btn btn-outline-primary">Save</hr>
         </div>

@@ -15,17 +15,13 @@ class CoachModelAdmin(admin.ModelAdmin):
 
 @admin.register(models.Client)
 class ClientModelAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['id', 'user']
 
 
 @admin.register(models.Session)
 class SessionModelAdmin(admin.ModelAdmin):
-    list_display = ['id', 'coach', 'group_session', 'time', 'duration', ]
+    list_display = ['id', 'coach', 'group_session', 'time', 'duration']
 
-
-@admin.register(models.Category)
-class CategoryModelAdmin(admin.ModelAdmin):
-    pass
 
 
 @admin.register(models.CustomerMessage)
@@ -40,4 +36,9 @@ class ZoomMeetingModelAdmin(admin.ModelAdmin):
 
 @admin.register(models.PromoCode)
 class PromoCodeModelAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.Certificate)
+class CertificateModelAdmin(admin.ModelAdmin):
     pass

@@ -9,15 +9,15 @@
           <div class="overview bg-white rad-10 d-flex align-center">
     
             <div class="avatar-box txt-c p-20">
-                {% if client.photo %}
-                <img class="rad-half mb-10" src="{{ client.photo.url }}" alt="Upload Your Photo" />
+                {% if person.photo %}
+                <img class="rad-half mb-10" src="{{ person.photo.url }}" alt="Upload Your Photo" />
                 {% else %}
                 <div class="rad-half mb-10" data-bs-toggle="tooltip" title="Upload Your Photo">
                     <i class="fa fa-user" style="width: 40%;height: 40%;"></i>
                 </div>
                 {% endif %}
                 <a href="{% url 'profile_edit' %}"><i class="fa fa-edit"></i></a>
-              <h3 class="m-0">{{client.user.username}}</h3>
+              <h3 class="m-0">{{person.user.username}}</h3>
             </div>
     
             <div class="info-box w-full txt-c-mobile">
@@ -26,15 +26,15 @@
                 <h4 class="c-blue fs-11 m-3 w-full"></h4>
                 <div class="fs-14">
                   <span class="c-grey">Full Name:</span>
-                  <span>{{client.user.get_full_name}}</span>
+                  <span>{{person.user.get_full_name}}</span>
                 </div>
                 <div class="fs-14">
                   <span class="c-grey">Gender:</span>
-                  <span>{{client.gender}}</span>
+                  <span>{{person.user.gender}}</span>
                 </div>
                 <div class="fs-14">
                   <span class="c-grey">Country:</span>
-                  <span>{{client.country}}</span>
+                  <span>{{person.user.country}}</span>
                 </div>
               </div>
               <!-- End Information Row -->
@@ -44,15 +44,15 @@
                 <h4 class="c-blue w-full fs-11 m-3"></h4>
                 <div class="fs-14">
                   <span class="c-grey">Email:</span>
-                  <span>{{client.user.email}}</span>
+                  <span>{{person.user.email}}</span>
                 </div>
                 <div class="fs-14">
                   <span class="c-grey">Phone:</span>
-                  <span>{{client.user.phone}}</span>
+                  <span>{{person.user.phone}}</span>
                 </div>
                 <div class="fs-14">
                   <span class="c-grey">Date Of Birth:</span>
-                  <span>{{client.date_of_birth}}</span>
+                  <span>{{person.user.date_of_birth}}</span>
                 </div>
               </div>
               <!-- End Information Row -->
@@ -71,7 +71,11 @@
                 <li class="d-flex align-center mt-15">
                   <span class="key bg-green mr-15 d-block rad-half"></span>
                   <div class="pl-15 green">
+                    {% if is_coach %}
+                    <p class="fs-14 fw-bold mt-0 mb-5">{{ session.clients.all | length }} Clients</p>
+                    {% else %}
                     <p class="fs-14 fw-bold mt-0 mb-5">Session with {{ session.coach.user.username }}</p>
+                    {% endif %}
                     <span class="fs-13 c-grey">{{session.time}}</span>
                   </div>
                 </li>
@@ -91,7 +95,11 @@
                 <li class="d-flex align-center mt-15">
                   <span class="key bg-blue mr-15 d-block rad-half"></span>
                   <div class="pl-15 blue">
-                    <p class="fs-14 fw-bold mt-0 mb-5">Session with {{session.coach.user.username}}</p>
+                    {% if is_coach %}
+                    <p class="fs-14 fw-bold mt-0 mb-5">{{ session.clients.all | length }} Clients</p>
+                    {% else %}
+                    <p class="fs-14 fw-bold mt-0 mb-5">Session with {{ session.coach.user.username }}</p>
+                    {% endif %}
                     <span class="fs-13 c-grey">{{session.time}}</span>
                     <a 
                     class="join join_meeting" 

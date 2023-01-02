@@ -8,14 +8,14 @@
 {% block content %}
     <div class="container py-3 my-3 w-50 bg-light" style="border-radius: 20px;">
         
-        <div class="container w-75">
-            <form method="post" class="clearfix">
+            <form method="post" class="w-100"  enctype="multipart/form-data">
                 {% csrf_token %}
                 {% bootstrap_form user_form %}
                 <hr>
                 {% bootstrap_form coach_form %}
-                <input class="btn btn-secondary float-end" type="submit" value="Update">
+                <div class="d-flex flex-row-reverse">
+                    <input class="btn btn-secondary w-100" type="submit" value="Update">
+                </div>
             </form>
-        </div>
     </div>
 {% endblock %}

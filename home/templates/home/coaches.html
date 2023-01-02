@@ -5,7 +5,7 @@
 <!-- script block -->
 
 {% block style %}
-<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<!-- <link rel="stylesheet" href="{% static 'css/styles.css' %}"> -->
 <script src="{% static 'js/custom.js' %}" defer></script>
 <script defer>
   let coach_details_url = "{% url 'coach_details' 1111 %}" // 1111 is place holder to be replaced with coach id in js
@@ -34,10 +34,10 @@
               Sort
             </button>
             <div class="dropdown-menu" aria-labelledby="sortBtn">
-              <div class="dropdown-item coach-sorting-option" value="{% url 'get_sorted_coaches' option='plh' coach_name_q='coach_name_q' coach_speciality_q='coach_speciality_q' min_price_q='min_price_q' max_price_q='max_price_q'  %}">Price low to high</div>
-              <div class="dropdown-item coach-sorting-option" value="{% url 'get_sorted_coaches' option='phl' coach_name_q='coach_name_q' coach_speciality_q='coach_speciality_q' min_price_q='min_price_q' max_price_q='max_price_q'   %}">Price high to low</div>
-              <div class="dropdown-item coach-sorting-option" value="{% url 'get_sorted_coaches' option='ctchna' coach_name_q='coach_name_q' coach_speciality_q='coach_speciality_q' min_price_q='min_price_q' max_price_q='max_price_q'   %}">Coach name accending</div>
-              <div class="dropdown-item coach-sorting-option" value="{% url 'get_sorted_coaches' option='catna' coach_name_q='coach_name_q' coach_speciality_q='coach_speciality_q' min_price_q='min_price_q' max_price_q='max_price_q'   %}">Category name accending</div>
+              <div class="dropdown-item coach-sorting-option" value="{% url 'get_sorted_coaches' option='plh' coach_name_q='coach_name_q' coach_category_q='coach_category_q' min_price_q='min_price_q' max_price_q='max_price_q'  %}">Price low to high</div>
+              <div class="dropdown-item coach-sorting-option" value="{% url 'get_sorted_coaches' option='phl' coach_name_q='coach_name_q' coach_category_q='coach_category_q' min_price_q='min_price_q' max_price_q='max_price_q'   %}">Price high to low</div>
+              <div class="dropdown-item coach-sorting-option" value="{% url 'get_sorted_coaches' option='ctchna' coach_name_q='coach_name_q' coach_category_q='coach_category_q' min_price_q='min_price_q' max_price_q='max_price_q'   %}">Coach name accending</div>
+              <div class="dropdown-item coach-sorting-option" value="{% url 'get_sorted_coaches' option='catna' coach_name_q='coach_name_q' coach_category_q='coach_category_q' min_price_q='min_price_q' max_price_q='max_price_q'   %}">Category name accending</div>
             </div>
           </div>
         </div>
@@ -58,10 +58,10 @@
             <div class="mt-2">
               <input
                 type="text"
-                id="specialityInput"
+                id="categoryInput"
                 class="form-control"
-                name="coach_speciality_q"
-                placeholder="Coach Speciality ..."
+                name="coach_category_q"
+                placeholder="Coach category ..."
               />
             </div>
             <hr />
@@ -131,7 +131,7 @@
                 </div>
                 <div>
                   <h4>{{coach.user.username}}</h4>
-                  <p>{{coach.speciality}}</p>
+                  <p>{{coach.category}}</p>
                   <div>
                       {% if coach.rating > 0%}
                       <i class="fa-solid fa-star" style="color: gold"></i>

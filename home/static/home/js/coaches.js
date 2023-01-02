@@ -5,14 +5,14 @@ let loadSortedCoaches = async function(item) {
     if (coach_name_q == '') {
         coach_name_q = 'Empty'
     }
-    let  coach_speciality_q = document.querySelector('#specialityInput').value
-    if (coach_speciality_q == '') {
-        coach_speciality_q = 'Empty'
+    let  coach_category_q = document.querySelector('#categoryInput').value
+    if (coach_category_q == '') {
+        coach_category_q = 'Empty'
     }
     let  min_price_q = document.querySelector('#minPriceInput').value
     let  max_price_q = document.querySelector('#maxPriceInput').value
     let  coach_list_div = document.querySelector('#coach-list')
-    let  url = item.attributes['value'].value.replace('coach_name_q', coach_name_q).replace('coach_speciality_q', coach_speciality_q).replace('min_price_q', min_price_q).replace('max_price_q', max_price_q)
+    let  url = item.attributes['value'].value.replace('coach_name_q', coach_name_q).replace('coach_category_q', coach_category_q).replace('min_price_q', min_price_q).replace('max_price_q', max_price_q)
 
     const response = await fetch(url, {
         method: "GET",
@@ -70,9 +70,9 @@ let loadSortedCoaches = async function(item) {
             let coach_name_h4 = document.createElement('h4')
             coach_name_h4.textContent = item.user
             main_info_div.append(coach_name_h4)
-            let coach_speciality = document.createElement('p')
-            coach_speciality.textContent = item.speciality
-            main_info_div.append(coach_speciality)
+            let coach_category = document.createElement('p')
+            coach_category.textContent = item.category
+            main_info_div.append(coach_category)
 
             let rating_div = document.createElement('div')
             Array(item.rating).fill(1).forEach(

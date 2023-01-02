@@ -25,17 +25,16 @@ from django.contrib.auth.models import AbstractUser
 # coach location filed options
 
 class User(AbstractUser):
+    city = models.CharField(max_length=50, default="not-provided")
+    country = models.CharField(max_length=50, default="not-provided")
+    gender = models.CharField(max_length=6, choices=(('Male','Male'), ('Female','Female')), blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, null=True)
     phone = models.CharField(max_length=20)
 
 # make the email required for any user
 User._meta.get_field('email').blank = False
 User._meta.get_field('email').null = False
 
-class Category(models.Model):
-    name = models.CharField(max_length=100)
-
-    def __str__(self) -> str:
-        return self.name
 
 class ClientCustomManager(models.QuerySet):
 
@@ -47,19 +46,19 @@ class ClientCustomManager(models.QuerySet):
 
 class Client(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    city = models.CharField(max_length=50, default="not-provided")
-    country = models.CharField(max_length=50, default="not-provided")
     joined_at = models.DateTimeField(auto_now_add=True)
-    gender = models.CharField(max_length=6, choices=(('Male','Male'), ('Female','Female')), blank=True, null=True)
-    date_of_birth = models.DateField(blank=True, null=True)
     photo = models.ImageField(upload_to='photo/client/%Y/%m/%d', blank=True)
-
+    
     
     objects = ClientCustomManager.as_manager()
 
     def __str__(self) -> str:
         return self.user.username
 
+class Certificate(models.Model):
+    name = models.CharField(max_length=50)
+    picture = models.ImageField(upload_to='certificate/coach', blank=True)
+    coach = models.ForeignKey("Coach", on_delete=models.CASCADE, null=True, blank=True, related_query_name='certificates')
 
 class CoachCustomManager(models.QuerySet):
 
@@ -107,24 +106,33 @@ class CoachCustomManager(models.QuerySet):
         return []
 
 
+
 class Coach(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    speciality = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.CharField(max_length=50)
     rating = models.IntegerField(default=0, validators=[
                                  MaxValueValidator(5), MinValueValidator(0)])
     location = models.CharField(max_length=150, default='Egypt')
     price_per_hour = models.IntegerField(default=0) # in 100 cents
     price_per_30_mins = models.IntegerField(default=0) # in 100 cents
     available_for_kids = models.BooleanField(default=False)
-    photo = models.ImageField(upload_to='photo/coach/%Y/%m/%d', blank=True)
+    photo = models.ImageField(upload_to='photo/coach/%Y/%m/%d')
     working_hours_start = models.TimeField(default=datetime.time(8, 0, 0))
     working_hours_end = models.TimeField(default=datetime.time(16, 0, 0))
     joined_at = models.DateTimeField(auto_now_add=True)
+    bio = models.CharField(max_length=255, null=True, blank=True)
+    featured = models.BooleanField(default=False)
+    # certificates = models.ManyToManyField(Certificate)
 
     objects = CoachCustomManager.as_manager()
 
     def __str__(self) -> str:
         return self.user.username
+
+    def save(self, *args, **kwargs):
+        self.location = f'{self.user.city}, {self.user.country}' 
+        super(Coach, self).save(*args, **kwargs)
+
 
 class SessionCustomManager(models.QuerySet):
 
@@ -148,7 +156,7 @@ class SessionCustomManager(models.QuerySet):
         return self.all().values('coach').annotate(count=Count('id')).values('coach__user__username', 'count').order_by('count')
 
     def get_total_session_per_category(self):
-        return self.all().values('category').annotate(count=Count('id')).values('category__name', 'count').order_by('count')
+        return self.all().values('coach__category').annotate(count=Count('id')).values('coach__category', 'count').order_by('count')
 
     def create_zoom_meeting(self, topic, start_time, duration_in_mins, time_zone, agenda):
         formated_time = '2022-12-12T11: 11: 11'  # will be formated from start_time
@@ -190,7 +198,6 @@ class SessionCustomManager(models.QuerySet):
 class Session(models.Model):
     clients = models.ManyToManyField(Client)
     coach = models.ForeignKey(Coach, on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     time = models.DateTimeField()
     duration = models.IntegerField(default=60)
     review = models.CharField(max_length=500, default='')
@@ -201,7 +208,7 @@ class Session(models.Model):
     objects = SessionCustomManager.as_manager()
 
     def __str__(self) -> str:
-        return f'{self.category}: {self.coach} : {self.time}'
+        return f'{self.coach.category}: {self.coach} : {self.time}'
 
 
 class Order(models.Model):
@@ -416,12 +423,12 @@ class Payment(models.Model):
             token=token, 
             merchant_order_id=merchant_order_id,
             amount_cents=coach.price_per_hour * (100 - discount),
-            item_name=coach.speciality.name,
+            item_name=coach.category.name,
             quantity=1,
             email=email,
             first_name=first_name,
             last_name=last_name,
-            phone_number=str(client.phone_number),
+            phone_number=str(client.user.phone),
             city=city,
             country=country
             )
@@ -437,7 +444,7 @@ class Payment(models.Model):
             first_name=first_name,
             last_name=last_name,
             email=email,
-            phone_number=str(client.phone_number),
+            phone_number=str(client.user.phone),
             city=city,
             country=country,
             amount_cents=coach.price_per_hour * 100

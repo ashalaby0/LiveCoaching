@@ -80,12 +80,15 @@ let checkPromoCode = async function () {
       (element, i) => {
         if (element.classList.contains('checked')) {
           document.querySelector('#book_button').disabled = false
+      document.querySelector('#pCode').style.color = 'black';
+
         }
       }
     )
   }
   else {
     document.querySelector('#book_button').disabled = true
+    document.querySelector('#pCode').style.color = 'red';
   }
 
   return responseObj.result
